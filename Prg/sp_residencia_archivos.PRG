@@ -1,0 +1,67 @@
+*
+* Busco archivo del examen correspondiente tipo, año y tema
+*
+Lparameter manio,mtema,mtipo
+
+If used('ima')
+	Use in ima
+Endif
+If used('__DATA')
+	Use in __DATA
+Endif
+If used ('imagen')
+	Use in imagen
+Endif
+mret = sqlexec(mcon1,"select documento as foto from TabDocGral where anio=?manio and "+;
+	"tema=?mtema and tipo=?mtipo","ima")
+If mret > 0
+	If file("C:\temp\imagenes\imagen.dbf")
+		Erase ("C:\temp\imagenes\imagen.dbf")
+	Endif
+	If file("C:\temp\imagenes\imagen.fpt")
+		Erase ("C:\temp\imagenes\imagen.fpt")
+	Endif
+	Select ima
+	Copy to "C:\temp\imagenes\imagen"
+	Use in ima
+*   Cambia el campo grneral de tipo memo
+	LL = fopen("C:\temp\imagenes\imagen.dbf",12)
+	Fseek(LL,43)
+	Fwrite(LL,'M')
+	Fclose(LL)
+*   Graba los datos campo memo en un archivo
+	Use "C:\temp\imagenes\imagen.dbf" alias ima
+	miresp = ''
+	mcimagen = 'archivo'
+	If file("C:\temp\imagenes\archivo."+mtipo)
+		Erase ("C:\temp\imagenes\archivo."+mtipo)
+	Endif
+	Do prg_saveBinnb with foto,"C:\temp\imagenes\"+mcimagen,miresp,mtipo
+	marchi = miresp
+
+	If used('__DATA')
+		Use in __DATA
+	Endif
+	If used ('imagen')
+		Use in imagen
+	Endif
+	If used('ima')
+		Use in ima
+	Endif
+
+*!*		loBrowser = createobject("InternetExplorer.Application")
+*!*		loBrowser.Navigate(marchi)
+*!*		loBrowser.visible=.t.
+*!*		Release loBrowser
+
+*!*		If OS(1) = "Windows 5.01"
+*!*			mpath = "RUN/N " + "rundll32.exe C:\WINDOWS\system32\shimgvw.dll,ImageView_Fullscreen " + mTifDir
+*!*		Else
+*!*			mpath = "RUN/N " + "Kodakimg.exe " + mTifDir
+*!*		Endif
+*!*		&mpath
+
+Else
+	Messagebox("AL LOCALIZAR ARCHIVO, REQUERIDO"+chr(10)+"AVISE A SISTEMAS",16,"ERROR")
+Endif
+Return

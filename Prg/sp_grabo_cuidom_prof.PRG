@@ -1,0 +1,190 @@
+*
+* Grabación Profesionales Cuidados Domiciliarios
+*
+Lparameters mform
+
+With mform
+
+	muser   = mwkusuario.idusuario
+	mfechoy = sp_busco_fecha_serv('DT')
+	mfnull  = Ctod("01/01/1900")
+
+	If .ltipo = "A" Or .ltipo = "M" && Alta ó Modificación
+		Dimension vd[8]
+
+		vd[2] = .txtdire.Value
+		vd[3] = .txtloca.Value
+		vd[4] = .txttelpar.Value
+		vd[5] = .txttelcel.Value
+		vd[6] = .txtemail.Value
+		vd[7] = .txtuserweb.Value
+		vd[8] = .txtpassweb.Value
+
+		mtipo = .opttipo.Value
+
+		Do Case
+		Case mtipo = 1 && Profesional Medico
+
+			vd[1]   = Alltrim(mwkmedicos.nombre)
+			mnombre = vd[1]
+			midmae  = mwkmedicos.Id
+
+		Case mtipo = 2 && Enfermeria
+
+			vd[1]   = Alltrim(mwkenfer.nomape)
+			mnombre = vd[1]
+			midmae  = mwkenfer.Id
+
+		Case mtipo = 3 && Prestador Externo
+
+			vd[1]   = Alltrim(.txtpresta.Value)
+			mnombre = vd[1]
+			midmae  = 0
+
+		Endcase
+
+		If .ltipo = "A"
+
+			mret = SQLExec(mcon1,"insert into TabCuiDomProf "+;
+				"(TDP_tipo, TDP_idmaestro, TDP_prestador, TDP_direccion, TDP_localidad,"+;
+				" TDP_telpar, TDP_telcel, TDP_email, TDP_pasivado, TDP_usuario, TDP_fecmov,"+;
+				" TDP_userweb, TDP_passweb)"+;
+				" values "+;
+				"(?mtipo, ?midmae, ?vd[1], ?vd[2], ?vd[3], ?vd[4], ?vd[5], ?vd[6],"+;
+				" ?mfnull, ?muser, ?mfechoy, ?vd[7], ?vd[8])")
+
+			If mret > 0
+
+				Use In Select("mwkproid")
+				mret = SQLExec(mcon1,"select id as lid from TabCuiDomProf"+;
+					" where TDP_usuario = ?muser and TDP_fecmov = ?mfechoy","mwkproid")
+
+				If mret > 0
+					mlid = mwkproid.lid
+					Use In Select("mwkproid")
+				Endif
+
+			Endif
+
+		Else
+
+			mlid = mwkcdprof.lid
+			mret = SQLExec(mcon1,"update TabCuiDomProf set "+;
+				"TDP_idmaestro = ?midmae,"+;
+				"TDP_prestador = ?vd[1],"+;
+				"TDP_direccion = ?vd[2],"+;
+				"TDP_localidad = ?vd[3],"+;
+				"TDP_telpar    = ?vd[4],"+;
+				"TDP_telcel    = ?vd[5],"+;
+				"TDP_email     = ?vd[6],"+;
+				"TDP_usuario   = ?muser,"+;
+				"TDP_fecmov    = ?mfechoy,"+;
+				"TDP_userweb   = ?vd[7],"+;
+				"TDP_passweb   = ?vd[8]"+;
+				" where id = ?mlid")
+
+		Endif
+		Release vd
+
+
+	Else && Pasivación / Recuperación
+
+		If .ltipo = "B"
+			mfnull = sp_busco_fecha_serv('DD')
+		Endif
+
+		mlid = mwkcdprof.lid
+		mret = SQLExec(mcon1,"update TabCuiDomProf set "+;
+			"TDP_pasivado = ?mfnull,"+;
+			"TDP_usuario  = ?muser,"+;
+			"TDP_fecmov   = ?mfechoy"+;
+			" where id = ?mlid")
+
+	Endif
+
+	If mret < 0
+		MTABLA = "CUIDADOS DOMICILIARIOS PROFESIONALES"
+		Do LOG_ERRORES With Error(), Message(), Message(1), Program(), Lineno()
+		Messagebox("EN LA TABLA " + MTABLA + Chr(10)+"AVISE A SISTEMAS",16,"ERROR")
+		Return .F.
+	Endif
+
+*!* ------
+*!* MySQL
+*!* ------
+
+*!*		mconM = Sqlstringconnect("Driver=MySQL ODBC 3.51 Driver;"+;
+*!*			"Server=localhost;"+;
+*!*			"UID=root;"+;
+*!*			"PWD=mysql01;"+;
+*!*			"Database=cuiddom")
+
+	mconM = 0
+
+	If sp_conectaMySQL(.mserver, .muid, .mpwd, .mdatabase)
+
+*!*			=SQLSetprop(mconM,"Transactions",2)
+*!*			=SQLSetprop(mconM,"Asynchronous",.F.)
+
+		If .ltipo = "A" Or .ltipo = "M"
+
+			muserw   = .txtuserweb.Value
+			mpassw   = .txtpassweb.Value
+			mfechoyM = Ttoc(mfechoy)
+
+			If .ltipo = "A" && Alta
+
+				mret = SQLExec(mconM,"insert into tbl_profesion "+;
+					"(idprofe, profesional, iduser, clave, user, fecmov, estado)"+;
+					" values "+;
+					"(?mlid, ?mnombre, ?muserw, ?mpassw, ?muser, ?mfechoyM, 'A')")
+
+			Else
+
+				mret = SQLExec(mconM,"update tbl_profesion "+;
+					" set "+;
+					"iduser = ?muserw,"+;
+					"clave  = ?mpassw,"+;
+					"user   = ?muser,"+;
+					"profesional = ?mnombre,"+;
+					"fecmov = ?mfechoyM,"+;
+					"estado = 'A'"+;
+					" where idprofe = ?mlid")
+			Endif
+
+		Else && Baja / Recupera
+
+			mestado = "B"
+			If .ltipo <> "B"
+				mestado = "A"
+			Endif
+			mfechoyM = Ttoc(mfechoy)
+		
+			mret = SQLExec(mconM,"update tbl_profesion "+;
+				" set "+;
+				"estado = ?mestado,"+;
+				"user   = ?muser,"+;
+				"fecmov = ?mfechoyM"+;
+				" where idprofe = ?mlid")
+
+		Endif
+		=SQLDisconnect(mconM)
+
+		If mret < 0
+			MTABLA = "CUIDADOS DOMICILIARIOS ACTUALIZACION WEB"
+			Do LOG_ERRORES With Error(), Message(), Message(1), Program(), Lineno()
+			Messagebox("CONECCION A " + MTABLA + Chr(10)+"AVISE A SISTEMAS",16,"ERROR")
+		Else
+			Messagebox("SE ACTUALIZO EL MAESTRO WEB DE PROFESIONALES",48,"ATENCION")
+		Endif
+
+	Else
+
+		MTABLA = "CUIDADOS DOMICILIARIOS WEB"
+		Do LOG_ERRORES With Error(), Message(), Message(1), Program(), Lineno()
+		Messagebox("CONECCION A " + MTABLA + Chr(10)+"AVISE A SISTEMAS",16,"ERROR")
+
+	Endif
+
+Endwith
+Return .T.

@@ -1,0 +1,151 @@
+*       *********************************************************
+*       *                                                         
+*       * 31/03/2005         INFORMESMENU.MPR           14:43:19  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2005 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _1hh0vjzv5 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _1hh0vjzvc OF _MSYSMENU PROMPT "Mesa de Admision" COLOR SCHEME 3 ;
+	KEY ALT+M, ""
+DEFINE PAD _1hh0vjzvd OF _MSYSMENU PROMPT "Admisión" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+DEFINE PAD _1hh0vjzve OF _MSYSMENU PROMPT "Guardia" COLOR SCHEME 3 ;
+	KEY ALT+G, ""
+DEFINE PAD _1hh0vjzvf OF _MSYSMENU PROMPT "Archivo" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+DEFINE PAD _1hh0vjzvg OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
+	KEY ALT+T, ""
+DEFINE PAD _1hh0vjzvh OF _MSYSMENU PROMPT "Estadisticas Generales" COLOR SCHEME 3 ;
+	KEY ALT+E, ""
+DEFINE PAD _1hh0vjzvi OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+	KEY ALT+C, ""
+ON PAD _1hh0vjzv5 OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _1hh0vjzvd OF _MSYSMENU ACTIVATE POPUP admisión
+ON PAD _1hh0vjzve OF _MSYSMENU ACTIVATE POPUP guardia
+ON PAD _1hh0vjzvf OF _MSYSMENU ACTIVATE POPUP archivo
+ON PAD _1hh0vjzvg OF _MSYSMENU ACTIVATE POPUP turnos
+ON PAD _1hh0vjzvh OF _MSYSMENU ACTIVATE POPUP estadistic
+ON PAD _1hh0vjzvi OF _MSYSMENU ACTIVATE POPUP password
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
+ON SELECTION BAR 1 OF salir quit
+
+DEFINE POPUP admisión MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF admisión PROMPT "Pacientes Internados" ;
+	SKIP FOR type('mfrmadmision01') = 'U'
+ON SELECTION BAR 1 OF admisión do form frmadmision01
+
+DEFINE POPUP guardia MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF guardia PROMPT "Ingreso de Pacientes" ;
+	SKIP FOR type('mfrmguardia01') = 'U'
+DEFINE BAR 2 OF guardia PROMPT "Planilla de Médicos" ;
+	SKIP FOR type('mfrmguardia3') = 'U'
+DEFINE BAR 3 OF guardia PROMPT "Planilla de Emergencias" ;
+	SKIP FOR type('mfrmguardia03') = 'U'
+DEFINE BAR 4 OF guardia PROMPT "\-"
+DEFINE BAR 5 OF guardia PROMPT "Consulta entre Fechas" ;
+	SKIP FOR type('mfrmguardia23') = 'U'
+DEFINE BAR 6 OF guardia PROMPT "Consulta mensual" ;
+	SKIP FOR type('mfrmguardia18') = 'U'
+ON SELECTION BAR 1 OF guardia do form frmguardia01
+ON SELECTION BAR 2 OF guardia do form frmguardia03 with 1
+ON SELECTION BAR 3 OF guardia do form frmguardia03 with 2
+ON SELECTION BAR 5 OF guardia do form frmguardia23
+ON SELECTION BAR 6 OF guardia do form frmguardia18
+
+DEFINE POPUP archivo MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF archivo PROMPT "H.Clinicas Faltantes por Planilla"
+DEFINE BAR 2 OF archivo PROMPT "Estado de H.Clínica"
+DEFINE BAR 3 OF archivo PROMPT "H.Clínicas en Rotación"
+DEFINE BAR 4 OF archivo PROMPT "Traslado de H.Clínicas"
+DEFINE BAR 5 OF archivo PROMPT "H.Clinicas sin Devolver"
+DEFINE BAR 6 OF archivo PROMPT "H.Clínicas para Reenviar"
+DEFINE BAR 7 OF archivo PROMPT "Estadística de Egresos"
+DEFINE BAR 8 OF archivo PROMPT "Estadística de Búsquedas"
+ON SELECTION BAR 1 OF archivo do form frmarchivo05
+ON SELECTION BAR 2 OF archivo do form frmarchivo07
+ON SELECTION BAR 3 OF archivo do form frmarchivo08
+ON SELECTION BAR 4 OF archivo do form frmarchivo11
+ON SELECTION BAR 5 OF archivo do form frmarchivo12
+ON SELECTION BAR 6 OF archivo do form frmarchivo18
+ON SELECTION BAR 7 OF archivo do form frmarchivo23 with 1
+ON SELECTION BAR 8 OF archivo do form frmarchivo23 with 2
+
+DEFINE POPUP turnos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF turnos PROMPT "Planillas de Medicos"
+DEFINE BAR 2 OF turnos PROMPT "Horarios de Medicos"
+DEFINE BAR 3 OF turnos PROMPT "Control de Fichadas"
+DEFINE BAR 4 OF turnos PROMPT "\-"
+DEFINE BAR 5 OF turnos PROMPT "Ofertados Vs Otorgados" ;
+	SKIP FOR type('mfrmturno36') = 'U'
+DEFINE BAR 6 OF turnos PROMPT "Presentes Vs Ausentes" ;
+	SKIP FOR type('mfrmturno26') = 'U'
+DEFINE BAR 7 OF turnos PROMPT "PE Presentes Vs Ausentes" ;
+	SKIP FOR type('mfrmturno69') = 'U'
+DEFINE BAR 8 OF turnos PROMPT "Rendimiento por Especialidad" ;
+	SKIP FOR type('mfrmturno28') = 'U'
+DEFINE BAR 9 OF turnos PROMPT "Turnos Solicitados Por" ;
+	SKIP FOR type('mfrmturno32') = 'U'
+DEFINE BAR 10 OF turnos PROMPT "Turnos por Entidad" ;
+	SKIP FOR type('mfrmturno36') = 'U'
+DEFINE BAR 11 OF turnos PROMPT "Turnos Generados" ;
+	SKIP FOR type('mfrmturno29') = 'U'
+DEFINE BAR 12 OF turnos PROMPT "Turnos Dados por Sector" ;
+	SKIP FOR type('mfrmturno21') = 'U'
+DEFINE BAR 13 OF turnos PROMPT "Ausentes por Especialidad" ;
+	SKIP FOR type('mfrmturno53') = 'U'
+DEFINE BAR 14 OF turnos PROMPT "Turnos Dados por Entidad" ;
+	SKIP FOR type('mfrmturno54') = 'U'
+DEFINE BAR 15 OF turnos PROMPT "Consumos Medicos Solicitantes" ;
+	SKIP FOR type('mfrmturno57') = 'U'
+ON SELECTION BAR 1 OF turnos do form frmphorariam
+ON SELECTION BAR 2 OF turnos do form frmphorariam
+ON SELECTION BAR 3 OF turnos do form frmmedicos03
+ON SELECTION BAR 5 OF turnos do form frmturno23
+ON SELECTION BAR 6 OF turnos do form frmturno26
+ON SELECTION BAR 7 OF turnos do form frmturno69
+ON SELECTION BAR 8 OF turnos do form frmturno28
+ON SELECTION BAR 9 OF turnos do form frmturno32
+ON SELECTION BAR 10 OF turnos do form frmturno36
+ON SELECTION BAR 11 OF turnos do form frmturno29
+ON SELECTION BAR 12 OF turnos do form frmturno21
+ON SELECTION BAR 13 OF turnos do form frmturno53
+ON SELECTION BAR 14 OF turnos do form frmturno54
+ON SELECTION BAR 15 OF turnos do form frmturno57
+
+DEFINE POPUP estadistic MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF estadistic PROMPT "Prestaciones" ;
+	SKIP FOR type('mfrmturno58') = 'U'
+DEFINE BAR 2 OF estadistic PROMPT "Totales por Servicio" ;
+	SKIP FOR type('mfrmturno66') = 'U'
+ON SELECTION BAR 1 OF estadistic do form frmturno58
+ON SELECTION BAR 2 OF estadistic do form frmturno66
+
+DEFINE POPUP password MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF password PROMPT "Cambio de Password"
+ON SELECTION BAR 1 OF password do form frmpass_amb

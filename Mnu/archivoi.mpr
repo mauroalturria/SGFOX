@@ -1,0 +1,76 @@
+*       *********************************************************
+*       *                                                         
+*       * 03/05/2006           ARCHIVOI.MPR             14:13:44  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2006 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _1sl0uhwr2 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _1sl0uhwr3 OF _MSYSMENU PROMPT "Administracion de HC" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+DEFINE PAD _1sl0uhwr4 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+	KEY ALT+C, ""
+DEFINE PAD _1sl0uhwr5 OF _MSYSMENU PROMPT "Tablas" COLOR SCHEME 3 ;
+	KEY ALT+T, ""
+ON SELECTION PAD _1sl0uhwr2 OF _MSYSMENU ;
+	DO _1sl0uhwr6 ;
+	IN LOCFILE("\DESAGUEMES\MNU\ARCHIVOI" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está ARCHIVOI?")
+ON PAD _1sl0uhwr3 OF _MSYSMENU ACTIVATE POPUP administra
+ON PAD _1sl0uhwr4 OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _1sl0uhwr5 OF _MSYSMENU ACTIVATE POPUP tablas
+
+DEFINE POPUP administra MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF administra PROMPT "Egreso de Historia"
+DEFINE BAR 2 OF administra PROMPT "Ingreso de Historia"
+DEFINE BAR 3 OF administra PROMPT "Altas"
+ON SELECTION BAR 1 OF administra do form frmarchivo26
+ON SELECTION BAR 2 OF administra do form frmarchivo29
+ON SELECTION BAR 3 OF administra do form frmarchivo33
+
+DEFINE POPUP consultas MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF consultas PROMPT "Consulta de Historias"
+ON SELECTION BAR 1 OF consultas frmarchivo27
+
+DEFINE POPUP tablas MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF tablas PROMPT "Cambio De Pasword"
+ON SELECTION BAR 1 OF tablas frmpass_amb
+
+
+*       *********************************************************
+*       *                                                         
+*       * _1SL0UHWR6  ON SELECTION PAD                            
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  ARCHIVOI.MPR,            Record:    3       
+*       * Called By:  ON SELECTION PAD                            
+*       * Prompt:     Salir                                       
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _1sl0uhwr6
+quit

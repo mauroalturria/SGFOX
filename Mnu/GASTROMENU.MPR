@@ -1,0 +1,92 @@
+*       *********************************************************
+*       *                                                         
+*       * 24/06/2014          GASTROMENU.MPR            17:51:09  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2014 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _43l129ifp OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _43l129ifq OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
+	KEY ALT+I, ""
+DEFINE PAD _43l129ifr OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+	KEY ALT+D, ""
+DEFINE PAD _43l129ifs OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+	KEY ALT+C, ""
+ON PAD _43l129ifp OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _43l129ifq OF _MSYSMENU ACTIVATE POPUP informesge
+ON PAD _43l129ifr OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _43l129ifs OF _MSYSMENU ACTIVATE POPUP password
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
+DEFINE BAR 2 OF salir PROMPT "Acerca de..."
+ON SELECTION BAR 1 OF salir ;
+	DO _43l129ift ;
+	IN LOCFILE("MNU\GASTROMENU" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está GASTROMENU?")
+ON SELECTION BAR 2 OF salir do form frmacercade
+
+DEFINE POPUP informesge MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF informesge PROMPT "Prestaciones" ;
+	SKIP FOR type('mfrmturno58') = 'U'
+DEFINE BAR 2 OF informesge PROMPT "Estadistica de Consumos" ;
+	SKIP FOR type('mfrmplan09') = 'U'
+DEFINE BAR 3 OF informesge PROMPT "Días Laborables"
+ON SELECTION BAR 1 OF informesge do form frmturno58
+ON SELECTION BAR 2 OF informesge do form frmplan09
+ON SELECTION BAR 3 OF informesge do form frmconsul17
+
+DEFINE POPUP documentac MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF documentac PROMPT "Sugerencias - Mejora Continua - Administrativo"
+DEFINE BAR 2 OF documentac PROMPT "Sistemáticas de Atención"
+DEFINE BAR 3 OF documentac PROMPT "Mesa de Ayuda"
+ON SELECTION BAR 1 OF documentac do form frmguardia34 with 6
+ON SELECTION BAR 2 OF documentac do form frmdocu01 with 3
+ON SELECTION BAR 3 OF documentac do form frmreclamos03
+
+DEFINE POPUP password MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF password PROMPT "Cambio de Password" ;
+	SKIP FOR left(mwkusuario.nomape,1)='*'
+DEFINE BAR 2 OF password PROMPT "Cambio de Ámbito"
+ON SELECTION BAR 1 OF password do form frmpass_amb
+ON SELECTION BAR 2 OF password do form frmagen01
+
+
+*       *********************************************************
+*       *                                                         
+*       * _43L129IFT  ON SELECTION BAR 1 OF POPUP salir           
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  GASTROMENU.MPR,            Record:    5     
+*       * Called By:  ON SELECTION BAR 1 OF POPUP salir           
+*       * Prompt:     Cerrar aplicacion                           
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _43l129ift
+do sp_logoff
+quit

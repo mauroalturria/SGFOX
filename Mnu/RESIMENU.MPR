@@ -1,0 +1,90 @@
+*       *********************************************************
+*       *                                                         
+*       * 23/04/2014           RESIMENU.MPR             12:02:33  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2014 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _41v0pt81i OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _41v0pt81j OF _MSYSMENU PROMPT "Residencias" COLOR SCHEME 3 ;
+	KEY ALT+R, ""
+DEFINE PAD _41v0pt81k OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+ON PAD _41v0pt81i OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _41v0pt81j OF _MSYSMENU ACTIVATE POPUP residencia
+ON PAD _41v0pt81k OF _MSYSMENU ACTIVATE POPUP administra
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
+DEFINE BAR 2 OF salir PROMPT "Acerca de..."
+ON SELECTION BAR 1 OF salir ;
+	DO _41v0pt81l ;
+	IN LOCFILE("MNU\RESIMENU" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está RESIMENU?")
+ON SELECTION BAR 2 OF salir do form frmacercade
+
+DEFINE POPUP residencia MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF residencia PROMPT "Examenes de Residencias"
+DEFINE BAR 2 OF residencia PROMPT "\-"
+DEFINE BAR 3 OF residencia PROMPT "Análisis de preguntas"
+DEFINE BAR 4 OF residencia PROMPT "\-"
+DEFINE BAR 5 OF residencia PROMPT "Procedencia y Desempeño"
+DEFINE BAR 6 OF residencia PROMPT "\-"
+DEFINE BAR 7 OF residencia PROMPT "Encuestas"
+DEFINE BAR 8 OF residencia PROMPT "\-"
+DEFINE BAR 9 OF residencia PROMPT "Preguntas x Especialidad / Dimensión"
+ON SELECTION BAR 1 OF residencia do form frmresi01
+ON SELECTION BAR 3 OF residencia do form frmresi03
+ON SELECTION BAR 5 OF residencia do form frmresi07
+ON SELECTION BAR 7 OF residencia do form frmresi10
+ON SELECTION BAR 9 OF residencia do form frmresi13
+
+DEFINE POPUP administra MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF administra PROMPT "Cambio de Password"
+DEFINE BAR 2 OF administra PROMPT "\-"
+DEFINE BAR 3 OF administra PROMPT "Selecciona Año y Evento"
+DEFINE BAR 4 OF administra PROMPT "\-"
+DEFINE BAR 5 OF administra PROMPT "Envio de Newsletters"
+ON SELECTION BAR 1 OF administra do form frmpass_amb
+ON SELECTION BAR 3 OF administra do form frmresi09
+ON SELECTION BAR 5 OF administra do form frmresi11
+
+
+*       *********************************************************
+*       *                                                         
+*       * _41V0PT81L  ON SELECTION BAR 1 OF POPUP salir           
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  RESIMENU.MPR,            Record:    5       
+*       * Called By:  ON SELECTION BAR 1 OF POPUP salir           
+*       * Prompt:     Cerrar Aplicacion                           
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _41v0pt81l
+do sp_logoff
+quit

@@ -1,0 +1,57 @@
+*       *********************************************************
+*       *                                                         
+*       * 28/02/2002           MENUOPER.MPR             17:11:02  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2002 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+DEFINE POPUP menúcontex SHORTCUT RELATIVE FROM MROW(),MCOL()
+DEFINE BAR 1 OF menúcontex PROMPT "Salir"
+DEFINE BAR 2 OF menúcontex PROMPT "Listado de Turnos"
+ON SELECTION BAR 1 OF menúcontex ;
+	DO _0m110tykc ;
+	IN LOCFILE("\DESAGUEMES\MNU\MENUOPER" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está MENUOPER?")
+ON BAR 2 OF menúcontex ACTIVATE POPUP listadodet
+
+DEFINE POPUP listadodet SHORTCUT RELATIVE
+DEFINE BAR 1 OF listadodet PROMPT "Pre de 48hs"
+DEFINE BAR 2 OF listadodet PROMPT "Definitivo 24hs"
+ON SELECTION BAR 1 OF listadodet do form frmturno19
+ON SELECTION BAR 2 OF listadodet do form frmturno20
+
+ACTIVATE POPUP menúcontex
+
+*       *********************************************************
+*       *                                                         
+*       * _0M110TYKC  ON SELECTION BAR 1 OF POPUP menúcontex      
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  MENUOPER.MPR,            Record:    5       
+*       * Called By:  ON SELECTION BAR 1 OF POPUP menúcontex      
+*       * Prompt:     Salir                                       
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _0m110tykc
+quit

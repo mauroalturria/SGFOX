@@ -1,0 +1,49 @@
+*       *********************************************************
+*       *                                                         
+*       * 30/06/2005           ARCHIMENU.MPR            14:48:51  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2005 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+DEFINE POPUP menúcontex SHORTCUT RELATIVE FROM MROW(),MCOL()
+DEFINE BAR 1 OF menúcontex PROMPT "ARCHIVO"
+DEFINE BAR 2 OF menúcontex PROMPT "PREPARADA"
+DEFINE BAR 3 OF menúcontex PROMPT "DESPACHADA"
+DEFINE BAR 4 OF menúcontex PROMPT "CONSULTORIO"
+DEFINE BAR 5 OF menúcontex PROMPT "FALTANTE"
+DEFINE BAR 6 OF menúcontex PROMPT "SECTOR"
+DEFINE BAR 7 OF menúcontex PROMPT "NO CORRESPONDE"
+DEFINE BAR 8 OF menúcontex PROMPT "PENDIENTE"
+DEFINE BAR 9 OF menúcontex PROMPT "INTERNADO"
+DEFINE BAR 10 OF menúcontex PROMPT "IMPRIME ETIQUETA"
+ON SELECTION BAR 1 OF menúcontex thisform.archivo()
+ON SELECTION BAR 2 OF menúcontex thisform.preparada()
+ON SELECTION BAR 3 OF menúcontex thisform.despachada()
+ON SELECTION BAR 4 OF menúcontex thisform.consultorio()
+ON SELECTION BAR 5 OF menúcontex thisform.faltante()
+ON SELECTION BAR 6 OF menúcontex thisform.sector()
+ON SELECTION BAR 7 OF menúcontex thisform.nocorres()
+ON SELECTION BAR 8 OF menúcontex thisform.pendiente()
+ON SELECTION BAR 9 OF menúcontex thisform.internado()
+ON SELECTION BAR 10 OF menúcontex thisform.etiqueta()
+
+ACTIVATE POPUP menúcontex

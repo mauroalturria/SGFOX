@@ -1,0 +1,210 @@
+*       *********************************************************
+*       *                                                         
+*       * 17/04/2007         GUARDIAMENUV.MPR           13:48:33  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2007 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _22c0tljhe OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _22c0tljhf OF _MSYSMENU PROMPT "Ingreso" COLOR SCHEME 3 ;
+	KEY ALT+I, ""
+DEFINE PAD _22c0tljhg OF _MSYSMENU PROMPT "Asignaciones y Consultas" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+DEFINE PAD _22c0tljhh OF _MSYSMENU PROMPT "Emergencias" COLOR SCHEME 3 ;
+	KEY ALT+E, ""
+DEFINE PAD _22c0tljhi OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+	KEY ALT+D, ""
+ON PAD _22c0tljhe OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _22c0tljhf OF _MSYSMENU ACTIVATE POPUP ingreso
+ON PAD _22c0tljhg OF _MSYSMENU ACTIVATE POPUP asignacion
+ON PAD _22c0tljhh OF _MSYSMENU ACTIVATE POPUP emergencia
+ON PAD _22c0tljhi OF _MSYSMENU ACTIVATE POPUP documentac
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
+DEFINE BAR 2 OF salir PROMPT "Acerca de..." ;
+	SKIP FOR type('mfrmacercade') = 'U'
+ON SELECTION BAR 1 OF salir ;
+	DO _22c0tljhj ;
+	IN LOCFILE("\DESAGUEMES\MNU\GUARDIAMENUV" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está GUARDIAMENUV?")
+ON SELECTION BAR 2 OF salir do form frmacercade
+
+DEFINE POPUP ingreso MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF ingreso PROMPT "Ingreso Pacientes" ;
+	SKIP FOR type('mfrmguardia01') = 'U'
+DEFINE BAR 2 OF ingreso PROMPT "Planilla de Medicos" ;
+	SKIP FOR type('mfrmguardia03') = 'U'
+DEFINE BAR 3 OF ingreso PROMPT "Planilla de Emergencias" ;
+	SKIP FOR type('mfrmguardia03') = 'U'
+DEFINE BAR 4 OF ingreso PROMPT "Planilla Enfermería" ;
+	SKIP FOR type('mfrmguardia28') = 'U'
+DEFINE BAR 5 OF ingreso PROMPT "Derivaciones"
+DEFINE BAR 6 OF ingreso PROMPT "\-"
+DEFINE BAR 7 OF ingreso PROMPT "Cambio de Password"
+DEFINE BAR 8 OF ingreso PROMPT "Usuario"
+ON SELECTION BAR 1 OF ingreso do form frmguardia01
+ON SELECTION BAR 2 OF ingreso do form frmguardia03 with 1
+ON SELECTION BAR 3 OF ingreso do form frmguardia03 with 2
+ON SELECTION BAR 4 OF ingreso do form frmguardia28
+ON SELECTION BAR 5 OF ingreso ;
+	DO _22c0tljhk ;
+	IN LOCFILE("\DESAGUEMES\MNU\GUARDIAMENUV" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está GUARDIAMENUV?")
+ON SELECTION BAR 7 OF ingreso do form frmpass_amb
+ON SELECTION BAR 8 OF ingreso ;
+	DO _22c0tljhl ;
+	IN LOCFILE("\DESAGUEMES\MNU\GUARDIAMENUV" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está GUARDIAMENUV?")
+
+DEFINE POPUP asignacion MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF asignacion PROMPT "Prestaciones" ;
+	SKIP FOR type('mfrmguardia11') = 'U'
+DEFINE BAR 2 OF asignacion PROMPT "Insumos" ;
+	SKIP FOR type('mfrmguardia19') = 'U'
+DEFINE BAR 3 OF asignacion PROMPT "Pedido a Farmacia" ;
+	SKIP FOR type('mfrmguardia22') = 'U'
+DEFINE BAR 4 OF asignacion PROMPT "Reimpresión Pedido a Farmacia" ;
+	SKIP FOR type('mfrmguardia24') = 'U'
+DEFINE BAR 5 OF asignacion PROMPT "Actualizacion de Profesionales" ;
+	SKIP FOR type('mfrmprestadg') = 'U'
+DEFINE BAR 6 OF asignacion PROMPT "\-"
+DEFINE BAR 7 OF asignacion PROMPT "Consulta entre Fechas" ;
+	SKIP FOR type('mfrmguardia23') = 'U'
+DEFINE BAR 8 OF asignacion PROMPT "Listado de Atención en Guardia" ;
+	SKIP FOR type('mfrmguardia25') = 'U'
+DEFINE BAR 9 OF asignacion PROMPT "Consulta mensual" ;
+	SKIP FOR type('mfrmguardia18') = 'U'
+DEFINE BAR 10 OF asignacion PROMPT "Ocupación de Consultorios" ;
+	SKIP FOR type('mfrmturno72') = 'U'
+DEFINE BAR 11 OF asignacion PROMPT "Agenda Telefonica"
+DEFINE BAR 12 OF asignacion PROMPT "Entidades Activas"
+DEFINE BAR 13 OF asignacion PROMPT "Consumo Médico Solicitante" ;
+	SKIP FOR type('mfrmguardia30') = 'U'
+DEFINE BAR 14 OF asignacion PROMPT "Producción por Médico" ;
+	SKIP FOR type('mfrmguardia31') = 'U'
+DEFINE BAR 15 OF asignacion PROMPT "Demora en Atención" ;
+	SKIP FOR type('mfrmguardia32') = 'U'
+ON SELECTION BAR 1 OF asignacion do form frmguardia11
+ON SELECTION BAR 2 OF asignacion do form frmguardia19
+ON SELECTION BAR 3 OF asignacion do form frmguardia22
+ON SELECTION BAR 4 OF asignacion do form frmguardia24
+ON SELECTION BAR 5 OF asignacion do form frmprestadg
+ON SELECTION BAR 7 OF asignacion do form frmguardia23
+ON SELECTION BAR 8 OF asignacion do form frmguardia25
+ON SELECTION BAR 9 OF asignacion do form frmguardia18
+ON SELECTION BAR 10 OF asignacion do form frmturno72
+ON SELECTION BAR 11 OF asignacion ;
+	DO _22c0tljhm ;
+	IN LOCFILE("\DESAGUEMES\MNU\GUARDIAMENUV" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está GUARDIAMENUV?")
+ON SELECTION BAR 12 OF asignacion do form frmadmision28
+ON SELECTION BAR 13 OF asignacion do form frmguardia30
+ON SELECTION BAR 14 OF asignacion do form frmguardia31
+ON SELECTION BAR 15 OF asignacion do form frmguardia32
+
+DEFINE POPUP emergencia MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF emergencia PROMPT "Planilla de Emergencias" ;
+	SKIP FOR type('mfrmguardia03') = 'U'
+ON SELECTION BAR 1 OF emergencia do form frmguardia03 with 2
+
+DEFINE POPUP documentac MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF documentac PROMPT "Vademecum y  Laboratorio" ;
+	SKIP FOR type('mfrmguardia29') = 'U'
+ON SELECTION BAR 1 OF documentac do form frmguardia29
+
+
+*       *********************************************************
+*       *                                                         
+*       * _22C0TLJHJ  ON SELECTION BAR 1 OF POPUP salir           
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  GUARDIAMENUV.MPR,            Record:    5   
+*       * Called By:  ON SELECTION BAR 1 OF POPUP salir           
+*       * Prompt:     Cerrar aplicacion                           
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _22c0tljhj
+do sp_logoff
+quit
+
+
+*       *********************************************************
+*       *                                                         
+*       * _22C0TLJHK  ON SELECTION BAR 5 OF POPUP ingreso         
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  GUARDIAMENUV.MPR,            Record:   13   
+*       * Called By:  ON SELECTION BAR 5 OF POPUP ingreso         
+*       * Prompt:     Derivaciones                                
+*       * Snippet:    2                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _22c0tljhk
+do sp_conexion
+do sp_tablas_loca_pcia
+do sp_tablas_guardia
+do form frmguardia20
+do sp_desconexion with "frmguardia20"
+
+
+
+
+*       *********************************************************
+*       *                                                         
+*       * _22C0TLJHL  ON SELECTION BAR 8 OF POPUP ingreso         
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  GUARDIAMENUV.MPR,            Record:   17   
+*       * Called By:  ON SELECTION BAR 8 OF POPUP ingreso         
+*       * Prompt:     Usuario                                     
+*       * Snippet:    3                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _22c0tljhl
+messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+ chr(13)+"Sector:  " + mwkusuario.sector,64,"Información")
+
+
+*       *********************************************************
+*       *                                                         
+*       * _22C0TLJHM  ON SELECTION BAR 11 OF POPUP asignacion     
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  GUARDIAMENUV.MPR,            Record:   31   
+*       * Called By:  ON SELECTION BAR 11 OF POPUP asignacion     
+*       * Prompt:     Agenda Telefonica                           
+*       * Snippet:    4                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _22c0tljhm
+do sp_conexion
+do form frmagenda_tel
+do sp_desconexion with "agenda"

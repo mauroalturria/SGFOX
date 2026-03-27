@@ -1,0 +1,194 @@
+*       *********************************************************
+*       *                                                         
+*       * 24/10/2008          AMBULATORIO.MPR           12:50:43  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2008 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _2hu0rj5bz OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _2hu0rj5c0 OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
+	KEY ALT+A, ""
+DEFINE PAD _2hu0rj5c1 OF _MSYSMENU PROMPT "Medicos" COLOR SCHEME 3 ;
+	KEY ALT+M, ""
+DEFINE PAD _2hu0rj5c2 OF _MSYSMENU PROMPT "Enfermeria" COLOR SCHEME 3 ;
+	KEY ALT+E, ""
+DEFINE PAD _2hu0rj5c3 OF _MSYSMENU PROMPT "Gestión" COLOR SCHEME 3 ;
+	KEY ALT+G, ""
+DEFINE PAD _2hu0rj5c4 OF _MSYSMENU PROMPT "Documentacion" COLOR SCHEME 3 ;
+	KEY ALT+D, ""
+ON PAD _2hu0rj5bz OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _2hu0rj5c0 OF _MSYSMENU ACTIVATE POPUP administra
+ON PAD _2hu0rj5c1 OF _MSYSMENU ACTIVATE POPUP medicos
+ON PAD _2hu0rj5c2 OF _MSYSMENU ACTIVATE POPUP enfermeria
+ON PAD _2hu0rj5c3 OF _MSYSMENU ACTIVATE POPUP gestión
+ON PAD _2hu0rj5c4 OF _MSYSMENU ACTIVATE POPUP documentac
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
+DEFINE BAR 2 OF salir PROMPT "Acerca de..." ;
+	SKIP FOR type('mfrmacercade') = 'U'
+ON SELECTION BAR 1 OF salir ;
+	DO _2hu0rj5cf ;
+	IN LOCFILE("MNU\AMBULATORIO" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está AMBULATORIO?")
+ON SELECTION BAR 2 OF salir do form frmacercade
+
+DEFINE POPUP administra MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF administra PROMPT "Ingreso Pacientes" ;
+	SKIP FOR type('mfrmguardia01') = 'U'
+DEFINE BAR 2 OF administra PROMPT "\-"
+DEFINE BAR 3 OF administra PROMPT "Cambio de Password" ;
+	SKIP FOR left(mwkusuario.nomape,1)='*'
+DEFINE BAR 4 OF administra PROMPT "Usuario"
+ON SELECTION BAR 3 OF administra do form frmpass_amb
+ON SELECTION BAR 4 OF administra ;
+	DO _2hu0rj5cg ;
+	IN LOCFILE("MNU\AMBULATORIO" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está AMBULATORIO?")
+
+DEFINE POPUP medicos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF medicos PROMPT "Pacientes en Sala de Espera" ;
+	SKIP FOR type('mfrmguardia03') = 'U'  
+DEFINE BAR 2 OF medicos PROMPT "Pacientes en Transito/Observación" ;
+	SKIP FOR type('mfrmguardia03') = 'U' 
+DEFINE BAR 3 OF medicos PROMPT "Pacientes por profesional" ;
+	SKIP FOR type('mfrmguardia04') = 'U' 
+DEFINE BAR 4 OF medicos PROMPT "\-"
+DEFINE BAR 5 OF medicos PROMPT "Planilla de Atención"
+DEFINE BAR 6 OF medicos PROMPT "\-"
+DEFINE BAR 7 OF medicos PROMPT "Planilla de Bloqueos" ;
+	SKIP FOR type('mfrmguardia03') = 'U'
+DEFINE BAR 8 OF medicos PROMPT "Evolucion Protocolos Anteriores" ;
+	SKIP FOR type('mfrmguardia13p') = 'U'
+ON SELECTION BAR 1 OF medicos do form frmambul03 with 1,4
+ON SELECTION BAR 2 OF medicos do form frmambul03 with 1,2
+ON SELECTION BAR 3 OF medicos do form frmambul04 with 2,,1
+ON SELECTION BAR 5 OF medicos do form frmambul12 with 1
+ON SELECTION BAR 7 OF medicos do form frmambul03 with 2,5
+ON SELECTION BAR 8 OF medicos do form frmmedpass with 'mwkMedicogua','frmambul13p'
+
+DEFINE POPUP enfermeria MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF enfermeria PROMPT "Planilla Enfermería" ;
+	SKIP FOR type('mfrmguardia28') = 'U'
+ON SELECTION BAR 1 OF enfermeria do form frmambul28
+
+DEFINE POPUP gestión MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF gestión PROMPT "Pedido a Farmacia" ;
+	SKIP FOR type('mfrmguardia22') = 'U'
+DEFINE BAR 2 OF gestión PROMPT "Reimpresión Pedido a Farmacia" ;
+	SKIP FOR type('mfrmguardia24') = 'U'
+DEFINE BAR 3 OF gestión PROMPT "\-"
+DEFINE BAR 4 OF gestión PROMPT "Consulta entre Fechas" ;
+	SKIP FOR type('mfrmguardia23') = 'U'
+DEFINE BAR 5 OF gestión PROMPT "Listado de Atención en Guardia" ;
+	SKIP FOR type('mfrmguardia25') = 'U'
+DEFINE BAR 6 OF gestión PROMPT "Consulta de Pacientes" ;
+	SKIP FOR type('mfrmarchivo63') = 'U'
+DEFINE BAR 7 OF gestión PROMPT "\-"
+DEFINE BAR 8 OF gestión PROMPT "Ocupación de Consultorios" ;
+	SKIP FOR type('mfrmturno72') = 'U'
+DEFINE BAR 9 OF gestión PROMPT "Entidades Activas"
+DEFINE BAR 10 OF gestión PROMPT "Agenda Telefónica"
+DEFINE BAR 11 OF gestión PROMPT "\-"
+DEFINE BAR 12 OF gestión PROMPT "Producción Enfermería" ;
+	SKIP FOR type('mfrmguardia37') = 'U'
+ON SELECTION BAR 1 OF gestión do form frmambul22
+ON SELECTION BAR 2 OF gestión do form frmambul24
+ON SELECTION BAR 4 OF gestión do form frmambul23
+ON SELECTION BAR 5 OF gestión do form frmambul25
+ON SELECTION BAR 6 OF gestión do form frmarchivo63
+ON SELECTION BAR 8 OF gestión do form frmturno72
+ON SELECTION BAR 9 OF gestión do form frmadmision28
+ON SELECTION BAR 10 OF gestión ;
+	DO _2hu0rj5cv ;
+	IN LOCFILE("MNU\AMBULATORIO" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está AMBULATORIO?")
+ON SELECTION BAR 12 OF gestión do form frmambul37
+
+DEFINE POPUP documentac MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF documentac PROMPT "Vademecum y  Laboratorio" ;
+	SKIP FOR type('mfrmguardia29') = 'U'
+DEFINE BAR 2 OF documentac PROMPT "Sugerencias - Mejor Continua - Medicos"
+DEFINE BAR 3 OF documentac PROMPT "Sugerencias - Mejora Continua - Enfermería"
+DEFINE BAR 4 OF documentac PROMPT "Mesa de Ayuda"
+DEFINE BAR 5 OF documentac PROMPT "Thesaurus" ;
+	SKIP FOR type('mfrmguardia46') = 'U'
+ON SELECTION BAR 1 OF documentac do form frmguardia29
+ON SELECTION BAR 2 OF documentac do form frmguardia34 with 0
+ON SELECTION BAR 3 OF documentac do form frmguardia34 with 1
+ON SELECTION BAR 4 OF documentac do form frmreclamos03
+ON SELECTION BAR 5 OF documentac do form frmguardia46
+
+
+*       *********************************************************
+*       *                                                         
+*       * _2HU0RJ5CF  ON SELECTION BAR 1 OF POPUP salir           
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  AMBULATORIO.MPR,            Record:    5    
+*       * Called By:  ON SELECTION BAR 1 OF POPUP salir           
+*       * Prompt:     Cerrar aplicacion                           
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _2hu0rj5cf
+do sp_logoff
+quit
+
+
+*       *********************************************************
+*       *                                                         
+*       * _2HU0RJ5CG  ON SELECTION BAR 4 OF POPUP administra      
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  AMBULATORIO.MPR,            Record:   14    
+*       * Called By:  ON SELECTION BAR 4 OF POPUP administra      
+*       * Prompt:     Usuario                                     
+*       * Snippet:    2                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _2hu0rj5cg
+messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+ chr(13)+"Sector:  " + mwkusuario.sector,64,"Información")
+
+
+*       *********************************************************
+*       *                                                         
+*       * _2HU0RJ5CV  ON SELECTION BAR 10 OF POPUP gestión        
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  AMBULATORIO.MPR,            Record:   43    
+*       * Called By:  ON SELECTION BAR 10 OF POPUP gestión        
+*       * Prompt:     Agenda Telefónica                           
+*       * Snippet:    3                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _2hu0rj5cv
+do sp_conexion
+do form frmagenda_tel
+do sp_desconexion with "agenda"

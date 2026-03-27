@@ -1,0 +1,47 @@
+*       *********************************************************
+*       *                                                         
+*       * 29/09/2003          PREPAGAMENU.MPR           10:09:07  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2003 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _1250lrbwy OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _1250lrbxc OF _MSYSMENU PROMPT "Consumos" COLOR SCHEME 3 ;
+	KEY ALT+C, ""
+ON PAD _1250lrbwy OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _1250lrbxc OF _MSYSMENU ACTIVATE POPUP consumos
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
+ON SELECTION BAR 1 OF salir quit
+
+DEFINE POPUP consumos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF consumos PROMPT "Consumos Generales" ;
+	SKIP FOR type('mfrmprep01') = 'U'
+DEFINE BAR 2 OF consumos PROMPT "Consumos por Afilido - Grupo" ;
+	SKIP FOR type('mfrmprep02') = 'U'
+ON SELECTION BAR 1 OF consumos do form frmprep01
+ON SELECTION BAR 2 OF consumos do form frmprep02

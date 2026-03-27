@@ -1,0 +1,71 @@
+*!* -------------------------------------------------------------------
+*!*	Grabo el aviso de la entidad (TabAvisos)
+*!* -------------------------------------------------------------------
+parameter mentidad, mcontrato, mtipopac, mpresta, medtaviso, mabm, mfpasiva,linserto
+
+if type('mfpasiva')#"D"
+	mfpasiva = ctod("01/01/1900")
+endif
+
+jj = int(len(alltrim(medtaviso))/250)+1
+for i = 0 to jj
+	clin = "linea" + padl(i,3,"0")
+	public &clin 
+next
+if vartype(linserto)="U"
+	linserto = .f.
+endif
+maviso = prg_concat(alltrim(medtaviso))
+
+mfecha  = sp_busco_fecha_srv2('DT')
+mfechadate = ttod(mfecha)
+
+mccpoamb = ''
+mcampo = ""
+minser = ""
+mcpoupd = ''
+If mxambito >1
+	mccpoamb = "  and codambito = ?mxambito "
+	mcampo = ", codambito "
+	mcpoupd = ", codambito = ?mxambito "
+	minser = ",?mxambito "  
+Endif 
+
+mret = sqlexec(mcon1, "select * from TabAvisos " + ;
+	"where AV_codent = ?mentidad and AV_codcont = ?mcontrato "+;
+	"and AV_prestacion = ?mpresta" + ;
+	" and AV_tipopaciente= ?mtipopac " +mccpoamb, "mwkTabAvisos")
+
+if mret < 0
+	aerr(eros)
+	messagebox("ERROR EN LA GENERACION DEL CURSOR, REINTENTE", 48, "VALIDACION")
+	Return .f.
+endif
+
+if reccount("mwktabavisos") > mabm
+	messagebox("ALGUIEN MODIFICO EL AVISO, SE PERDERA LA MODIFICACION ANTERIOR", 48, "VALIDACION")
+endif
+
+if reccount("mwktabavisos") = 0 or linserto
+	mret = sqlexec(mcon1, "insert into TabAvisos (AV_codent, AV_codcont, " + ;
+		"AV_tipopaciente, AV_prestacion ,AV_Aviso,av_fecha,av_fechaUM, " + ;
+		"av_fechaPasiva &mcampo ) values " + ;
+		"( ?mentidad, ?mcontrato ,?mtipopac, ?mpresta, " + maviso + ", " + ;
+		"?mfechadate,?mfecha,?mfpasiva &minser )" )
+else
+	nid = mwkTabAvisos.id
+	mret = sqlexec(mcon1, "update TabAvisos set AV_Aviso = " + maviso + ", " + ;
+		"av_fechaUM = ?mfecha, av_fechaPasiva = ?mfpasiva " + ;
+		"where id = ?nid ")
+endif
+
+if mret < 0
+	aerr(eros)
+	messagebox("ERROR EN LA GENERACION DEL CURSOR, REINTENTE", 48, "VALIDACION")
+	Return .f.
+endif
+
+for i = 0 to jj
+	clin = "linea" + padl(i,3,"0")
+	release &clin 
+next

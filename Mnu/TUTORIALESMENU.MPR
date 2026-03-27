@@ -1,0 +1,78 @@
+*       *********************************************************
+*       *                                                         
+*       * 29/08/2008        TUTORIALESMENU.MPR          18:10:58  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2008 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _2ga12z007 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _2ga12z008 OF _MSYSMENU PROMPT "Tutoriales" COLOR SCHEME 3 ;
+	KEY ALT+T, ""
+DEFINE PAD _2ga12z009 OF _MSYSMENU PROMPT "Modificaciones" COLOR SCHEME 3 ;
+	KEY ALT+M, ""
+ON PAD _2ga12z007 OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _2ga12z008 OF _MSYSMENU ACTIVATE POPUP tutoriales
+ON PAD _2ga12z009 OF _MSYSMENU ACTIVATE POPUP modificaci
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
+DEFINE BAR 2 OF salir PROMPT "Acerca de..." ;
+	SKIP FOR type('mfrmacercade') = 'U'
+ON SELECTION BAR 1 OF salir ;
+	DO _2ga12z00a ;
+	IN LOCFILE("MNU\TUTORIALESMENU" ,"MPX;MPR|FXP;PRG" ,"DÓNDE está TUTORIALESMENU?")
+ON SELECTION BAR 2 OF salir do form frmacercade
+
+DEFINE POPUP tutoriales MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF tutoriales PROMPT "Guardia"
+DEFINE BAR 2 OF tutoriales PROMPT "\-"
+DEFINE BAR 3 OF tutoriales PROMPT "Pisos" ;
+	SKIP FOR type('mfrmtutoriales03') = 'U'
+ON SELECTION BAR 1 OF tutoriales do form frmtutoriales04 with 'tutorial01'
+ON SELECTION BAR 3 OF tutoriales do form frmtutoriales03
+
+DEFINE POPUP modificaci MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF modificaci PROMPT "Cambio de Password" ;
+	SKIP FOR left(mwkusuario.nomape,1)='*'
+ON SELECTION BAR 1 OF modificaci do form frmpass_amb
+
+
+*       *********************************************************
+*       *                                                         
+*       * _2GA12Z00A  ON SELECTION BAR 1 OF POPUP salir           
+*       *                                                         
+*       * Procedure Origin:                                       
+*       *                                                         
+*       * From Menu:  TUTORIALESMENU.MPR,            Record:    5 
+*       * Called By:  ON SELECTION BAR 1 OF POPUP salir           
+*       * Prompt:     Cerrar Aplicacion                           
+*       * Snippet:    1                                           
+*       *                                                         
+*       *********************************************************
+*
+PROCEDURE _2ga12z00a
+do sp_logoff
+quit

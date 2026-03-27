@@ -1,0 +1,43 @@
+*       *********************************************************
+*       *                                                         
+*       * 02/05/2003          MEDICOSMENU.MPR           16:52:02  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2003 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _0xz105i4g OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+	KEY ALT+S, ""
+DEFINE PAD _0xz105i4h OF _MSYSMENU PROMPT "Planilla Medicos" COLOR SCHEME 3 ;
+	KEY ALT+P, ""
+ON PAD _0xz105i4g OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _0xz105i4h OF _MSYSMENU ACTIVATE POPUP planillame
+
+DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF salir PROMPT "Salir del sistema"
+ON SELECTION BAR 1 OF salir quit
+
+DEFINE POPUP planillame MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF planillame PROMPT "Entrada/Salida"
+ON SELECTION BAR 1 OF planillame do form frmmedicos01
