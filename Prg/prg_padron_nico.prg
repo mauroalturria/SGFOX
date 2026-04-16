@@ -6,7 +6,6 @@ Parameters loForm, tbReturn
 
 Local cLogPlanes
 
-
 cLogPlanes = ""
 
 *!*         CASE i = 100529
@@ -411,6 +410,8 @@ Do While !Eof("padron")
 
 * Set Step On
 
+    cAf = ""  && 13/04/2026
+
 	Select padron
 
 	loForm.txtnproc.Value = Recno("padron")
@@ -420,6 +421,8 @@ Do While !Eof("padron")
 	Case mentidadagrupadora = 948 Or mentidadagrupadora = 80
 		If(mentidadagrupadora = 948)
 			mnroaso=Val(padron->cuil+padron->parentesco)
+			
+			
 		Else
 *!*				20230113 gus
 			mnroaso=Val(Alltrim(padron->cuil)+padron->parentesco)
@@ -490,6 +493,10 @@ Do While !Eof("padron")
 			Endif
 
 			mtipobeneficiario = Alltrim(padron->tipo_afi)  && 11/11/2023 - Marcelo Torres
+			
+			*If Type('padron->AF') <> 'U'   && 13/04/2026
+			   cAf = padron->AF
+			*ENDIF 
 
 		Endif  && ------------------------------------------------
 
@@ -776,7 +783,7 @@ Do While !Eof("padron")
 	Endif
 
 	mret = SQLExec(mcon1," select id,apeynom,cuil,documento,entidad, " + ;
-		"fecegreso, fecingreso, fecnac, nroafiliado, sexo, tipodocumento,grupofamiliar, plan, pmi, antecedentes, NVL(tipobeneficiario,'') as tipobeneficiario " + ;
+		"fecegreso, fecingreso, fecnac, nroafiliado, sexo, tipodocumento,grupofamiliar, plan, pmi, antecedentes, NVL(tipobeneficiario,'') as tipobeneficiario, NVL(AFTipoAfiliacion,'') as AFTipoAfiliacion  " + ;
 		"from PadCabe where entidad=?mentidadagrupadora and nroafiliado = ?mnroaso","mwkpadcabe")
 	If mret < 0
 		Messagebox("ERROR de LECTURA , Reintente", 48, "Validacion")
@@ -919,7 +926,8 @@ If mapellido# Upper(Alltrim(Chrtran(mwkpadcabe->apeynom, "ÑðÐ^/\'$:ñ¥·ÿº?¿!¡%&()
 		OR mPmi#Alltrim(Nvl(mwkpadcabe->pmi,"")) ;
 		OR mAntecedente#Alltrim(Nvl(mwkpadcabe->Antecedentes,"")) ;
 		OR mtipobeneficiario#Alltrim(Nvl(mwkpadcabe->tipobeneficiario,""));
-		OR mcuil#mwkpadcabe->cuil
+		OR mcuil#mwkpadcabe->cuil ;
+		OR cAf#NVL(mwkpadcabe->AFTipoAfiliacion,'')
 
 	mrealizocambios = .T.
 Endif
@@ -942,13 +950,14 @@ If mrealizocambios
 	xpmi = mwkpadcabe->pmi
 	xantecedente = mwkpadcabe->Antecedentes
 	xTipoBeneficiario = mwkpadcabe->tipobeneficiario
+	xAf = mwkpadcabe->AFTipoAfiliacion
 
 	mret = SQLExec(mcon1, "insert into PadCabelog set nroafiliado = ?xnroafiliado, " +;
 		"apeynom =?xapeynom,  documento =?xdocumentoprincipal, " +;
 		"tipodocumento =?xtipodocumento, cuil =?xcuil," +;
 		"entidad = ?xentidadagrupadora, fecingreso = ?xfecingreso," +;
 		"fecegreso=?xfecegreso, fecnac =?xfecnac, sexo=?xsexo, idpadcabe=?xid, grupofamiliar=?xgrupofamiliar, plan=?xplan " + ;
-		",fechaproceso=?mfechaproceso,pmi = ?xpmi, antecedentes = ?xAntecedente, tipobeneficiario = ?xTipoBeneficiario ")
+		",fechaproceso=?mfechaproceso,pmi = ?xpmi, antecedentes = ?xAntecedente, tipobeneficiario = ?xTipoBeneficiario, AFTipoAfiliacion = ?xAf")
 
 	If mret<1
 		=Aerr(eros)
@@ -962,7 +971,7 @@ If mrealizocambios
 		"documento =?mdocumento, tipodocumento =?mtipodocumento, cuil =?mcuil," +;
 		"entidad= ?mentidadagrupadora, fecnac =?mfecnac, sexo=?msexo, " + ;
 		"fecingreso=?mfecingreso, fecegreso =?mfechatope, grupofamiliar=?mgrupofamiliar," +;
-		"plan=?mplan ,pmi = ?mpmi,antecedentes = ?mAntecedente, tipobeneficiario = ?mTipoBeneficiario " +;
+		"plan=?mplan ,pmi = ?mpmi,antecedentes = ?mAntecedente, tipobeneficiario = ?mTipoBeneficiario, AFTipoAfiliacion = ?cAf " +;
 		"where id=?midpadcabe ")
 	If mret<1
 		=Aerr(eros)
@@ -1415,7 +1424,7 @@ mret = SQLExec(mcon1, "insert into PadCabe set nroafiliado = ?mnroaso, " + ;
 	"nombre=?mnombresolo, grupofamiliar=?mgrupofamiliar, plan=?mplan ," +;
 	"planalternativo=?mplanalternativo, nroafiliadoalternativo=?mnroafiliadoalternativo," +;
 	"pmi = ?mpmi,antecedentes = ?mAntecedente,nroafiliadoalternativo = ?mAfiAlt, " +;
-	"tipobeneficiario = ?mTipoBeneficiario ")
+	"tipobeneficiario = ?mTipoBeneficiario, AFTipoAfiliacion = ?cAf ")
 If mret < 0
 	Messagebox("ERROR de ESCRITURA PADCABE, Reintente", 48, "Validacion")
 	Select padron

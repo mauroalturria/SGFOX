@@ -21,7 +21,6 @@ mret = SQLExec(mcon1,"select * FROM TabMedFoto where  FechaToma >= '2025-07-11' 
 *!*		" Tabmedfoto.IdMedico, Tabmedfoto.Tipo,fecpasivap FROM TabMedFoto,prestadores  where  idmedico=prestadores.id and idmedico =     5680 "+;
 *!*		" and fecpasivap  = '1900-01-01' and FechaBaja = ?mfecpas and tipo in (2,3,4) ","mprofFotoctr")
  
-Set Step On
  
 Select * From mprofFotoctr Where idmedico  Not In (Select codmed From medfirm ) Into Cursor mprofFotList
 *Select * From mprofFotoctr Where idmedico  In (Select idmedico From faltanjpg) Into Cursor mprofFotList

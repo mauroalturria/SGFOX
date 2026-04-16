@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 24/09/2025           CIAMMENU.MPR             09:17:18  
+*       * 10/04/2026           CIAMMENU.MPR             11:35:58  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,24 +26,24 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7aa0jwnla OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0ov1b1 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7aa0jwnlb OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0ov1b2 OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7aa0jwnlq OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0ov1b3 OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-DEFINE PAD _7aa0jwnlr OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0ov1b4 OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7aa0jwnla OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7aa0jwnlb OF _MSYSMENU ACTIVATE POPUP administra
-ON PAD _7aa0jwnlq OF _MSYSMENU ACTIVATE POPUP listadosyc
-ON PAD _7aa0jwnlr OF _MSYSMENU ACTIVATE POPUP modificaci
+ON PAD _7fu0ov1b1 OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7fu0ov1b2 OF _MSYSMENU ACTIVATE POPUP administra
+ON PAD _7fu0ov1b3 OF _MSYSMENU ACTIVATE POPUP listadosyc
+ON PAD _7fu0ov1b4 OF _MSYSMENU ACTIVATE POPUP modificaci
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7aa0jwnls ;
+	DO _7fu0ov1b5 ;
 	IN LOCFILE("MNU\CIAMMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CIAMMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -70,7 +70,7 @@ ON SELECTION BAR 1 OF modificaci do form frmpass_amb
 
 *       *********************************************************
 *       *                                                         
-*       * _7AA0JWNLS  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7FU0OV1B5  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -81,6 +81,6 @@ ON SELECTION BAR 1 OF modificaci do form frmpass_amb
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7aa0jwnls
+PROCEDURE _7fu0ov1b5
 do sp_logoff
 quit

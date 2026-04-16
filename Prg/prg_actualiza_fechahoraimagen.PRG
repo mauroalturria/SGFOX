@@ -1,9 +1,9 @@
-Lparameters FechaDesde, FechaHasta, SoloCheck
+Lparameters FechaDesde, FechaHasta, SoloCheck, OperConforme
 Clear 
 
 
 
-Close Tables
+**Close Tables
 *Set Resource off
 
 
@@ -14,6 +14,10 @@ Close Tables
 IF EMPTY(FechaDesde)
 	FechaDesde = DATE()
 	FechaHasta = DATE()
+ENDIF
+
+IF EMPTY(OperConforme)
+	OperConforme = 99999
 ENDIF
 
 
@@ -194,14 +198,16 @@ Scan All
 *!*			 	   *SUSPEND
 *!*			 	ENDIF
 			*SET STEP ON
-			*SUSPEND
+			**SUSPEND
 
 			FechaHoraImagen = ALLTRIM(FechaHoraImagen)
 			** Grabo la Fecha/hora de la grabación de la imagen (PACS), si hubiera:
+			** -RLV 19/03/2026: También grabo ahora el Operador Conforme del proceso automático, para diferenc. de conforme Manual sin evidencia
 			IF NOT EMPTY(FechaHoraImagen) AND NOT ISNULL(FechaHoraImagen) AND NOT SoloCheck
 				TEXT To lcUpdate Textmerge Noshow Pretext 7
 					UPDATE ValesAsist
-						SET VAL_FechaHoraImagen = '<<FechaHoraImagen>>'
+						SET VAL_FechaHoraImagen = '<<FechaHoraImagen>>',
+			 			    VAL_OperadorConforme = <<OperConforme>>
 						WHERE VAL_codvaleasist = <<mvale>>
 				ENDTEXT
 				If SqlExec(mcon1,lcUpdate) <= 0

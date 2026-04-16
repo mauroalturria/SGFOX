@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 26/01/2026          FACTURAMENU.MPR           17:11:15  
+*       * 10/04/2026          FACTURAMENU.MPR           11:03:19  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,30 +26,30 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7ds10tzdn OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0np1lj OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7ds10tzdo OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0np1lk OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7ds10tzdp OF _MSYSMENU PROMPT "Procesos" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0np1ll OF _MSYSMENU PROMPT "Procesos" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-DEFINE PAD _7ds10tzdq OF _MSYSMENU PROMPT "Quirofano" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0np1lm OF _MSYSMENU PROMPT "Quirofano" COLOR SCHEME 3 ;
 	KEY ALT+Q, ""
-DEFINE PAD _7ds10tzdr OF _MSYSMENU PROMPT "Sap" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0np1ln OF _MSYSMENU PROMPT "Sap" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7ds10tzds OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7fu0np1lo OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7ds10tzdn OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7ds10tzdo OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _7ds10tzdp OF _MSYSMENU ACTIVATE POPUP procesos
-ON PAD _7ds10tzdq OF _MSYSMENU ACTIVATE POPUP quirofano
-ON PAD _7ds10tzdr OF _MSYSMENU ACTIVATE POPUP sap
-ON PAD _7ds10tzds OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7fu0np1lj OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7fu0np1lk OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7fu0np1ll OF _MSYSMENU ACTIVATE POPUP procesos
+ON PAD _7fu0np1lm OF _MSYSMENU ACTIVATE POPUP quirofano
+ON PAD _7fu0np1ln OF _MSYSMENU ACTIVATE POPUP sap
+ON PAD _7fu0np1lo OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7ds10tzdt ;
+	DO _7fu0np1lp ;
 	IN LOCFILE("MNU\FACTURAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is FACTURAMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -98,14 +98,14 @@ DEFINE BAR 2 OF usuario PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7ds10tzdu ;
+	DO _7fu0np1lq ;
 	IN LOCFILE("MNU\FACTURAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is FACTURAMENU?")
 ON SELECTION BAR 3 OF usuario Do form frmguardia04e with 1,"FACTURACION",,,"frmreclamos03"
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7DS10TZDT  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7FU0NP1LP  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -116,14 +116,14 @@ ON SELECTION BAR 3 OF usuario Do form frmguardia04e with 1,"FACTURACION",,,"frmr
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ds10tzdt
+PROCEDURE _7fu0np1lp
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7DS10TZDU  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7FU0NP1LQ  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -134,7 +134,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ds10tzdu
+PROCEDURE _7fu0np1lq
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

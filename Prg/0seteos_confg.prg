@@ -1,4 +1,4 @@
-Lparameters miparam, CantDias
+Lparameters miparam, CantDiasAtras, CantDiasAnula
 Clear 
 
 *SET STEP ON
@@ -14,13 +14,20 @@ Endif
 
 *!*	? 'Current resource file: ', SYS(2005)
 
-** Parámetro CantDias: Cantidad de días que recorrer hacia atrás buscando vales sin conformar.
+** Parámetro CantDiasAtras: Cantidad de días que recorrer hacia atrás buscando vales sin conformar.
 *  Útil si se quieren correr diferentes instancias del mismo proceso. 
 *  Por ejemplo, una instancia que corra hora a hora buscando los pendientes de HOY (o ayer y hoy)
 *     Otra instancia, a la madrugada, recorriendo N días hacia atrás buscando pendientes.
-IF EMPTY(CantDias)
-	CantDias = '0'  && Default: Vales de hoy
+IF EMPTY(CantDiasAtras)
+	CantDiasAtras = '0'  && Default: Vales de hoy
 ENDIF
+
+** Parámetro CantDiasAnula: (Solo si CantDiasAtras > 0 y TipoPaciente = INT)
+*  Si el vale está sin conformar desde hace más de CantDiasAnula entonces se anula (conforma en CERO):
+IF EMPTY(CantDiasAnula) OR VAL(ALLTRIM(CantDiasAnula)) < 3
+	CantDiasAnula = '3'  && Default: Pendientes anteriores a 3 días atrás se anulan 
+ENDIF
+
 
 
 *!*	? 'Current resource file: ', SYS(2005)
@@ -84,16 +91,16 @@ lnexec = 1
 ****** Proceso Principal: Barrida de los vales pendientes ****************************
 
 
-? 'Buscando vales de imágenes desde ',CantDias,' días atrás a hoy...'
+? 'Buscando vales de imágenes desde ',CantDiasAtras,' días atrás a hoy...'
 
 ** -RLV 16/10/2025: En el SELECT de abajo, que recorre los vales pendientes, 
-*    ahora está calculando los días mediante la variable parámetro CantDias 
+*    ahora está calculando los días mediante la variable parámetro CantDiasAtras 
 *    para que no se escapen los pendientes realizados con demora.
 *    La línea original era:
 *	where Val_fechasolicitud >= DATEADD('dd',-12,current_date) AND 
 *  -RLV 16/10/2025: Agrego también la suma de las Cantidades de los items, para ver si hay vales que ANULAR completos:
 TEXT To lcsql Textmerge Noshow Pretext 7
-	select VAL_fechasolicitud, ser_codserv, VAL_codmnemoserv,VAL_codvaleasist, val_nroprotocolo ,ser_descripserv, pacientes.pac_codhce,
+	select VAL_fechasolicitud, ser_codserv, VAL_codmnemoserv,VAL_codvaleasist, val_tipopaciente, val_nroprotocolo ,ser_descripserv, pacientes.pac_codhce,
 	    SUM(PIA_cantsolicitada) as TotalSolicit,
 		Cast("" AS CHAR(20)) AS PACS, 
 		Cast("" AS CHAR(20)) AS INF, 
@@ -104,7 +111,7 @@ TEXT To lcsql Textmerge Noshow Pretext 7
 	from servicios, valesasist 
 		inner join pacientes on pac_codadmision = val_codadmision
 		inner join PresInsuVas on PIA_Valesasist = VAL_codpun
-	where Val_fechasolicitud >= DATEADD('dd',-?CantDias,current_date) AND 
+	where Val_fechasolicitud >= DATEADD('dd', -?CantDiasAtras, current_date) AND 
 		VAL_codservvale = ser_codserv and 
 		val_estado <> 3 AND
 		VAL_codservvale 
@@ -150,18 +157,14 @@ mcantvales = 0
 Scan All 
 	mcantvales = mcantvales + 1
 	mvale = mwkaux.VAL_codvaleasist
-	? mcantvales, mvale, mwkaux.VAL_fechasolicitud, mwkaux.VAL_codmnemoserv, mwkaux.pac_codhce, mwkaux.val_nroprotocolo
+	? mcantvales, mvale, mwkaux.VAL_fechasolicitud, mwkaux.VAL_codmnemoserv, mwkaux.pac_codhce, mwkaux.val_nroprotocolo, mwkaux.val_tipopaciente
 
 	* Reviso si todos los items están en CERO (para anular el conforme)
 	IF mwkAux.TotalSolicit = 0
 
-		SET STEP ON
+		**SET STEP ON
 		
-		?? " ANULADO!!!"
-		lccode = "D CONFANUL^RTN031("+ Transform(lnexec) + ',' + Transform(mvale) + ',' + Transform(moperador) + ')'
-		lccomenta = "CONFGANUL" + '-' + Alltrim(str(mvale,16,0))
-
-		ExecVism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
+		DO AnularVale
 
 	ELSE
 
@@ -218,7 +221,7 @@ Scan All
 		 	****************
 		 	*  Acá agregar el CONFORME **********
 		 	*INKEY(1)
-			SET STEP ON
+			*SET STEP ON
 
 			lccode = "D CONFTOTAL^RTN031("+ Transform(lnexec) + ',' + Transform(mvale) + ',' + Transform(moperador) + ')'
 			lccomenta = "CONFG" + '-' + Alltrim(str(mvale,16,0))
@@ -236,6 +239,19 @@ Scan All
 					Aerror(eros)
 					?eros(3)
 				Endif			
+			ENDIF
+		
+		ELSE
+			* Si el vale no se pudo conformar
+			*  y es el proceso nocturno (que corre cada madrugada)
+			*  y es de paciente Internado
+			*  y ya pasaron más de CantDiasAnula
+			* Entonces se ANULA el Vale  (Definición consensuada con Dirección Médica) -RLV 19/03/2026
+			IF VAL(ALLTRIM(CantDiasAtras)) > 2 AND mwkaux.val_tipopaciente = 'INT' AND (DATE() - mwkaux.VAL_FechaSolicitud) > VAL(ALLTRIM(CantDiasAnula))
+
+				**SET STEP ON
+				DO AnularVale
+
 			ENDIF
 
 		ENDIF
@@ -257,8 +273,11 @@ Release olevism
 *** -RLV 02/12/2025: Si es la versión nocturna (que corre diariamente una vez) 
 *   entonces dispara también este programa que busca Fecha/hora de imagen que hayan quedado sin grabar al momento del conforme,
 *   por haberse cargado luego de que haya corrido este programa de conforme automático de imágenes:
-IF VAL(ALLTRIM(CantDias)) > 2
-   do prg_actualiza_fechahoraimagen WITH DATE()-4,DATE()-1   && Recorre últimos 4 días
+**  -RLV 26/03/2026: Agrego el post-proceso que cambia el operadorconforme a los vales conformados manualmente
+*    pero que se detecta evidencia de que el estudio fue realizado.
+IF VAL(ALLTRIM(CantDiasAtras)) > 2
+   do prg_actualiza_fechahoraimagen WITH DATE()-4, DATE()-1, .F., moperador   && Recorre últimos 4 días
+   do prg_actualiza_operadorconforme_imagen WITH CantDiasAtras, moperador
 ENDIF
 
 
@@ -465,6 +484,25 @@ ENDCASE
 Release xmlHTTP
 
 RETURN
+
+
+
+*!*	------------------------------------------------------------------------
+Procedure AnularVale
+*!*	------------------------------------------------------------------------
+PRIVATE lcparr
+
+lcparr = "CONFANUL"
+
+?? " ANULADO!!!"
+lccode = "D CONFANUL^RTN031("+ Transform(lnexec) + ',' + Transform(mvale) + ',' + Transform(moperador) + ')'
+lccomenta = "CONFGANUL" + '-' + Alltrim(str(mvale,16,0))
+
+ExecVism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
+
+RETURN
+
+
 
 
 

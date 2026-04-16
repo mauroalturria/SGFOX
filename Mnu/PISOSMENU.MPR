@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 26/03/2026           PISOSMENU.MPR            09:39:53  
+*       * 31/03/2026           PISOSMENU.MPR            14:08:58  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,32 +26,32 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7ff0kpqgm OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7fk0ubslp OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7ff0kpqgn OF _MSYSMENU PROMPT "Ingresos" COLOR SCHEME 3 ;
+DEFINE PAD _7fk0ubslq OF _MSYSMENU PROMPT "Ingresos" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7ff0kpqgo OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7fk0ubslr OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, "" ;
 	SKIP FOR mwkexe.idexe <> 25
-DEFINE PAD _7ff0kpqgp OF _MSYSMENU PROMPT "Auditoria" COLOR SCHEME 3 ;
+DEFINE PAD _7fk0ubsls OF _MSYSMENU PROMPT "Auditoria" COLOR SCHEME 3 ;
 	KEY ALT+A, "" ;
 	SKIP FOR mwkexe.idexe = 25
-DEFINE PAD _7ff0kpqgq OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7fk0ubslt OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7ff0kpqgr OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7fk0ubslu OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7ff0kpqgm OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7ff0kpqgn OF _MSYSMENU ACTIVATE POPUP ingresos
-ON PAD _7ff0kpqgo OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _7ff0kpqgp OF _MSYSMENU ACTIVATE POPUP auditoria
-ON PAD _7ff0kpqgq OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7ff0kpqgr OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7fk0ubslp OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7fk0ubslq OF _MSYSMENU ACTIVATE POPUP ingresos
+ON PAD _7fk0ubslr OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7fk0ubsls OF _MSYSMENU ACTIVATE POPUP auditoria
+ON PAD _7fk0ubslt OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7fk0ubslu OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7ff0kpqgs ;
+	DO _7fk0ubslv ;
 	IN LOCFILE("MNU\PISOSMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PISOSMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -198,7 +198,7 @@ DEFINE BAR 4 OF usuario PROMPT "Responsable Médico"
 DEFINE BAR 5 OF usuario PROMPT "Responsable Enfermería"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7ff0kpqgu ;
+	DO _7fk0ubslw ;
 	IN LOCFILE("MNU\PISOSMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PISOSMENU?")
 ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 ON SELECTION BAR 4 OF usuario do form frmmedicos09 with 1
@@ -207,7 +207,7 @@ ON SELECTION BAR 5 OF usuario do form frmmedicos09 with 2
 
 *       *********************************************************
 *       *                                                         
-*       * _7FF0KPQGS  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7FK0UBSLV  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -218,14 +218,14 @@ ON SELECTION BAR 5 OF usuario do form frmmedicos09 with 2
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ff0kpqgs
+PROCEDURE _7fk0ubslv
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7FF0KPQGU  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7FK0UBSLW  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -236,7 +236,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ff0kpqgu
+PROCEDURE _7fk0ubslw
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

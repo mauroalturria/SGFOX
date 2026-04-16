@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 24/02/2026            PACCONF.MPR             14:53:49  
+*       * 01/04/2026            PACCONF.MPR             14:15:02  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,27 +26,27 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7el0vwkzp OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7fl0ujl8x OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, "ALT+S"
-DEFINE PAD _7el0vwkzq OF _MSYSMENU PROMPT "Actualizaciones" COLOR SCHEME 3 ;
+DEFINE PAD _7fl0ujl8y OF _MSYSMENU PROMPT "Actualizaciones" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7el0vwkzr OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7fl0ujl8z OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7el0vwkzs OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7fl0ujl90 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7el0vwkzt OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7fl0ujl91 OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+C, "ALT+C"
-ON PAD _7el0vwkzp OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7el0vwkzq OF _MSYSMENU ACTIVATE POPUP actualizac
-ON PAD _7el0vwkzr OF _MSYSMENU ACTIVATE POPUP _4j20ncrld
-ON PAD _7el0vwkzs OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7el0vwkzt OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7fl0ujl8x OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7fl0ujl8y OF _MSYSMENU ACTIVATE POPUP actualizac
+ON PAD _7fl0ujl8z OF _MSYSMENU ACTIVATE POPUP _4j20ncrld
+ON PAD _7fl0ujl90 OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7fl0ujl91 OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Salir del Sistema"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7el0vwkzu ;
+	DO _7fl0ujl92 ;
 	IN LOCFILE("MNU\PACCONF" ,"MPX;MPR|FXP;PRG" ,"WHERE is PACCONF?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -79,14 +79,14 @@ DEFINE BAR 2 OF usuario PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7el0vwkzy ;
+	DO _7fl0ujl93 ;
 	IN LOCFILE("MNU\PACCONF" ,"MPX;MPR|FXP;PRG" ,"WHERE is PACCONF?")
 ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7EL0VWKZU  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7FL0UJL92  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -97,14 +97,14 @@ ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7el0vwkzu
+PROCEDURE _7fl0ujl92
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7EL0VWKZY  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7FL0UJL93  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -115,7 +115,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7el0vwkzy
+PROCEDURE _7fl0ujl93
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")
