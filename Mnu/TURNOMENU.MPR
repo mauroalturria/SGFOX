@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 23/03/2026           TURNOMENU.MPR            15:57:00  
+*       * 22/04/2026           TURNOMENU.MPR            10:19:54  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,45 +26,45 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7fc0y6ppv OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wd OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, "ALT+S"
-DEFINE PAD _7fc0y6ppw OF _MSYSMENU PROMPT "Configuracion" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55we OF _MSYSMENU PROMPT "Configuracion" COLOR SCHEME 3 ;
 	KEY ALT+C, "ALT+C"
-DEFINE PAD _7fc0y6ppx OF _MSYSMENU PROMPT "Tablas Varias" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wf OF _MSYSMENU PROMPT "Tablas Varias" COLOR SCHEME 3 ;
 	KEY ALT+V, "ALT+V"
-DEFINE PAD _7fc0y6ppy OF _MSYSMENU PROMPT "Profesionales" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wg OF _MSYSMENU PROMPT "Profesionales" COLOR SCHEME 3 ;
 	KEY ALT+P, "ALT+P"
-DEFINE PAD _7fc0y6ppz OF _MSYSMENU PROMPT "Manejo de Agenda" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wh OF _MSYSMENU PROMPT "Manejo de Agenda" COLOR SCHEME 3 ;
 	KEY ALT+A, "ALT+A"
-DEFINE PAD _7fc0y6pq0 OF _MSYSMENU PROMPT "Estadisticas" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wi OF _MSYSMENU PROMPT "Estadisticas" COLOR SCHEME 3 ;
 	KEY ALT+E, "ALT+E"
-DEFINE PAD _7fc0y6pq1 OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wj OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
 	KEY ALT+T, "ALT+T"
-DEFINE PAD _7fc0y6pq2 OF _MSYSMENU PROMPT "Facturacion" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wk OF _MSYSMENU PROMPT "Facturacion" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7fc0y6pq3 OF _MSYSMENU PROMPT "HDO" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wl OF _MSYSMENU PROMPT "HDO" COLOR SCHEME 3 ;
 	KEY ALT+H, "ALT+H"
-DEFINE PAD _7fc0y6pq4 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wm OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7fc0y6pq5 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
+DEFINE PAD _7g60m55wn OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7fc0y6ppv OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7fc0y6ppw OF _MSYSMENU ACTIVATE POPUP configurac
-ON PAD _7fc0y6ppx OF _MSYSMENU ACTIVATE POPUP tablasvari
-ON PAD _7fc0y6ppy OF _MSYSMENU ACTIVATE POPUP profesiona
-ON PAD _7fc0y6ppz OF _MSYSMENU ACTIVATE POPUP manejodeag
-ON PAD _7fc0y6pq0 OF _MSYSMENU ACTIVATE POPUP estadistic
-ON PAD _7fc0y6pq1 OF _MSYSMENU ACTIVATE POPUP turnos
-ON PAD _7fc0y6pq2 OF _MSYSMENU ACTIVATE POPUP facturacio
-ON PAD _7fc0y6pq3 OF _MSYSMENU ACTIVATE POPUP hdo
-ON PAD _7fc0y6pq4 OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7fc0y6pq5 OF _MSYSMENU ACTIVATE POPUP usuarios
+ON PAD _7g60m55wd OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7g60m55we OF _MSYSMENU ACTIVATE POPUP configurac
+ON PAD _7g60m55wf OF _MSYSMENU ACTIVATE POPUP tablasvari
+ON PAD _7g60m55wg OF _MSYSMENU ACTIVATE POPUP profesiona
+ON PAD _7g60m55wh OF _MSYSMENU ACTIVATE POPUP manejodeag
+ON PAD _7g60m55wi OF _MSYSMENU ACTIVATE POPUP estadistic
+ON PAD _7g60m55wj OF _MSYSMENU ACTIVATE POPUP turnos
+ON PAD _7g60m55wk OF _MSYSMENU ACTIVATE POPUP facturacio
+ON PAD _7g60m55wl OF _MSYSMENU ACTIVATE POPUP hdo
+ON PAD _7g60m55wm OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7g60m55wn OF _MSYSMENU ACTIVATE POPUP usuarios
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Salir del Sistema"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7fc0y6pq6 ;
+	DO _7g60m55wo ;
 	IN LOCFILE("MNU\TURNOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is TURNOMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -336,10 +336,10 @@ ON SELECTION BAR 1 OF estadistic do form frmturno23
 ON SELECTION BAR 2 OF estadistic do form frmturno26
 ON SELECTION BAR 3 OF estadistic do form frmturno69
 ON SELECTION BAR 4 OF estadistic ;
-	DO _7fc0y6pqv ;
+	DO _7g60m55wp ;
 	IN LOCFILE("MNU\TURNOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is TURNOMENU?")
 ON SELECTION BAR 5 OF estadistic ;
-	DO _7fc0y6pqw ;
+	DO _7g60m55wq ;
 	IN LOCFILE("MNU\TURNOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is TURNOMENU?")
 ON SELECTION BAR 6 OF estadistic do form frmturno32
 ON SELECTION BAR 7 OF estadistic do form frmturno36
@@ -430,14 +430,14 @@ DEFINE BAR 2 OF usuarios PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuarios PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuarios do form frmpass_amb
 ON SELECTION BAR 2 OF usuarios ;
-	DO _7fc0y6pr7 ;
+	DO _7g60m55wr ;
 	IN LOCFILE("MNU\TURNOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is TURNOMENU?")
 ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7FC0Y6PQ6  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7G60M55WO  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -448,14 +448,14 @@ ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7fc0y6pq6
+PROCEDURE _7g60m55wo
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7FC0Y6PQV  ON SELECTION BAR 4 OF POPUP estadistic      
+*       * _7G60M55WP  ON SELECTION BAR 4 OF POPUP estadistic      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -466,7 +466,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7fc0y6pqv
+PROCEDURE _7g60m55wp
 lcdirlocal  = "C:\qepd1a1\Exe\listarendi.EXE"
 mcrun = lcdirlocal + "  " + TRANSFORM(mxcentromedico)+","+TRANSFORM(mxambito)+",1"
 Run /N &mcrun
@@ -476,7 +476,7 @@ Run /N &mcrun
 
 *       *********************************************************
 *       *                                                         
-*       * _7FC0Y6PQW  ON SELECTION BAR 5 OF POPUP estadistic      
+*       * _7G60M55WQ  ON SELECTION BAR 5 OF POPUP estadistic      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -487,7 +487,7 @@ Run /N &mcrun
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7fc0y6pqw
+PROCEDURE _7g60m55wq
 lcdirlocal  = "C:\qepd1a1\Exe\listarendi.EXE"
 mcrun = lcdirlocal + "  " + TRANSFORM(mxcentromedico)+","+TRANSFORM(mxambito)+",2"
 Run /N &mcrun
@@ -497,7 +497,7 @@ Run /N &mcrun
 
 *       *********************************************************
 *       *                                                         
-*       * _7FC0Y6PR7  ON SELECTION BAR 2 OF POPUP usuarios        
+*       * _7G60M55WR  ON SELECTION BAR 2 OF POPUP usuarios        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -508,7 +508,7 @@ Run /N &mcrun
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7fc0y6pr7
+PROCEDURE _7g60m55wr
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 		"Centro Medico: "+ TRANSFORM(mxcentromedico)+"-"+TRANSFORM(mxambito)+ chr(13)+ ;

@@ -1,4 +1,4 @@
-Parameters tnRegistrac,tcwhere, tcCursor,lretorno
+Parameters tnRegistrac,tcwhere, tcCursor,lretorno,tntipo
 
 If Vartype(tcCursor) # "C"
 	tcCursor= 'mwkregCond'
@@ -8,20 +8,39 @@ If Vartype(tcwhere) # "C"
 Endif
 If Vartype(lretorno) # "N"
 	lretorno = 0
-ENDIF
-IF VARTYPE(tnRegistrac)="N"
-lcSql = " SELECT ZabRegCondEsp.ID , CodAmbito , FecHorDbAdd , FecHorDbUpd , UserDbAdd , UserDbUpd , RCE_fechadesde "+;
-	", RCE_fechahasta ,RCE_nroCertificado, RCE_registracio , RCE_tipoCondesp ,RCE_usuario, RCE_usuario->nomape, descrip,subestado"+;
-	" FROM  ZabRegCondEsp "+;
-	" INNER JOIN tabestados ON (RCE_tipoCondesp = tabestados.estado and propietario = 51) "+;
-	" where RCE_registracio = ?tnRegistrac "+tcwhere +" order by RCE_fechahasta desc,RCE_tipoCondesp  "
-ELSE
-lcSql = " SELECT ZabRegCondEsp.ID , CodAmbito , FecHorDbAdd , FecHorDbUpd , UserDbAdd , UserDbUpd , RCE_fechadesde "+;
-	", RCE_fechahasta ,RCE_nroCertificado, RCE_registracio , RCE_tipoCondesp ,RCE_usuario, RCE_usuario->nomape, tabestados.descrip,tabestados.subestado"+;
-	" FROM  ZabRegCondEsp inner join pacientes on RCE_registracio =   pac_codhci "+;
-	" INNER JOIN tabestados ON (RCE_tipoCondesp = tabestados.estado and propietario = 51) "+;
-	" where pac_codadmision = ?tnRegistrac "+tcwhere +" order by RCE_fechahasta desc,RCE_tipoCondesp  "
-endif
+Endif
+If Vartype(tntipo) # "N"
+	tntipo = 0
+Endif
+Do Case
+Case tntipo = 0
+	If Vartype(tnRegistrac)="N"
+		lcSql = " SELECT ZabRegCondEsp.ID , CodAmbito , FecHorDbAdd , FecHorDbUpd , UserDbAdd , UserDbUpd , RCE_fechadesde "+;
+			", RCE_fechahasta ,RCE_nroCertificado, RCE_registracio , RCE_tipoCondesp ,RCE_usuario, RCE_usuario->nomape"+;
+			", descrip,subestado"+;
+			" FROM  ZabRegCondEsp "+;
+			" INNER JOIN tabestados ON (RCE_tipoCondesp = tabestados.estado and propietario = 51) "+;
+			" where RCE_registracio = ?tnRegistrac "+tcwhere +" order by RCE_fechahasta desc,RCE_tipoCondesp  "
+	Else
+
+		lcSql = " SELECT ZabRegCondEsp.ID , CodAmbito , FecHorDbAdd , FecHorDbUpd , UserDbAdd , UserDbUpd , RCE_fechadesde "+;
+			", RCE_fechahasta ,RCE_nroCertificado, RCE_registracio , RCE_tipoCondesp ,RCE_usuario, RCE_usuario->nomape"+;
+			", tabestados.descrip,tabestados.subestado"+;
+			" FROM  ZabRegCondEsp inner join pacientes on RCE_registracio =   pac_codhci "+;
+			" INNER JOIN tabestados ON (RCE_tipoCondesp = tabestados.estado and propietario = 51) "+;
+			" where pac_codadmision = ?tnRegistrac "+tcwhere +" order by RCE_fechahasta desc,RCE_tipoCondesp  "
+
+
+	Endif
+Case tntipo = 1
+		lcSql = " SELECT ZabRegCondEsp.ID , CodAmbito , FecHorDbAdd , FecHorDbUpd , UserDbAdd , UserDbUpd , RCE_fechadesde "+;
+			", RCE_fechahasta ,RCE_nroCertificado, RCE_registracio , RCE_tipoCondesp ,RCE_usuario, RCE_usuario->nomape "+;
+			", tabestados.descrip,tabestados.subestado"+;
+			" FROM  ZabRegCondEsp inner join registracio on RCE_registracio =   REG_nroregistrac "+;
+			" INNER JOIN tabestados ON (RCE_tipoCondesp = tabestados.estado and propietario = 51) "+;
+			" where REG_nrohclinica = ?tnRegistrac "+tcwhere +" order by RCE_fechahasta desc,RCE_tipoCondesp  "
+
+Endcase
 
 If !Prg_EjecutoSql(lcSql,tcCursor,.F.)
 	Return .F.

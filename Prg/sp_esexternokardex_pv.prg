@@ -21,6 +21,7 @@ Local nCuenta
 Local mInsumos
 Local mInsumos2
 Local nResultado
+Local lResult
 
 mval = "N"
 mResultado = .F.
@@ -297,20 +298,30 @@ Else
 			xmlHTTP.Open("POST", lcUrl, .F.)
 			xmlHTTP.setRequestHeader("Content-Type","application/json")
 			xmlHTTP.setRequestHeader("Authorization", lcToken)
+			xmlHTTP.setTimeouts(5000, 5000, 5000, 10000)    &&para que espere 10 segundos la consulta
 
 			xmlHTTP.Send(lcJson)
 
+			nCuenta = 0
+			lResult = .T.
+
 			Do While xmlHTTP.readyState<>4
 				DoEvents
+				nCuenta = nCuenta + 1
+
+				If nCuenta >= 1000
+					lResult = .F.
+					Exit
+				Endif
 			Enddo
 
 			lnServidor = xmlHTTP.Status
 
 			Wait Clear
 
-* Set Step On
+*			Set Step On
 
-			If !xmlHTTP.Status = 200
+			If !xmlHTTP.Status = 200 Or !lResult
 				Messagebox('Tipo de Error: '+Alltrim(Str(xmlHTTP.Status) + Chr(10)+ "Descripción " + Chr(10) + xmlHTTP.responseText ),48,'Problemas con el Servidor')
 				lOk = .F.
 				nResultado = -4
@@ -378,7 +389,7 @@ Else
 							Endtry
 
 
-							* Set Step On
+* Set Step On
 
 							If lOk
 
