@@ -26,7 +26,7 @@ mret = SQLExec(mcon1, "SELECT ID, cuil FROM Prestadores"+;
 
 *!*	*!*	Set Step On
 *!*	     SCAN 
-  	mnroreg = '0VE775-F' &&cuentas.episodio
+  	mnroreg = '0C3944-G' &&cuentas.episodio
 *!*	*!*		
 *!*	   	mnroreg =  admis.episodio
 	mret = SQLExec(mcon1, "select * "+;

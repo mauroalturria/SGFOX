@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 28/04/2026          QUIROFMENU.MPR            12:32:48  
+*       * 13/05/2026          QUIROFMENU.MPR            13:18:35  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,27 +26,27 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7gc0qw30y OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7gr0sivhw OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7gc0qw30z OF _MSYSMENU PROMPT "Actualizaciones" COLOR SCHEME 3 ;
+DEFINE PAD _7gr0sivhx OF _MSYSMENU PROMPT "Actualizaciones" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7gc0qw310 OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7gr0sivhy OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-DEFINE PAD _7gc0qw311 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7gr0sivhz OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7gc0qw312 OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7gr0sivi0 OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7gc0qw30y OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7gc0qw30z OF _MSYSMENU ACTIVATE POPUP actualizac
-ON PAD _7gc0qw310 OF _MSYSMENU ACTIVATE POPUP listadosyc
-ON PAD _7gc0qw311 OF _MSYSMENU ACTIVATE POPUP newitem
-ON PAD _7gc0qw312 OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7gr0sivhw OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7gr0sivhx OF _MSYSMENU ACTIVATE POPUP actualizac
+ON PAD _7gr0sivhy OF _MSYSMENU ACTIVATE POPUP listadosyc
+ON PAD _7gr0sivhz OF _MSYSMENU ACTIVATE POPUP newitem
+ON PAD _7gr0sivi0 OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7gc0qw313 ;
+	DO _7gr0sivi1 ;
 	IN LOCFILE("MNU\QUIROFMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUIROFMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -164,14 +164,14 @@ DEFINE BAR 4 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmguardia34 with 2
 ON SELECTION BAR 2 OF usuario do form frmpass_amb
 ON SELECTION BAR 3 OF usuario ;
-	DO _7gc0qw31e ;
+	DO _7gr0sivic ;
 	IN LOCFILE("MNU\QUIROFMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUIROFMENU?")
 ON SELECTION BAR 4 OF usuario Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7GC0QW313  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7GR0SIVI1  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -182,14 +182,14 @@ ON SELECTION BAR 4 OF usuario Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gc0qw313
+PROCEDURE _7gr0sivi1
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7GC0QW31E  ON SELECTION BAR 3 OF POPUP usuario         
+*       * _7GR0SIVIC  ON SELECTION BAR 3 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -200,7 +200,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gc0qw31e
+PROCEDURE _7gr0sivic
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

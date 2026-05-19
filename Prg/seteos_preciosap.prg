@@ -11,7 +11,8 @@
 **********************************************************************
 *
 Lparameters miparam
-Public mcon1, mcon1, mcon4, midusu,myip,miform,mxambito
+Public mcon1, mcon1, mcon4, midusu,myip,miform,mxambito,mxcentromedico
+mxcentromedico = 1
 mxambito = 1
 DO seteos_ip
  
@@ -86,7 +87,7 @@ If mresplog = 0
 *-- Instancio el prg para ejectura la rutina da ctualizacion de precios
 	oPrestaprecios = Newobject("prestaprecios","..\sp_actualiza_prestaprecios.prg")
 	oPrestaprecios.ArmaSetDatos()
-	oPrestaprecios.ActualizaPrecios()
+	oPrestaprecios.ActualizaPrecios(3)
 
 	Strtofile( Ttoc( Datetime())+ " - fin Programa "+Chr(13)+Chr(10),"PrestaPrecios.txt",1)
 

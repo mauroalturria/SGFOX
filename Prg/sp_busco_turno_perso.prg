@@ -209,7 +209,7 @@ If mnada And mpreacre # 0
 		'medpresta.fecvigenh <> medpresta.fecvigend and ' + ;
 		't.hhmmtur >= medpresta.hhmmDes and ' + ;
 		't.hhmmtur < medpresta.hhmmHas )' + ;
-		" where turnos.codreserva<>'' and " + ;
+		" where t.codreserva<>'' and " + ;
 		'(t.tipoturno < 9 or t.tipoturno >= 13) and ' +mccpoamb  +	mbusco1 , 'mwkphorario5')
 		If mret < 0
 			Messagebox("ERROR EN LA GENERACION DEL CURSOR, REINTENTE",16, "Validacion")

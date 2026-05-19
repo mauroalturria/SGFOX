@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 03/12/2025         MAESTROSMENU.MPR           10:05:34  
+*       * 18/05/2026         MAESTROSMENU.MPR           09:23:41  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,30 +26,33 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7c80lm2m3 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7gw0k4qeb OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7c80lm2m4 OF _MSYSMENU PROMPT "Admisión" COLOR SCHEME 3 ;
+DEFINE PAD _7gw0k4qec OF _MSYSMENU PROMPT "Admisión" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7c80lm2m5 OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
+DEFINE PAD _7gw0k4qed OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
 	KEY ALT+T, ""
-DEFINE PAD _7c80lm2m6 OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
+DEFINE PAD _7gw0k4qee OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7c80lm2m7 OF _MSYSMENU PROMPT "Maestros" COLOR SCHEME 3 ;
+DEFINE PAD _7gw0k4qef OF _MSYSMENU PROMPT "Maestros" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
-DEFINE PAD _7c80lm2m8 OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+DEFINE PAD _7gw0k4qeg OF _MSYSMENU PROMPT "Guardia" COLOR SCHEME 3 ;
+	KEY ALT+G, ""
+DEFINE PAD _7gw0k4qeh OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-ON PAD _7c80lm2m3 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7c80lm2m4 OF _MSYSMENU ACTIVATE POPUP admisión
-ON PAD _7c80lm2m5 OF _MSYSMENU ACTIVATE POPUP turnos
-ON PAD _7c80lm2m6 OF _MSYSMENU ACTIVATE POPUP informesge
-ON PAD _7c80lm2m7 OF _MSYSMENU ACTIVATE POPUP maestros
-ON PAD _7c80lm2m8 OF _MSYSMENU ACTIVATE POPUP password
+ON PAD _7gw0k4qeb OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7gw0k4qec OF _MSYSMENU ACTIVATE POPUP admisión
+ON PAD _7gw0k4qed OF _MSYSMENU ACTIVATE POPUP turnos
+ON PAD _7gw0k4qee OF _MSYSMENU ACTIVATE POPUP informesge
+ON PAD _7gw0k4qef OF _MSYSMENU ACTIVATE POPUP maestros
+ON PAD _7gw0k4qeg OF _MSYSMENU ACTIVATE POPUP guardia
+ON PAD _7gw0k4qeh OF _MSYSMENU ACTIVATE POPUP password
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7c80lm2mj ;
+	DO _7gw0k4qer ;
 	IN LOCFILE("MNU\MAESTROSMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is MAESTROSMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -118,6 +121,12 @@ ON SELECTION BAR 3 OF listadepre do form frmmaestros01 with 2
 ON SELECTION BAR 5 OF listadepre do form frmmaestros01 with 1, 2
 ON SELECTION BAR 7 OF listadepre do form frmmaestros05
 
+DEFINE POPUP guardia MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF guardia PROMPT "Prestaciones"
+DEFINE BAR 2 OF guardia PROMPT "Insumos"
+ON SELECTION BAR 1 OF guardia do form frmguardia11
+ON SELECTION BAR 2 OF guardia do form frmguardia19
+
 DEFINE POPUP password MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF password PROMPT "Cambio de Password" ;
 	SKIP FOR left(mwkusuario.nomape,1)='*'
@@ -126,7 +135,7 @@ ON SELECTION BAR 1 OF password do form frmpass_amb
 
 *       *********************************************************
 *       *                                                         
-*       * _7C80LM2MJ  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7GW0K4QER  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -137,6 +146,6 @@ ON SELECTION BAR 1 OF password do form frmpass_amb
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7c80lm2mj
+PROCEDURE _7gw0k4qer
 do sp_logoff
 quit

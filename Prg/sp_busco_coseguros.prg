@@ -8,7 +8,7 @@ else
 	cmtp  = " "
 endif
 mret = sqlexec(mcon1,  "select Coseguros.*,ent_descrient, CosegurosTipoAtencion.Descripcion as Descripcion "+;
-	" ,planes.descripcion as Denominacion from entidades, CosegurosTipoAtencion,Coseguros "+;
+	" ,planes.descripcion as Denominacion,FecPasivaPlan,ENT_fecpas  from entidades, CosegurosTipoAtencion,Coseguros "+;
 	" left join planes on planes.id = Coseguros.plan "+;
 	" where entidad = ent_codent  "+cmtp  +;
 	" and Coseguros.TipoAten = CosegurosTipoAtencion.tipoAten",'MwkCoseguros')

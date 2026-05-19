@@ -4,10 +4,10 @@
 Use In Select("mwkptosvt1")
 Use In Select("mwkptosvta")
 
-mret = SQLExec(mcon1,"select Descripcion, FechaAlta, FechaPasiva,PuntodeVenta " + ;
-	" from Puntosdeventa where TipoPuntoVenta = 1 ", "mwkptosvt1")
-Select *,Iif(At('Ambulatorio',Descripcion)>0,"0016",Iif(At('Guardia',Descripcion)>0,"0017","0019")) As origen ;
-	from mwkptosvt1 Into Cursor mwkptosvta
+*!*	mret = SQLExec(mcon1,"select Descripcion, FechaAlta, FechaPasiva,PuntodeVenta " + ;
+*!*		" from Puntosdeventa where TipoPuntoVenta = 1 ", "mwkptosvt1")
+*!*	Select *,Iif(At('Ambulatorio',Descripcion)>0,"0016",Iif(At('Guardia',Descripcion)>0,"0017","0019")) As origen ;
+*!*		from mwkptosvt1 Into Cursor mwkptosvta
 
 mret = SQLExec(mcon1,"select  Puntosdeventa.Descripcion, Puntosdeventa.FechaAlta,"+;
 	" Puntosdeventa.FechaPasiva, Puntosdeventa.PuntodeVenta,"+;

@@ -627,8 +627,8 @@ If mlmodifevoln
 				mnurse = mnurse + ' Glasgow:'+ Transf(.txtglas1.Value,'99')+ '/'+Transf(.txtglas2.Value,'99')+Chr(10)
 			Endif
 			mnconc 	= .OptConciencia.Value
-			mnurse = mnurse + Iif(mnconc # 0, ' Nivel de conciencia:'+ Iif(mnconc =1," Alerta",Iif(mnconc =2," Voz",Iif(mnconc =1," Dolor",' Inconciente') ) ) + Chr(10),'')
-
+			mnurse = mnurse + Iif(mnconc # 0, ' Nivel de conciencia:'+ Iif(mnconc =1," Alerta",Iif(mnconc =2," Voz",Iif(mnconc =1," Confuso",' Inconciente') ) ) + Chr(10),'')
+			mcntEPOC = .cntEPOC.visible
 		Endwith
 
 
@@ -916,13 +916,14 @@ If mlcambiocsv
 			"AVISE A SISTEMAS",16, "ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
 	Endif
-	miescore = prg_calcula_news(mparfreresp ,mparsatur ,mpartemaxl ,mpartenssis ,mparfrecard,mnconc,1,mnO2Aux )
-	mlobs = prg_calcula_news(mparfreresp ,mparsatur ,mpartemaxl ,mpartenssis ,mparfrecard,mnconc,2,mnO2Aux )
-	mlobs = Iif(miescore >6,'',mlobs )
+	miescore = prg_calcula_news(mparfreresp ,mparsatur ,mpartemaxl ,mpartenssis ,mparfrecard,mnconc,1,mnO2Aux,mcntEPOC  )
+	mlobs = prg_calcula_news(mparfreresp ,mparsatur ,mpartemaxl ,mpartenssis ,mparfrecard,mnconc,2,mnO2Aux,mcntEPOC  )
+	mlobs = Iif(miescore >=5,'',mlobs )
+	 
 	If miescore>=0
 		mhora = Hour(mfechahora )*100+Minute(mfechahora )
 		mfechahora = Ctot(Dtoc(mfechadia- Iif(mhoratoma>mhora,1,0) )+" "+ Transform(mhoratoma,"@L 99:99"))
-		mvalor = miescore + Iif(lnARM = 1, 2, 0)
+		mvalor = miescore &&+ Iif(lnARM = 1, 2, 0)
 		mret = SQLExec(mcon1, "insert into TabIntScorNur " + ;
 			"(EIS_fechaH ,EIS_idevol ,EIS_observacion , EIS_tiposcore ,EIS_usuario ,EIS_valor )"+;
 			" values "+;

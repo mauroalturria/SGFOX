@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 22/04/2026           TURNOME01.MPR            10:19:54  
+*       * 14/05/2026           TURNOME01.MPR            12:33:36  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,14 +26,14 @@
 DEFINE POPUP menúcontex SHORTCUT RELATIVE FROM MROW(),MCOL()
 DEFINE BAR 1 OF menúcontex PROMPT "Grabar Todos"
 ON SELECTION BAR 1 OF menúcontex ;
-	DO _7g60m55ze ;
+	DO _7gs0qwvax ;
 	IN LOCFILE("MNU\TURNOME01" ,"MPX;MPR|FXP;PRG" ,"WHERE is TURNOME01?")
 
 ACTIVATE POPUP menúcontex
 
 *       *********************************************************
 *       *                                                         
-*       * _7G60M55ZE  ON SELECTION BAR 1 OF POPUP menúcontex      
+*       * _7GS0QWVAX  ON SELECTION BAR 1 OF POPUP menúcontex      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -44,7 +44,7 @@ ACTIVATE POPUP menúcontex
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7g60m55ze
+PROCEDURE _7gs0qwvax
 
 mxambitoR = mxambito
 

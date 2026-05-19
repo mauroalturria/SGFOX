@@ -56,11 +56,11 @@ Define Class PrestaPrecios As Custom
 *-- Ejecutamos la consulta al motor
 	If SQLExec( This.nConexionSQL , lcCMDSql, 'mwkPrestaciones') = 1
 
-		Else
-			This.llok = .F.
-		Endif
+	Else
+		This.llok = .F.
+	Endif
 
-		Endproc
+	Endproc
 
 
 ***************************************************************************************************
@@ -70,8 +70,11 @@ Define Class PrestaPrecios As Custom
 *  Description :   Procesa las prestaciones para conseguir los valores o precios
 ***************************************************************************************************
 *
-	Procedure ActualizaPrecios()
-
+	Procedure ActualizaPrecios(mcentro)
+	If Vartype(mcentro)<>"N"
+		mcentro = 1
+	Endif
+	mxcentromedico = mcentro
 	mGraba		= '1'
 	mFechasol	= Dtoc( Ttod( mwkFecServ.FechaHora ) )
 	FechaHora = Datetime()
@@ -120,16 +123,19 @@ Define Class PrestaPrecios As Custom
 		lnValorPrecio =0
 		lnValorPrecio1 = 0
 		lnValorPrecio2 = 0
+		lactualiza = .F.
+
 		mnCodDia	  =  mwkPrestaciones.PRE_CodPrest
 		mCodDia	  = Alltrim( Transf ( mnCodDia))
 		If mnCodDia > 0
-			mresp = prg_preciosap(11,mnCodDia,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
-			If !Empty(mresp ) And At("mensaje",MRESP)=0
+			mresp = prg_preciosapCM(11,mnCodDia,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida,mcentro )
+			If !Empty(mresp ) And At("mensaje",mresp)=0
 				lnValorPrecio1 =  Val(Strtran(lcimportePaciente , '.', ',' ))
 				lnValorPrecio2 =  Val(Strtran(lcimporteCobertura, '.', ',' ))
+				lactualiza = .T.
 			Endif
 
-			mret = SQLExec(mcon1,"SELECT PRE_codservicio,PRA_codprestasocia FROM Prestacions "+;
+			mret = SQLExec(mCon1,"SELECT PRE_codservicio,PRA_codprestasocia FROM Prestacions "+;
 				"  left join Prestasocia on Prestasocia.PRA_PRESTACIONS = Prestacions.PRE_codprest " +;
 				" WHERE  PRE_codprest = "+Transform(mnCodDia)	,"mwkservpres")
 			Select mwkservpres
@@ -140,10 +146,13 @@ Define Class PrestaPrecios As Custom
 					lcimportePaciente =''
 					lcpracticaSinCargo = ''
 					lcpracticaConvenida = ''
-					mresp = prg_preciosap(11 ,mwkservpres.PRA_codprestasocia ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
+					mresp = prg_preciosapCM(11 ,mwkservpres.PRA_codprestasocia ,@lcimporteCobertura;
+						,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida,mcentro )
 					mresp = ''
 					lnValorPrecio1 = lnValorPrecio1 + Val(Strtran(lcimportePaciente , '.', ',' ))
 					lnValorPrecio2 = lnValorPrecio2 + Val(Strtran(lcimporteCobertura, '.', ',' ))
+									lactualiza = .T.
+
 				Endif
 			Endscan
 *!*				Else
@@ -164,14 +173,15 @@ Define Class PrestaPrecios As Custom
 *!*						lcimportePaciente =''
 *!*						lcpracticaSinCargo = ''
 *!*						lcpracticaConvenida = ''
-*!*						mresp = prg_preciosap(11 ,codinsu  ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
+*!*						mresp = prg_preciosapCM(11 ,codinsu  ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
 *!*						mresp = ''
 *!*						lnValorPrecio1 = lnValorPrecio1 + Val(Strtran(lcimportePaciente , '.', ',' ))
 *!*						lnValorPrecio2 = lnValorPrecio2 + Val(Strtran(lcimporteCobertura, '.', ',' ))
 *!*					Endif
 *!*				Endscan
 
-			If lnValorPrecio1 >0
+			If lnValorPrecio1 >0 OR lactualiza  
+
 				lnValorPrecio1 =   Alltrim(Transform(Round(lnValorPrecio1,2),"99999999.99"))
 				lnValorPrecio2 =   Alltrim(Transform(Round(lnValorPrecio2,2),"99999999.99"))
 
@@ -238,13 +248,13 @@ Define Class PrestaPrecios As Custom
 				Endif
 			Endif
 			mihora = sp_busco_fecha_serv("DT")
-			mReturn = SQLExec(mCon1, "select id from TabPrestaPrecios WHERE TabPrestaPrecios.Codigo = ?mnCodDia ",'mwkctrlprest')
+			mReturn = SQLExec(mCon1, "select id from TabPrestaPrecios WHERE TabPrestaPrecios.Codigo = ?mnCodDia and centromedico = ?mxcentromedico ",'mwkctrlprest')
 			mid = mwkctrlprest.Id
 			Strtofile( Ttoc( mihora )+" - "+Transform(mnCodDia )+Chr(9)+Transform(lnValorPrecio1) +Chr(13)+Chr(10),"PrestaPrecios.txt",1)
 
 			If mid=0
-				mReturn = SQLExec(mCon1, "insert into TabPrestaPrecios (Codigo,Precio1,Precio2 ) "+;
-					" values ( ?mnCodDia,?lnValorPrecio1,?lnValorPrecio2    )")
+				mReturn = SQLExec(mCon1, "insert into TabPrestaPrecios (Codigo,Precio1,Precio2,centromedico  ) "+;
+					" values ( ?mnCodDia,?lnValorPrecio1,?lnValorPrecio2, ?mxcentromedico     )")
 			Else
 				mReturn = SQLExec(mCon1, "UPDATE TabPrestaPrecios SET Precio1 = ?lnValorPrecio1,Precio2 = ?lnValorPrecio2 "+;
 					",FecHorDbUpd = ?mihora  WHERE id  = ?mid  ")
@@ -369,13 +379,13 @@ Define Class PrestaPrecios As Custom
 		lnValorPrecio2 = Alltrim(Transform(valor ))
 		lnValorPrecio1 = lnValorPrecio2
 		mihora = sp_busco_fecha_serv("DT")
-		mReturn = SQLExec(mCon1, "select id from TabPrestaPrecios WHERE TabPrestaPrecios.Codigo = ?mnCodDia ",'mwkctrlprest')
+		mReturn = SQLExec(mCon1, "select id from TabPrestaPrecios WHERE TabPrestaPrecios.Codigo = ?mnCodDia and centromedico = ?mxcentromedico",'mwkctrlprest')
 		mid = mwkctrlprest.Id
 		Strtofile( Ttoc( mihora )+" - "+Transform(mnCodDia )+Chr(9)+lnValorPrecio1 +Chr(13)+Chr(10),"PrestaPrecios.txt",1)
 		If Val(lnValorPrecio1)>0
 			If mid=0
-				mReturn = SQLExec(mCon1, "insert into TabPrestaPrecios (Codigo,Precio1,Precio2 ) "+;
-					" values ( ?mnCodDia,?lnValorPrecio1,?lnValorPrecio2    )")
+				mReturn = SQLExec(mCon1, "insert into TabPrestaPrecios (Codigo,Precio1,Precio2,  centromedico  ) "+;
+					" values ( ?mnCodDia,?lnValorPrecio1,?lnValorPrecio2, ?mxcentromedico     )")
 			Else
 				mReturn = SQLExec(mCon1, "UPDATE TabPrestaPrecios SET Precio1 = ?lnValorPrecio1,Precio2 = ?lnValorPrecio2 "+;
 					",FecHorDbUpd = ?mihora  WHERE id  = ?mid  ")

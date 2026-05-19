@@ -345,7 +345,11 @@ Else
 			lncantlocal = Adir(ladatosloc,lcdirlocalud  + lcnewfile )
 
 			If lncantlocal>0
+				If Ctot(Dtoc(ladatosupd[lnupdt,3] )+ ' ' + ladatosupd[lnupdt,4]) ;
+						> Ctot(Dtoc(ladatosloc[1,3] )+ ' ' + ladatosloc[1,4])
+					Copy File (lcdirupdate + lcnewfile ) To (lcdirlocalud  + lcnewfile )
 
+				Endif
 			Else
 				mccad =  mccad + Ttoc(Datetime()) + Chr(9) + Alltrim(myiplocal) + Chr(9) + ;
 					alltrim(lcdirupdate + lcnewfile )+ Chr(9) + Dtoc(ladatosupd[lnupdt,3] )+ ' ' + ladatosupd[lnupdt,4]+ Chr(10)

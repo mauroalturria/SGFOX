@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 20/04/2026          AMBULAMENU.MPR            09:37:05  
+*       * 19/05/2026          AMBULAMENU.MPR            11:52:15  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,36 +26,36 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7g40klve8 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfyma OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7g40klve9 OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfymb OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7g40klvea OF _MSYSMENU PROMPT "Medicos" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfymc OF _MSYSMENU PROMPT "Medicos" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
-DEFINE PAD _7g40klveb OF _MSYSMENU PROMPT "Enfermeria" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfymd OF _MSYSMENU PROMPT "Enfermeria" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7g40klvec OF _MSYSMENU PROMPT "Gestión" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfyme OF _MSYSMENU PROMPT "Gestión" COLOR SCHEME 3 ;
 	KEY ALT+G, ""
-DEFINE PAD _7g40klved OF _MSYSMENU PROMPT "Documentacion" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfymf OF _MSYSMENU PROMPT "Documentacion" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7g40klvee OF _MSYSMENU PROMPT "HDO" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfymg OF _MSYSMENU PROMPT "HDO" COLOR SCHEME 3 ;
 	KEY ALT+H, ""
-DEFINE PAD _7g40klvef OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7gx0pfymh OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7g40klve8 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7g40klve9 OF _MSYSMENU ACTIVATE POPUP administra
-ON PAD _7g40klvea OF _MSYSMENU ACTIVATE POPUP medicos
-ON PAD _7g40klveb OF _MSYSMENU ACTIVATE POPUP enfermeria
-ON PAD _7g40klvec OF _MSYSMENU ACTIVATE POPUP gestión
-ON PAD _7g40klved OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7g40klvee OF _MSYSMENU ACTIVATE POPUP hdo
-ON PAD _7g40klvef OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7gx0pfyma OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7gx0pfymb OF _MSYSMENU ACTIVATE POPUP administra
+ON PAD _7gx0pfymc OF _MSYSMENU ACTIVATE POPUP medicos
+ON PAD _7gx0pfymd OF _MSYSMENU ACTIVATE POPUP enfermeria
+ON PAD _7gx0pfyme OF _MSYSMENU ACTIVATE POPUP gestión
+ON PAD _7gx0pfymf OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7gx0pfymg OF _MSYSMENU ACTIVATE POPUP hdo
+ON PAD _7gx0pfymh OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7g40klveg ;
+	DO _7gx0pfymi ;
 	IN LOCFILE("MNU\AMBULAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is AMBULAMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -148,7 +148,7 @@ ON SELECTION BAR 6 OF gestión do form frmambula53 with 0
 ON SELECTION BAR 7 OF gestión do form frmambula57 with 0
 ON SELECTION BAR 9 OF gestión do form frmturno72
 ON SELECTION BAR 10 OF gestión ;
-	DO _7g40klveh ;
+	DO _7gx0pfymj ;
 	IN LOCFILE("MNU\AMBULAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is AMBULAMENU?")
 ON SELECTION BAR 11 OF gestión do form frmambula51
 ON SELECTION BAR 12 OF gestión do form frmambula11
@@ -194,14 +194,14 @@ DEFINE BAR 2 OF usuario PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7g40klvei ;
+	DO _7gx0pfymk ;
 	IN LOCFILE("MNU\AMBULAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is AMBULAMENU?")
 ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7G40KLVEG  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7GX0PFYMI  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -212,14 +212,14 @@ ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7g40klveg
+PROCEDURE _7gx0pfymi
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7G40KLVEH  ON SELECTION BAR 10 OF POPUP gestión        
+*       * _7GX0PFYMJ  ON SELECTION BAR 10 OF POPUP gestión        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -230,7 +230,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7g40klveh
+PROCEDURE _7gx0pfymj
 do sp_conexion
 do form frmagenda_tel
 do sp_desconexion with "agenda"
@@ -238,7 +238,7 @@ do sp_desconexion with "agenda"
 
 *       *********************************************************
 *       *                                                         
-*       * _7G40KLVEI  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7GX0PFYMK  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -249,7 +249,7 @@ do sp_desconexion with "agenda"
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7g40klvei
+PROCEDURE _7gx0pfymk
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

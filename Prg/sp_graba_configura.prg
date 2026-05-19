@@ -1,5 +1,5 @@
 **sp para grabar datos en la tabla TABConfigura
-PARAMETERS nCentro,cConcepto,cTipo,cValor,cImagen,cDescrip,nTipo,nAccion
+PARAMETERS nCentro,cConcepto,cTipo,cValor,cImagen,cDescrip,nTipo,nAccion,nmulti,dfechafin
 
 ** Pasamos la validacion, ahora grabamos los datos.
 
@@ -44,8 +44,8 @@ If .pAccion == 1   &&insert
 	If .optTipo.Value == 2
 
 		If !Empty(cImagen)  &&con imagen
-			cSql = "insert into tabconfigura (tbc_centro,tbc_concepto,tbc_tipo,tbc_descripcion,tbc_foto,tbc_valor) "
-			cSql = cSql + "values(?nCentro,?cConcepto,?cTipo,?cDescrip,?__DATA.foto,"+mvalor+")"
+			cSql = "insert into tabconfigura (tbc_centro,tbc_concepto,tbc_tipo,tbc_descripcion,tbc_foto,tbc_valor,TBC_Multiples,TBC_Fechahasta ) "
+			cSql = cSql + "values(?nCentro,?cConcepto,?cTipo,?cDescrip,?__DATA.foto,"+mvalor+",?nmulti,?dfechaini)"
 		Else
 			cSql = "insert into tabconfigura (tbc_centro,tbc_concepto,tbc_tipo,tbc_descripcion) "
 			cSql = cSql + "values(?nCentro,?cConcepto,?cTipo,?cDescrip)"

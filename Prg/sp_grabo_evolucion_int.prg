@@ -116,7 +116,7 @@ mlmodifscore2 = mopage2.Parent.Parent.lmodifscore2
 mlmodifscore3= mopage2.Parent.Parent.lmodifscore3
 mlmodifscore4= mopage2.Parent.Parent.lmodifscore4
 mlmodifscore5= mopage2.Parent.Parent.lmodifscore5
-mlmodifkine =  (mopage2.Parent.Parent.lmodifevolk Or mopage2.Parent.Parent.lcambioevolkr) && KINE
+mlmodifkine =  (mopage2.Parent.Parent.lmodifevolk Or mopage2.Parent.Parent.lcambioevolkr Or mopage2.Parent.Parent.lcambioevolkm) && KINE
 mlcambiometanut = mopage2.Parent.Parent.lcambiometanut
 mlalertacovid = mopage2.Parent.Parent.lalertacovid
 

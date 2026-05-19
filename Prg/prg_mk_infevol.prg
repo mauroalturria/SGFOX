@@ -1,15 +1,19 @@
-Lparameters  xturnos, xevol, xestado, operacion, xsala
+Lparameters  xturnos, xevol, xestado, operacion, xsala, tipollamado
 
-If myip='172.16.1.7'
+If myip='172.16.1.7' Or myip='172.16.1.160'
 	Set Step On
 Endif
+
 If Vartype(xevol)<>"C"
 	xevol=""
 Endif
+
 * Nueva versión de prg 2025-09-02 (Fabián)
-* Se cambia la forma de llamar al servicio usando otro componente más compatible.
+* Se cambia la forma de llamar al servicio usando otro componente más compatible
+* Tipo = recibe parámetro true / false para parametro (turnInicioTotem)
 
 Local lnpermiso
+
 lnpermiso = 0
 
 Do sp_busco_estados With 57,' and tipo = 85 and subestado = ?mxcentromedico ','mwkhabilitainfevol'
@@ -60,25 +64,29 @@ Case operacion = "informaevolucion"  &&& para informes
 *!*		lclink = lclink + '&consDescripcion=' + Alltrim(xsala)
 *!*		lclink = lclink + '&'+'turnInicioAtencion=' +  xlestado
 
-
-
-Case operacion = "informarllamadof" Or  operacion = "informarllamadot"  Or  operacion ="informarllamadoconsultorio"
+Case operacion = "informarllamadof" Or  operacion = "informarllamadot"
 
 	lclink = lcURL
 	lclink = lclink + '?operacion=informarllamado'   + '&'+'turnocodigo=' + Transform(xturnos)
-	lclink = lclink + '&sala=' + Alltrim(xsala)+'&inicio=' +xlestado
+	lclink = lclink + '&sala=' + Alltrim(xsala)
 
 	If operacion = "informarllamadof"
 		lclink = lclink + '&inicio=false'
 	Else
 		lclink = lclink + '&inicio=true'
 	Endif
+
 Case  operacion ="informarllamadoconsultorio"
 
+	If tipollamado
+		ltipollamado = "true"
+	Else
+		ltipollamado = "false"
+	Endif
+
 	lclink = lcURL
-	lclink = lclink + '?operacion=informarllamado'   + '&'+'turnocodigo=' + Transform(xturnos)
-	lclink = lclink + '&sala=' + Alltrim(xsala)+'&inicio=' +xlestado
- 
+	lclink = lclink + '?operacion=informarllamado'   + '&turnocodigo=' + Transform(xturnos)
+	lclink = lclink + '&sala=' + Alltrim(xsala)+'&inicio=' + ltipollamado
 
 Otherwise
 

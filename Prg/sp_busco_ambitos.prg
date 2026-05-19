@@ -18,9 +18,9 @@ If mtipo = 1 && Sólo ambitos
 	Endif
 
 Else         && Relación de ambito y parámetros
-
+ 
 	Use In Select("mwkconfigura")
-	mret = SQLExec(mcon1,"select TabAmbito.ambito,tbc_concepto,tbc_tipo,tbc_valor,tbc_descripcion,tbc_foto,tabconfigura.id,tbc_centro"+;
+	mret = SQLExec(mcon1,"select TabAmbito.ambito, tabconfigura.* "+;
 		" from tabconfigura"+;
 		" join TabAmbito on TabAmbito.id = tabconfigura.tbc_centro","mwkconfigura")
 

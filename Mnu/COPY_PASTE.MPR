@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 26/03/2026          COPY_PASTE.MPR            14:08:04  
+*       * 14/05/2026          COPY_PASTE.MPR            12:55:00  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -43,14 +43,14 @@ DEFINE BAR _med_copy OF menúcontex PROMPT "Copiar" ;
 DEFINE BAR _med_paste OF menúcontex PROMPT "Pegar" ;
 	KEY CTRL+V, "CTRL+V"
 ON SELECTION BAR 1 OF menúcontex ;
-	DO _7ff0uammb ;
+	DO _7gs0roi00 ;
 	IN LOCFILE("MNU\COPY_PASTE" ,"MPX;MPR|FXP;PRG" ,"WHERE is COPY_PASTE?")
 
 ACTIVATE POPUP menúcontex
 
 *       *********************************************************
 *       *                                                         
-*       * _7FF0UAMMB  ON SELECTION BAR 1 OF POPUP menúcontex      
+*       * _7GS0ROI00  ON SELECTION BAR 1 OF POPUP menúcontex      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -61,7 +61,7 @@ ACTIVATE POPUP menúcontex
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ff0uammb
+PROCEDURE _7gs0roi00
 IF TYPE("m.oRef") = "O"
 
 *	m.cFont = Getfont(m.oRef.FontName,m.oRef.FontSize,Iif(oRef.FontBold,"B",""),Iif(oRef.FontItalic,1,0))

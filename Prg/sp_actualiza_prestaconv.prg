@@ -132,7 +132,7 @@ Define Class PrestaPrecios As Custom
 		mnCodDia	  =  mwkPrestaciones.PRE_CodPrest
 		mCodDia	  = Alltrim( Transf ( mnCodDia))
 		If mnCodDia > 0
-			mresp = prg_preciosap(11,mnCodDia,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
+			mresp = prg_preciosapCM(11,mnCodDia,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
 			If !Empty(mresp ) And At("mensaje",MRESP)=0
 				lnValorPrecio1 =  Val(Strtran(lcimportePaciente , '.', ',' ))
 				lnValorPrecio2 =  Val(Strtran(lcimporteCobertura, '.', ',' ))
@@ -149,7 +149,7 @@ Define Class PrestaPrecios As Custom
 					lcimportePaciente =''
 					lcpracticaSinCargo = ''
 					lcpracticaConvenida = ''
-					mresp = prg_preciosap(11 ,mwkservpres.PRA_codprestasocia ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
+					mresp = prg_preciosapCM(11 ,mwkservpres.PRA_codprestasocia ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
 					mresp = ''
 					lnValorPrecio1 = lnValorPrecio1 + Val(Strtran(lcimportePaciente , '.', ',' ))
 					lnValorPrecio2 = lnValorPrecio2 + Val(Strtran(lcimporteCobertura, '.', ',' ))
@@ -173,7 +173,7 @@ Define Class PrestaPrecios As Custom
 *!*						lcimportePaciente =''
 *!*						lcpracticaSinCargo = ''
 *!*						lcpracticaConvenida = ''
-*!*						mresp = prg_preciosap(11 ,codinsu  ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
+*!*						mresp = prg_preciosapCM(11 ,codinsu  ,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
 *!*						mresp = ''
 *!*						lnValorPrecio1 = lnValorPrecio1 + Val(Strtran(lcimportePaciente , '.', ',' ))
 *!*						lnValorPrecio2 = lnValorPrecio2 + Val(Strtran(lcimporteCobertura, '.', ',' ))
@@ -285,7 +285,7 @@ Define Class PrestaPrecios As Custom
 		mnCodDia	  =  mwkconvenidas.PC_codprest
 		mCodDia	  = Alltrim( Transf ( mnCodDia))
 		If mnCodDia > 0
-			mresp = prg_preciosap(aseguradora ,mnCodDia,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
+			mresp = prg_preciosapCM(aseguradora ,mnCodDia,@lcimporteCobertura,@lcimportePaciente ,@lcpracticaSinCargo ,@lcpracticaConvenida )
 			If  Empty(lcpracticaConvenida) And At("mensaje",MRESP)=0
 				Loop
 			Else

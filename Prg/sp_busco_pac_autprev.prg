@@ -86,14 +86,14 @@ Select pac_nombrepaciente, pac_edad , sec_codsector, sec_descripsec, pac_habitac
 	, apv_fechasolicitud , apv_horaauditoria , apv_horasolicitud , apv_idautprevias;
 	, apv_nommedicosolic ,apv_observaciones , apv_operauditoria , apv_opersolicitud;
 	, apv_presinsu , apv_unixdosisautor , apv_unixdosissolic , apv_urgencia, APV_FechaCirugia  ;
-	, ainsau.ins_descriinsumo ,apv_idagrupador, APV_NroVale,padr(Nvl(mwkplanpre.descripcion,''),50) As plan ;
+	, ainsau.ins_descriinsumo ,apv_idagrupador, APV_NroVale,Padr(Nvl(mwkplanpre.descripcion,''),50) As plan ;
 	, ainsso.ins_descriinsumo As ins_descriinsumo1, ainsso.ins_medsensi, ainsso.ins_ddd, ainsso.ins_uniddd,ainsso.ins_contenido, esta.Descrip As descest ;
 	, prestau.pre_descriprest, apv_subestadopend ;
 	, prestso.pre_descriprest As pre_descriprest1, mwkpacint00.Descrip As desccpafar, estse.Descrip As descsubes  , estse.subestado ;
 	, autid, mwkentexc_int.fecpasiva, prestso.pre_codservicio ;
 	, apv_diagnostico , apv_resprev, afi_nroafiliado, afi_idplan,  Nvl(mwkpacint00.subestado,100000-100000) As SubEstadocpa, mwkpacint00.Descrip As descripcpa;
 	, apv_descripsolic, apv_descripautori, apv_posologiasol, pac_tipopac,Nvl(prestso.pre_tipomuestra,1) As pre_tipomuestra ;
-	,Nvl(prestso.PRE_Lateralidad,1) As PRE_Lateralidad ,Nvl(prestso.PRE_tipozona,1) As PRE_tipozona ,prg_busco_dato_estsolic(pac_codadmision,apv_idautprevias,APV_CodPrestSolic ,1) As apv_codlado ;
+	,Nvl(prestso.PRE_Lateralidad,1) As PRE_Lateralidad ,Nvl(prestso.PRE_tipozona,1) As PRE_tipozona ,prg_busco_dato_estsolic(pac_codadmision,apv_idautprevias,apv_codprestsolic ,1) As apv_codlado ;
 	,Iif(Left(sec_codsector ,2)='CO',0,1) As prio,idcodmed,ENT_nroprestadorexterno ;
 	from mwkpacint00;
 	left Join mwkinsuac As ainsau On ainsau.insumos = apv_codinsuautori ;
@@ -105,7 +105,7 @@ Select pac_nombrepaciente, pac_edad , sec_codsector, sec_descripsec, pac_habitac
 	left Join mwkentidad On cob_codentidad = mwkentidad.ent_codent  ;
 	left Join mwksectorint On pac_sectorinternac = mwksectorint.sec_codsector  ;
 	left Join mwkentexc_int On mwkentexc_int.codent =  cob_codentidad ;
-	Left Join mwkplanpre On  mwkplanpre.Id = AFI_idplan;
+	Left Join mwkplanpre On  mwkplanpre.Id = afi_idplan;
 	GROUP By apv_idautprevias;
 	into Cursor mwkpacint0
 
@@ -140,7 +140,11 @@ Select  pac_nombrepaciente;
 	, Iif( !Inlist(apv_presinsu , 'P','Q','M','C'),apv_idautprevias ;
 	,apv_idagrupador ) As apv_idagrupador, APV_NroVale , SubEstadocpa, descsubes,descripcpa,ENT_nroprestadorexterno  ;
 	,pac_fechaalta, ins_medsensi, ins_ddd, ins_uniddd,ins_contenido, pac_horaalta ,pre_tipomuestra,PRE_Lateralidad ,PRE_tipozona ,prio,idcodmed ;
-	, Iif(apv_presinsu ='I',1,2) As prinsu,APV_codlado,plan;
+	, Iif(apv_presinsu ='I',1,2) As prinsu,apv_codlado,plan;
+		,sp_busco_datos_regis_cond(pac_codadmision ," and RCE_tipoCondesp  = 13 And  RCE_fechahasta>= {fn curdate()} ",;
+	"mwkpacvip",1) As lespacvip ;
+	,sp_busco_datos_regis_cond(pac_codadmision ," and RCE_tipoCondesp  = 15 And  RCE_fechahasta>= {fn curdate()} ",;
+	"mwkpacvip",1) As lespactras ;
 	from mwkpacint0 ;
 	order By &mordensql,apv_fechasolicitud Desc,pac_nombrepaciente,apv_idagrupador,apv_idautprevias Desc ;
 	into Cursor &mnomcur
