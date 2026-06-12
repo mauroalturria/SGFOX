@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 15/09/2025         FARMACIAMENU.MPR           18:00:43  
+*       * 26/05/2026         FARMACIAMENU.MPR           14:06:25  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,30 +26,30 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7a112lsup OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7h40u8ibd OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7a112lsuq OF _MSYSMENU PROMPT "Farmacia" COLOR SCHEME 3 ;
+DEFINE PAD _7h40u8ibe OF _MSYSMENU PROMPT "Farmacia" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7a112lsur OF _MSYSMENU PROMPT "Citostáticos" COLOR SCHEME 3 ;
+DEFINE PAD _7h40u8ibf OF _MSYSMENU PROMPT "Citostáticos" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7a112lsus OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7h40u8ibg OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-DEFINE PAD _7a112lsut OF _MSYSMENU PROMPT "SAP" COLOR SCHEME 3 ;
+DEFINE PAD _7h40u8ibh OF _MSYSMENU PROMPT "SAP" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7a112lsuu OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7h40u8ibi OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7a112lsup OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7a112lsuq OF _MSYSMENU ACTIVATE POPUP farmacia
-ON PAD _7a112lsur OF _MSYSMENU ACTIVATE POPUP _31v0ln9j3
-ON PAD _7a112lsus OF _MSYSMENU ACTIVATE POPUP listadosyc
-ON PAD _7a112lsut OF _MSYSMENU ACTIVATE POPUP sap
-ON PAD _7a112lsuu OF _MSYSMENU ACTIVATE POPUP modificaci
+ON PAD _7h40u8ibd OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7h40u8ibe OF _MSYSMENU ACTIVATE POPUP farmacia
+ON PAD _7h40u8ibf OF _MSYSMENU ACTIVATE POPUP _31v0ln9j3
+ON PAD _7h40u8ibg OF _MSYSMENU ACTIVATE POPUP listadosyc
+ON PAD _7h40u8ibh OF _MSYSMENU ACTIVATE POPUP sap
+ON PAD _7h40u8ibi OF _MSYSMENU ACTIVATE POPUP modificaci
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7a112lsuv ;
+	DO _7h40u8ibt ;
 	IN LOCFILE("MNU\FARMACIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is FARMACIAMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -175,7 +175,7 @@ ON SELECTION BAR 1 OF modificaci do form frmpass_amb
 
 *       *********************************************************
 *       *                                                         
-*       * _7A112LSUV  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7H40U8IBT  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -186,6 +186,6 @@ ON SELECTION BAR 1 OF modificaci do form frmpass_amb
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7a112lsuv
+PROCEDURE _7h40u8ibt
 do sp_logoff
 quit

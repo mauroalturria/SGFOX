@@ -17,7 +17,7 @@ mret = sqlexec(mcon1,"select TUF_firmante,TUF_puesto,TUF_codigovax,matriculas"+;
 	" join Tabautprevlog on APL_IdAutPrev = ?mlid "+;
 	" join PRESTADORES on PRESTADORES.id = TabUsuario.IDCodMed "+;
 	" where TUF_fecpasiva >= ?mfechaa and TUF_tipo = ?mtipo and Tabautprevlog.APL_Operador = TabUsuario.codigovax "+;
-	" order by Tabautprevlog.id","mwkUsufirma")
+	" order by Tabautprevlog.id desc","mwkUsufirma")
 If mret < 0
 	Messagebox("CONSULTA DE FIRMANTES"+chr(10)+;
 		"AVISE A SISTEMAS",16, "ERROR")

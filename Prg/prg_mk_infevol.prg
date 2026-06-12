@@ -49,12 +49,14 @@ Case operacion = "informarevol"
 
 	lclink = lcURL
 	lclink = lclink + '?operacion=informarevol'   + '&'+'turnocodigo=' + Transform(xturnos)
+	lclink = lclink + '&' + 'turnInicioAtencion=false'
 	lclink = lclink + '&'+'evolucion=' +  xevol+ '&'+'evolestado=' +  xlestado
 
 Case operacion = "informaevolucion"  &&& para informes
 
 	lclink = lcURL
 	lclink = lclink + '?operacion=informaevolucion'   + '&'+'turnocodigo=' + Transform(xturnos)
+	lclink = lclink + '&' + 'turnInicioAtencion=false'
 	lclink = lclink + '&'+'entrEvolucion=' +  xevol+ '&'+'entrAtendido=' +  xlestado
 
 *!*	Case operacion = "informarllamadoconsultorio"  &&& para informes

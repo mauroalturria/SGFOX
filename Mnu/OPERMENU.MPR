@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 17/09/2025           OPERMENU.MPR             16:03:43  
+*       * 21/05/2026           OPERMENU.MPR             10:44:52  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,36 +26,36 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7a30yfd5s OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185i OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7a30yfd5t OF _MSYSMENU PROMPT "Actualizaciones SSFF" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185j OF _MSYSMENU PROMPT "Actualizaciones SSFF" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7a30yfd5u OF _MSYSMENU PROMPT "Prestadores" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185k OF _MSYSMENU PROMPT "Prestadores" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-DEFINE PAD _7a30yfd5v OF _MSYSMENU PROMPT "Estadisticas" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185l OF _MSYSMENU PROMPT "Estadisticas" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7a30yfd5w OF _MSYSMENU PROMPT "Listados" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185m OF _MSYSMENU PROMPT "Listados" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-DEFINE PAD _7a30yfd5x OF _MSYSMENU PROMPT "Depuracion" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185n OF _MSYSMENU PROMPT "Depuracion" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7a30yfd5y OF _MSYSMENU PROMPT "Operaciones" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185o OF _MSYSMENU PROMPT "Operaciones" COLOR SCHEME 3 ;
 	KEY ALT+O, ""
-DEFINE PAD _7a30yfd5z OF _MSYSMENU PROMPT "Control Sistemas" COLOR SCHEME 3 ;
+DEFINE PAD _7gz0n185p OF _MSYSMENU PROMPT "Control Sistemas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-ON PAD _7a30yfd5s OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7a30yfd5t OF _MSYSMENU ACTIVATE POPUP actualizac
-ON PAD _7a30yfd5u OF _MSYSMENU ACTIVATE POPUP prestadore
-ON PAD _7a30yfd5v OF _MSYSMENU ACTIVATE POPUP estadistic
-ON PAD _7a30yfd5w OF _MSYSMENU ACTIVATE POPUP listados
-ON PAD _7a30yfd5x OF _MSYSMENU ACTIVATE POPUP depuracion
-ON PAD _7a30yfd5y OF _MSYSMENU ACTIVATE POPUP operacione
-ON PAD _7a30yfd5z OF _MSYSMENU ACTIVATE POPUP controlsis
+ON PAD _7gz0n185i OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7gz0n185j OF _MSYSMENU ACTIVATE POPUP actualizac
+ON PAD _7gz0n185k OF _MSYSMENU ACTIVATE POPUP prestadore
+ON PAD _7gz0n185l OF _MSYSMENU ACTIVATE POPUP estadistic
+ON PAD _7gz0n185m OF _MSYSMENU ACTIVATE POPUP listados
+ON PAD _7gz0n185n OF _MSYSMENU ACTIVATE POPUP depuracion
+ON PAD _7gz0n185o OF _MSYSMENU ACTIVATE POPUP operacione
+ON PAD _7gz0n185p OF _MSYSMENU ACTIVATE POPUP controlsis
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7a30yfd60 ;
+	DO _7gz0n185q ;
 	IN LOCFILE("MNU\OPERMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is OPERMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -180,7 +180,7 @@ ON SELECTION BAR 6 OF controlsis do form frmopera05a
 
 *       *********************************************************
 *       *                                                         
-*       * _7A30YFD60  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7GZ0N185Q  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -191,6 +191,6 @@ ON SELECTION BAR 6 OF controlsis do form frmopera05a
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7a30yfd60
+PROCEDURE _7gz0n185q
 do sp_logoff
 quit

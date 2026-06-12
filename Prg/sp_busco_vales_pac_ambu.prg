@@ -17,9 +17,9 @@ Endif
 If midmedico=0 And mcodserv = 0 AND mnreg = 0
 	Return
 Endif
-mbusamb = ''
+mbusamb = ' and centromedico = ?mxcentromedico  '
 If Val(Transform(mnreg))>0
-	mbusamb = ' and nroregistrac =?mnreg '
+	mbusamb = mbusamb + ' and nroregistrac =?mnreg '
 Endif
 If midmedico>0
 	mbusamb = mbusamb + " and codmed ="+Transf(midmedico)

@@ -133,7 +133,8 @@ Case mcual = 5		&& planilla enfermeria
 		" inner join registracio on TabAmbulatorio.nroregistrac = registracio.REG_nroregistrac " + ;
 		" inner join valesasist on valesasist.val_codvaleasist = TabAmbulatorio.nrovale" + ;
 		" where VAL_tipopaciente='AMB' and  " + ;
-		" TabAmbulatorio.fechahoraing >= ?mf1 " + mbuscog + mccpoamb + ;
+		" TabAmbulatorio.fechahoraing >= ?mf1  AND  Prestacions.PRE_modoatencion =  'PRESENCIAL'   " +;
+		 mbuscog + mccpoamb + ;
 		"", "mwkambula0")
 
 

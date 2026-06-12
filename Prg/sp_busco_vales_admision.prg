@@ -79,7 +79,7 @@ select VAL_codvaleasist,VAL_fechasolicitud,VAL_horasolicitud,VAL_URGENCIASERV,;
 	ttipo,lestado,max(TVO_Fechamov) as TVO_Fechamov,TVO_Fechaestudio, ;
 	ctot(dtoc(VAL_fechasolicitud)+ " " +strtran(alltrim(VAL_horasolicitud),".",":")+":00") as fechahora,;
 	sum(iif(isnull(TVO_SubEstado) or nvl(TVO_SubEstado,0)>=10,0,iif(TVO_SubEstado=0,1,TVO_SubEstado) )) as TVO_SubEstado,;
-	TVO_evolucion ,TVO_observa,PRE_nombmed,PRE_especialidad,TVO_codmed,scv_mnemonico,pre_codprest  ;
+	TVO_evolucion ,TVO_observa,PRE_nombmed,PRE_especialidad,TVO_codmed,scv_mnemonico,pre_codprest   ;
 	from mwkvalesfar0 ;
 	group by VAL_codvaleasist   into cursor mwkcons_prev
 
@@ -95,8 +95,8 @@ if reccount('mwkcons_prev')>0
 
 	select VAL_fechasolicitud ,pre_descriprest,estvale,VAL_codvaleasist,tsolicita,VAL_codpun,;
 		VAL_nroprotocolo,nombre,TVO_Fechamov,ser_codserv,scv_mnemonico,ttipo,VAL_tipopaciente,ser_descripserv,VAL_verficasolicit,;
-		TVO_observa,PRE_nombmed,VAL_codservvale,nvl(TVO_SubEstado,0) as TVO_SubEstado,VAL_fechasolicitud,TVO_evolucion;
-		,TVO_Fechaestudio,lestado,PRE_especialidad,TVO_codmed,pre_codprest ;
+		TVO_observa,PRE_nombmed,VAL_codservvale,nvl(TVO_SubEstado,0) as TVO_SubEstado,TVO_evolucion;
+		,TVO_Fechaestudio,lestado,PRE_especialidad,TVO_codmed,pre_codprest,VAL_estado ;
 		from mwkconsumoss order by &mordenIC VAL_codvaleasist desc into cursor &mcursorori
 
 else

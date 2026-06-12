@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 28/04/2025          PRESTAMENU.MPR            13:00:03  
+*       * 02/06/2026          PRESTAMENU.MPR            22:41:53  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,24 +26,24 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7650ruzaq OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7hb1cndt6 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7650ruzar OF _MSYSMENU PROMPT "Prestadores" COLOR SCHEME 3 ;
+DEFINE PAD _7hb1cndt7 OF _MSYSMENU PROMPT "Prestadores" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-DEFINE PAD _7650ruzas OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7hb1cndt8 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7650ruzat OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
+DEFINE PAD _7hb1cndt9 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7650ruzaq OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7650ruzar OF _MSYSMENU ACTIVATE POPUP prestadore
-ON PAD _7650ruzas OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _7650ruzat OF _MSYSMENU ACTIVATE POPUP usuarios
+ON PAD _7hb1cndt6 OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7hb1cndt7 OF _MSYSMENU ACTIVATE POPUP prestadore
+ON PAD _7hb1cndt8 OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7hb1cndt9 OF _MSYSMENU ACTIVATE POPUP usuarios
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Salir del sistema"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7650ruzau ;
+	DO _7hb1cndta ;
 	IN LOCFILE("MNU\PRESTAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PRESTAMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -94,14 +94,14 @@ DEFINE BAR 2 OF usuarios PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuarios PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuarios do form frmpass_amb
 ON SELECTION BAR 2 OF usuarios ;
-	DO _7650ruzav ;
+	DO _7hb1cndtb ;
 	IN LOCFILE("MNU\PRESTAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PRESTAMENU?")
 ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7650RUZAU  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7HB1CNDTA  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -112,14 +112,14 @@ ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7650ruzau
+PROCEDURE _7hb1cndta
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7650RUZAV  ON SELECTION BAR 2 OF POPUP usuarios        
+*       * _7HB1CNDTB  ON SELECTION BAR 2 OF POPUP usuarios        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -130,7 +130,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7650ruzav
+PROCEDURE _7hb1cndtb
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

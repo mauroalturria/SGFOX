@@ -3,7 +3,7 @@
 ***
 Parameter miabm,mentidad,mcontrato ,mtipopac,mtipoAtend ,mCredencial,mplan,fecpas
 
-mplan = Iif(Empty(mplan), "0", Alltrim(Iif(Type('mplan')="N",Str(mplan,3),mplan)))
+mplan = Iif(Empty(mplan), "0", Alltrim(Iif(Type('mplan')="N",Str(mplan,10),mplan)))
 lmuestra = .T.
 Select mwkcose
 Scan

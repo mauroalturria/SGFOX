@@ -110,8 +110,9 @@ Else
 		lnNEWS = lnNEWS + 3
 		mlobs = mlobs + Iif(!Empty(mlobs),"-","")+"FR"
 	Endcase
-	If lnConc>1
-		lnNEWS = lnNEWS + 3
+
+	lnNEWS = lnNEWS + lnConc -1
+	If lnConc=4
 		mlobs = mlobs + Iif(!Empty(mlobs),"-","")+"NC"
 	Endif
 

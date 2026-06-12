@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 24/07/2025          BRISTOLMENU.MPR           10:29:47  
+*       * 26/05/2026          BRISTOLMENU.MPR           11:06:50  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,39 +26,39 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _78k0mhvpw OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcpv OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _78k0mhvqc OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcpw OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
 	KEY ALT+T, ""
-DEFINE PAD _78k0mhvqd OF _MSYSMENU PROMPT "Control Horario" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcpx OF _MSYSMENU PROMPT "Control Horario" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _78k0mhvqe OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcpy OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _78k0mhvqf OF _MSYSMENU PROMPT "Auditoría" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcpz OF _MSYSMENU PROMPT "Auditoría" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _78k0mhvqg OF _MSYSMENU PROMPT "RRHH" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcq0 OF _MSYSMENU PROMPT "RRHH" COLOR SCHEME 3 ;
 	KEY ALT+R, ""
-DEFINE PAD _78k0mhvqh OF _MSYSMENU PROMPT "Legales" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcq1 OF _MSYSMENU PROMPT "Legales" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-DEFINE PAD _78k0mhvqi OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcq2 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _78k0mhvqj OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+DEFINE PAD _7h40ntcq3 OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-ON PAD _78k0mhvpw OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _78k0mhvqc OF _MSYSMENU ACTIVATE POPUP turnos
-ON PAD _78k0mhvqd OF _MSYSMENU ACTIVATE POPUP controlhor
-ON PAD _78k0mhvqe OF _MSYSMENU ACTIVATE POPUP informesge
-ON PAD _78k0mhvqf OF _MSYSMENU ACTIVATE POPUP auditoría
-ON PAD _78k0mhvqg OF _MSYSMENU ACTIVATE POPUP rrhh
-ON PAD _78k0mhvqh OF _MSYSMENU ACTIVATE POPUP legales
-ON PAD _78k0mhvqi OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _78k0mhvqj OF _MSYSMENU ACTIVATE POPUP password
+ON PAD _7h40ntcpv OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7h40ntcpw OF _MSYSMENU ACTIVATE POPUP turnos
+ON PAD _7h40ntcpx OF _MSYSMENU ACTIVATE POPUP controlhor
+ON PAD _7h40ntcpy OF _MSYSMENU ACTIVATE POPUP informesge
+ON PAD _7h40ntcpz OF _MSYSMENU ACTIVATE POPUP auditoría
+ON PAD _7h40ntcq0 OF _MSYSMENU ACTIVATE POPUP rrhh
+ON PAD _7h40ntcq1 OF _MSYSMENU ACTIVATE POPUP legales
+ON PAD _7h40ntcq2 OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7h40ntcq3 OF _MSYSMENU ACTIVATE POPUP password
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _78k0mhvqk ;
+	DO _7h40ntcq4 ;
 	IN LOCFILE("MNU\BRISTOLMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is BRISTOLMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -104,17 +104,17 @@ DEFINE BAR 20 OF turnos PROMPT "\-"
 DEFINE BAR 21 OF turnos PROMPT "Turnos SG" ;
 	SKIP FOR type('mfrmturno84') = 'U' or mxambito=1
 ON SELECTION BAR 1 OF turnos ;
-	DO _78k0mhvql ;
+	DO _7h40ntcqb ;
 	IN LOCFILE("MNU\BRISTOLMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is BRISTOLMENU?")
 ON SELECTION BAR 2 OF turnos do form frmturno72
 ON SELECTION BAR 3 OF turnos do form frmambula05
 ON SELECTION BAR 5 OF turnos do form frmturno23
 ON SELECTION BAR 6 OF turnos do form frmturno26
 ON SELECTION BAR 7 OF turnos ;
-	DO _78k0mhvqr ;
+	DO _7h40ntcqc ;
 	IN LOCFILE("MNU\BRISTOLMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is BRISTOLMENU?")
 ON SELECTION BAR 8 OF turnos ;
-	DO _78k0mhvqs ;
+	DO _7h40ntcqd ;
 	IN LOCFILE("MNU\BRISTOLMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is BRISTOLMENU?")
 ON SELECTION BAR 9 OF turnos do form frmturno32
 ON SELECTION BAR 10 OF turnos do form frmturno36
@@ -206,7 +206,7 @@ ON SELECTION BAR 2 OF password do form frmagen01
 
 *       *********************************************************
 *       *                                                         
-*       * _78K0MHVQK  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7H40NTCQ4  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -217,14 +217,14 @@ ON SELECTION BAR 2 OF password do form frmagen01
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _78k0mhvqk
+PROCEDURE _7h40ntcq4
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _78K0MHVQL  ON SELECTION BAR 1 OF POPUP turnos          
+*       * _7H40NTCQB  ON SELECTION BAR 1 OF POPUP turnos          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -235,7 +235,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _78k0mhvql
+PROCEDURE _7h40ntcqb
 do sp_conexion
 do sp_busco_med_presta with ,'mwkmedico'
 do form frmturno18
@@ -245,7 +245,7 @@ do sp_desconexion with "consulta_ turno18"
 
 *       *********************************************************
 *       *                                                         
-*       * _78K0MHVQR  ON SELECTION BAR 7 OF POPUP turnos          
+*       * _7H40NTCQC  ON SELECTION BAR 7 OF POPUP turnos          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -256,7 +256,7 @@ do sp_desconexion with "consulta_ turno18"
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _78k0mhvqr
+PROCEDURE _7h40ntcqc
 lcdirlocal  = "C:\qepd1a1\Exe\listarendi.EXE"
 mcrun = lcdirlocal + "  " + TRANSFORM(mxcentromedico)+","+TRANSFORM(mxambito)+",2"
 Run /N &mcrun
@@ -266,7 +266,7 @@ Run /N &mcrun
 
 *       *********************************************************
 *       *                                                         
-*       * _78K0MHVQS  ON SELECTION BAR 8 OF POPUP turnos          
+*       * _7H40NTCQD  ON SELECTION BAR 8 OF POPUP turnos          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -277,7 +277,7 @@ Run /N &mcrun
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _78k0mhvqs
+PROCEDURE _7h40ntcqd
 lcdirlocal  = "C:\qepd1a1\Exe\listarendi.EXE"
 mcrun = lcdirlocal + "  " + TRANSFORM(mxcentromedico)+","+TRANSFORM(mxambito)+",1"
 Run /N &mcrun

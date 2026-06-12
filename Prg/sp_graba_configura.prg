@@ -44,8 +44,8 @@ If .pAccion == 1   &&insert
 	If .optTipo.Value == 2
 
 		If !Empty(cImagen)  &&con imagen
-			cSql = "insert into tabconfigura (tbc_centro,tbc_concepto,tbc_tipo,tbc_descripcion,tbc_foto,tbc_valor,TBC_Multiples,TBC_Fechahasta ) "
-			cSql = cSql + "values(?nCentro,?cConcepto,?cTipo,?cDescrip,?__DATA.foto,"+mvalor+",?nmulti,?dfechaini)"
+			cSql = "insert into tabconfigura (tbc_centro,tbc_concepto,tbc_tipo,tbc_descripcion,tbc_foto,tbc_valor) "
+			cSql = cSql + "values(?nCentro,?cConcepto,?cTipo,?cDescrip,?__DATA.foto,"+mvalor+")"
 		Else
 			cSql = "insert into tabconfigura (tbc_centro,tbc_concepto,tbc_tipo,tbc_descripcion) "
 			cSql = cSql + "values(?nCentro,?cConcepto,?cTipo,?cDescrip)"

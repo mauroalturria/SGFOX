@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 18/02/2025       MANTENIMIENTOMENU.MPR        17:42:57  
+*       * 11/06/2026       MANTENIMIENTOMENU.MPR        13:11:39  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Carmen Funes                                            
 *       *                                                         
-*       * Copyright (C) 2025 Sanatorio Güemes                     
+*       * Copyright (C) 2026 Sanatorio Güemes                     
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,27 +26,27 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _74811yysl OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7hk0sa1c4 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _74811yysm OF _MSYSMENU PROMPT "Tablas" COLOR SCHEME 3 ;
+DEFINE PAD _7hk0sa1c5 OF _MSYSMENU PROMPT "Tablas" COLOR SCHEME 3 ;
 	KEY ALT+T, ""
-DEFINE PAD _74811yysn OF _MSYSMENU PROMPT "Ingreso" COLOR SCHEME 3 ;
+DEFINE PAD _7hk0sa1c6 OF _MSYSMENU PROMPT "Ingreso" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _74811yyso OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7hk0sa1c7 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _74811yysp OF _MSYSMENU PROMPT "Permisos" COLOR SCHEME 3 ;
+DEFINE PAD _7hk0sa1c8 OF _MSYSMENU PROMPT "Permisos" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-ON PAD _74811yysl OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _74811yysm OF _MSYSMENU ACTIVATE POPUP tablas
-ON PAD _74811yysn OF _MSYSMENU ACTIVATE POPUP ingreso
-ON PAD _74811yyso OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _74811yysp OF _MSYSMENU ACTIVATE POPUP permisos
+ON PAD _7hk0sa1c4 OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7hk0sa1c5 OF _MSYSMENU ACTIVATE POPUP tablas
+ON PAD _7hk0sa1c6 OF _MSYSMENU ACTIVATE POPUP ingreso
+ON PAD _7hk0sa1c7 OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7hk0sa1c8 OF _MSYSMENU ACTIVATE POPUP permisos
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _74811yysq ;
+	DO _7hk0sa1c9 ;
 	IN LOCFILE("\DESAGUEMES\MNU\MANTENIMIENTOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is MANTENIMIENTOMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -69,7 +69,7 @@ ON SELECTION BAR 3 OF tablas do form frmmantenimiento09
 ON SELECTION BAR 4 OF tablas do form frmmantenimiento22
 ON SELECTION BAR 6 OF tablas do form frmpass_amb
 ON SELECTION BAR 7 OF tablas ;
-	DO _74811yysr ;
+	DO _7hk0sa1ca ;
 	IN LOCFILE("\DESAGUEMES\MNU\MANTENIMIENTOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is MANTENIMIENTOMENU?")
 
 DEFINE POPUP ingreso MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -104,7 +104,7 @@ ON SELECTION BAR 1 OF permisos do form frmmantenimiento18
 
 *       *********************************************************
 *       *                                                         
-*       * _74811YYSQ  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7HK0SA1C9  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -115,14 +115,14 @@ ON SELECTION BAR 1 OF permisos do form frmmantenimiento18
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _74811yysq
+PROCEDURE _7hk0sa1c9
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _74811YYSR  ON SELECTION BAR 7 OF POPUP tablas          
+*       * _7HK0SA1CA  ON SELECTION BAR 7 OF POPUP tablas          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -133,7 +133,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _74811yysr
+PROCEDURE _7hk0sa1ca
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

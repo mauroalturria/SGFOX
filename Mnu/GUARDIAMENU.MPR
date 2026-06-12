@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 13/05/2026          GUARDIAMENU.MPR           22:35:32  
+*       * 09/06/2026          GUARDIAMENU.MPR           13:31:22  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,33 +26,33 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7gr1cf3di OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfyo OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7gr1cf3dj OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfyp OF _MSYSMENU PROMPT "Administracion" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7gr1cf3dk OF _MSYSMENU PROMPT "Medicos" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfyq OF _MSYSMENU PROMPT "Medicos" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
-DEFINE PAD _7gr1cf3dl OF _MSYSMENU PROMPT "Enfermeria" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfyr OF _MSYSMENU PROMPT "Enfermeria" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7gr1cf3dm OF _MSYSMENU PROMPT "Gestión" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfys OF _MSYSMENU PROMPT "Gestión" COLOR SCHEME 3 ;
 	KEY ALT+G, ""
-DEFINE PAD _7gr1cf3dn OF _MSYSMENU PROMPT "Documentacion" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfyt OF _MSYSMENU PROMPT "Documentacion" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7gr1cf3do OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
+DEFINE PAD _7hi0szfyu OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7gr1cf3di OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7gr1cf3dj OF _MSYSMENU ACTIVATE POPUP administra
-ON PAD _7gr1cf3dk OF _MSYSMENU ACTIVATE POPUP medicos
-ON PAD _7gr1cf3dl OF _MSYSMENU ACTIVATE POPUP enfermeria
-ON PAD _7gr1cf3dm OF _MSYSMENU ACTIVATE POPUP gestión
-ON PAD _7gr1cf3dn OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7gr1cf3do OF _MSYSMENU ACTIVATE POPUP usuarios
+ON PAD _7hi0szfyo OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7hi0szfyp OF _MSYSMENU ACTIVATE POPUP administra
+ON PAD _7hi0szfyq OF _MSYSMENU ACTIVATE POPUP medicos
+ON PAD _7hi0szfyr OF _MSYSMENU ACTIVATE POPUP enfermeria
+ON PAD _7hi0szfys OF _MSYSMENU ACTIVATE POPUP gestión
+ON PAD _7hi0szfyt OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7hi0szfyu OF _MSYSMENU ACTIVATE POPUP usuarios
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7gr1cf3dp ;
+	DO _7hi0szfyv ;
 	IN LOCFILE("MNU\GUARDIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is GUARDIAMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -75,10 +75,10 @@ DEFINE BAR 11 OF administra PROMPT "Facturacion Privados" ;
 	SKIP FOR left(mwkusuario.nomape,1)='*'
 ON SELECTION BAR 1 OF administra do form frmguardia01
 ON SELECTION BAR 2 OF administra ;
-	DO _7gr1cf3dq ;
+	DO _7hi0szfz4 ;
 	IN LOCFILE("MNU\GUARDIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is GUARDIAMENU?")
 ON SELECTION BAR 3 OF administra ;
-	DO _7gr1cf3dr ;
+	DO _7hi0szfz5 ;
 	IN LOCFILE("MNU\GUARDIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is GUARDIAMENU?")
 ON SELECTION BAR 4 OF administra Do Form frmadmision16b
 ON SELECTION BAR 5 OF administra do form frmguardia69
@@ -127,7 +127,7 @@ ON SELECTION BAR 7 OF medicos do form frmguardia03 with 2,7
 ON SELECTION BAR 9 OF medicos do form frmguardia03 with 2,4
 ON SELECTION BAR 11 OF medicos do form frmguardia12 with 1
 ON SELECTION BAR 12 OF medicos ;
-	DO _7gr1cf3ds ;
+	DO _7hi0szfz6 ;
 	IN LOCFILE("MNU\GUARDIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is GUARDIAMENU?")
 ON SELECTION BAR 13 OF medicos do form frmguardia65
 ON SELECTION BAR 15 OF medicos do form frmguardia03 with 2,5
@@ -223,7 +223,7 @@ ON SELECTION BAR 15 OF gestión do form frmguardia62 with 2
 ON SELECTION BAR 17 OF gestión do form frmturno72
 ON SELECTION BAR 18 OF gestión do form frmadmision28
 ON SELECTION BAR 19 OF gestión ;
-	DO _7gr1cf3dt ;
+	DO _7hi0szfzj ;
 	IN LOCFILE("MNU\GUARDIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is GUARDIAMENU?")
 ON SELECTION BAR 21 OF gestión do form frmguardia30
 ON SELECTION BAR 22 OF gestión do form frmguardia31
@@ -240,18 +240,12 @@ ON SELECTION BAR 32 OF gestión Do Form frmadmision38
 ON BAR 34 OF gestión ACTIVATE POPUP enfermería
 
 DEFINE POPUP _2qe0qgyxi MARGIN RELATIVE SHADOW COLOR SCHEME 4
-DEFINE BAR 1 OF _2qe0qgyxi PROMPT "Prestaciones" ;
-	SKIP FOR type('mfrmguardia11') = 'U'
-DEFINE BAR 2 OF _2qe0qgyxi PROMPT "Insumos" ;
-	SKIP FOR type('mfrmguardia19') = 'U'
-DEFINE BAR 3 OF _2qe0qgyxi PROMPT "Pedido a Farmacia" ;
+DEFINE BAR 1 OF _2qe0qgyxi PROMPT "Pedido a Farmacia" ;
 	SKIP FOR type('mfrmguardia22') = 'U'
-DEFINE BAR 4 OF _2qe0qgyxi PROMPT "Reimpresión Pedido a Farmacia" ;
+DEFINE BAR 2 OF _2qe0qgyxi PROMPT "Reimpresión Pedido a Farmacia" ;
 	SKIP FOR type('mfrmguardia24') = 'U'
-ON SELECTION BAR 1 OF _2qe0qgyxi do form frmguardia11
-ON SELECTION BAR 2 OF _2qe0qgyxi do form frmguardia19
-ON SELECTION BAR 3 OF _2qe0qgyxi do form frmguardia22
-ON SELECTION BAR 4 OF _2qe0qgyxi do form frmguardia24
+ON SELECTION BAR 1 OF _2qe0qgyxi do form frmguardia22
+ON SELECTION BAR 2 OF _2qe0qgyxi do form frmguardia24
 
 DEFINE POPUP enfermería MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF enfermería PROMPT "Producción Enfermería" ;
@@ -300,14 +294,14 @@ DEFINE BAR 2 OF usuarios PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuarios PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuarios do form frmpass_amb
 ON SELECTION BAR 2 OF usuarios ;
-	DO _7gr1cf3du ;
+	DO _7hi0szfzk ;
 	IN LOCFILE("MNU\GUARDIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is GUARDIAMENU?")
 ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7GR1CF3DP  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7HI0SZFYV  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -318,14 +312,14 @@ ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gr1cf3dp
+PROCEDURE _7hi0szfyv
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7GR1CF3DQ  ON SELECTION BAR 2 OF POPUP administra      
+*       * _7HI0SZFZ4  ON SELECTION BAR 2 OF POPUP administra      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -336,7 +330,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gr1cf3dq
+PROCEDURE _7hi0szfz4
 do sp_conexion
 do sp_tablas_loca_pcia
 do sp_tablas_guardia
@@ -348,7 +342,7 @@ do sp_desconexion with "frmguardia20"
 
 *       *********************************************************
 *       *                                                         
-*       * _7GR1CF3DR  ON SELECTION BAR 3 OF POPUP administra      
+*       * _7HI0SZFZ5  ON SELECTION BAR 3 OF POPUP administra      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -359,7 +353,7 @@ do sp_desconexion with "frmguardia20"
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gr1cf3dr
+PROCEDURE _7hi0szfz5
 do sp_conexion
 do sp_tablas_loca_pcia
 do sp_tablas_guardia
@@ -370,7 +364,7 @@ do sp_desconexion with "frmguardia20"
 
 *       *********************************************************
 *       *                                                         
-*       * _7GR1CF3DS  ON SELECTION BAR 12 OF POPUP medicos        
+*       * _7HI0SZFZ6  ON SELECTION BAR 12 OF POPUP medicos        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -381,7 +375,7 @@ do sp_desconexion with "frmguardia20"
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gr1cf3ds
+PROCEDURE _7hi0szfz6
 do sp_conexion
 do sp_tablas_loca_pcia
 do sp_tablas_guardia
@@ -392,18 +386,18 @@ do sp_desconexion with "frmguardia20"
 
 *       *********************************************************
 *       *                                                         
-*       * _7GR1CF3DT  ON SELECTION BAR 19 OF POPUP gestión        
+*       * _7HI0SZFZJ  ON SELECTION BAR 19 OF POPUP gestión        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
-*       * From Menu:  GUARDIAMENU.MPR,            Record:   83    
+*       * From Menu:  GUARDIAMENU.MPR,            Record:   81    
 *       * Called By:  ON SELECTION BAR 19 OF POPUP gestión        
 *       * Prompt:     Agenda Telefónica                           
 *       * Snippet:    5                                           
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gr1cf3dt
+PROCEDURE _7hi0szfzj
 do sp_conexion
 do form frmagenda_tel
 do sp_desconexion with "agenda"
@@ -411,18 +405,18 @@ do sp_desconexion with "agenda"
 
 *       *********************************************************
 *       *                                                         
-*       * _7GR1CF3DU  ON SELECTION BAR 2 OF POPUP usuarios        
+*       * _7HI0SZFZK  ON SELECTION BAR 2 OF POPUP usuarios        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
-*       * From Menu:  GUARDIAMENU.MPR,            Record:  122    
+*       * From Menu:  GUARDIAMENU.MPR,            Record:  120    
 *       * Called By:  ON SELECTION BAR 2 OF POPUP usuarios        
 *       * Prompt:     Usuario                                     
 *       * Snippet:    6                                           
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7gr1cf3du
+PROCEDURE _7hi0szfzk
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

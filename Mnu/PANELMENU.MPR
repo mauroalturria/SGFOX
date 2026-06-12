@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 12/02/2025           PANELMENU.MPR            16:26:02  
+*       * 27/05/2026           PANELMENU.MPR            17:15:45  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,31 +26,31 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7420z831e OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7h510zzbn OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7420z831f OF _MSYSMENU PROMPT "Turnos Policonsultorio" COLOR SCHEME 3 ;
+DEFINE PAD _7h510zzc2 OF _MSYSMENU PROMPT "Turnos Policonsultorio" COLOR SCHEME 3 ;
 	KEY ALT+T, "" ;
 	SKIP FOR mxambito=1
-DEFINE PAD _7420z831g OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
+DEFINE PAD _7h510zzf4 OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7420z831h OF _MSYSMENU PROMPT "Auditoría" COLOR SCHEME 3 ;
+DEFINE PAD _7h510zzi5 OF _MSYSMENU PROMPT "Auditoría" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7420z831i OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7h510zzi6 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7420z831j OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+DEFINE PAD _7h510zzi7 OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-ON PAD _7420z831e OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7420z831f OF _MSYSMENU ACTIVATE POPUP turnospoli
-ON PAD _7420z831g OF _MSYSMENU ACTIVATE POPUP informesge
-ON PAD _7420z831h OF _MSYSMENU ACTIVATE POPUP auditoría
-ON PAD _7420z831i OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7420z831j OF _MSYSMENU ACTIVATE POPUP password
+ON PAD _7h510zzbn OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7h510zzc2 OF _MSYSMENU ACTIVATE POPUP turnospoli
+ON PAD _7h510zzf4 OF _MSYSMENU ACTIVATE POPUP informesge
+ON PAD _7h510zzi5 OF _MSYSMENU ACTIVATE POPUP auditoría
+ON PAD _7h510zzi6 OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7h510zzi7 OF _MSYSMENU ACTIVATE POPUP password
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7420z831k ;
+	DO _7h510zzi8 ;
 	IN LOCFILE("MNU\PANELMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PANELMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -87,7 +87,7 @@ DEFINE BAR 15 OF turnospoli PROMPT "Turnos Reprogramados" ;
 DEFINE BAR 16 OF turnospoli PROMPT "Turnos Cancelados" ;
 	SKIP FOR type('mfrmturno80') = 'U'
 ON SELECTION BAR 1 OF turnospoli ;
-	DO _7420z831l ;
+	DO _7h510zzi9 ;
 	IN LOCFILE("MNU\PANELMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PANELMENU?")
 ON SELECTION BAR 2 OF turnospoli do form frmturno72
 ON SELECTION BAR 3 OF turnospoli do form frmambula05
@@ -152,7 +152,7 @@ ON SELECTION BAR 2 OF password do form frmagen01
 
 *       *********************************************************
 *       *                                                         
-*       * _7420Z831K  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7H510ZZI8  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -163,14 +163,14 @@ ON SELECTION BAR 2 OF password do form frmagen01
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7420z831k
+PROCEDURE _7h510zzi8
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7420Z831L  ON SELECTION BAR 1 OF POPUP turnospoli      
+*       * _7H510ZZI9  ON SELECTION BAR 1 OF POPUP turnospoli      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -181,7 +181,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7420z831l
+PROCEDURE _7h510zzi9
 do sp_conexion
 do sp_busco_med_presta with ,'mwkmedico'
 do form frmturno18
