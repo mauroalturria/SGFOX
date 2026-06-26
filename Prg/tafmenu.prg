@@ -23,6 +23,8 @@ Define Bar 6 Of menúcontex Prompt "PENDIENTE" ;
 SKIP For lmenu(6)
 Define Bar 7 Of menúcontex Prompt "CERRADA" ;
 SKIP For lmenu(7)
+Define Bar 8 Of menúcontex Prompt "PENDIENTE INFORME" ;
+SKIP For lmenu(8)
 
 mcmd1 = Alltrim(nameform)+'.menu(1)'
 On Selection Bar 1 Of menúcontex &mcmd1
@@ -38,6 +40,7 @@ mcmd6 = Alltrim(nameform)+'.menu(6)'
 On Selection Bar 6 Of menúcontex &mcmd6
 mcmd7 = Alltrim(nameform)+'.menu(7)'
 On Selection Bar 7 Of menúcontex &mcmd7
-
+mcmd8 = Alltrim(nameform)+'.menu(8)'
+On Selection Bar 8 Of menúcontex &mcmd8
  
 Activate Popup menúcontex Bar nbar

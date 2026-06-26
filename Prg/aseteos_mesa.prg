@@ -1,9 +1,16 @@
 ****
 **  Seteos del sistema - Mesa de ingresos
 ****
+lparameters miparam
 public mcon1, midusu, mpassw, mcodvax, msql_reg, mcon1, ;
-	mresplog,mtfhoy,myip,miform,block_ent,mxambito
+	mresplog,mtfhoy,myip,miform,block_ent,mxambito,mxcentromedico 
 mxambito = 1
+
+if vartype(miparam)="C"
+	mxcentromedico = VAL(transf(miparam))
+else
+	mxcentromedico = 1
+endif
 *Nombre de Variables
 public  midpers, mape, mid, mob, mdt, maten, mForm,;
 	midSocio,mpac,mresplog
@@ -35,10 +42,11 @@ set sysmenu off
 set ENGINEBEHAVIOR 70
 do seteos_ip
 myip = IPAddress()
+DO seteos_public
 
 dirfonts = alltrim(getenv('windir'))+ '\fonts\Pf_i2of5.ttf'
 if !file(dirfonts)
-	*copy file Pf_i2of5.ttf to &dirfonts
+*	copy file Pf_i2of5.ttf to &dirfonts
 endif
 
 *****
@@ -60,6 +68,9 @@ cfondo = iif(_screen.width<=800,"\qepd1a1\solo_marca.jpg","\qepd1a1\solo_marca2.
 modify windows screen;
 	fill file &cfondo
 _screen.icon = 'FILES07.ico'
+
+*Set Step On
+
 do form frmloguin1 with 'MESAINGRESOS'
 
 
@@ -135,10 +146,10 @@ else
 
 		do sp_desconexion with "inicio mesaadmision"
 		do registroocx
-		ON ERROR
-		
-*!*			do mnme.mpr
-*!*			read events
+*!*			If prg_modo_exe()
+*!*				do mnme.mpr
+*!*				read events
+*!*			Endif 	
 	endif
 endif
 

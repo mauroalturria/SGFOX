@@ -43,7 +43,7 @@ Else
 		" and password = ?mpassw " + ;
 		" and fecpasiva = ?mfecpas ", "mwkusuario")
 	If Reccount("mwkusuario")= 0
-		mpasswU  = Upper(mpassw )
+		mpasswU  = mpassw 
 		mret = SQLExec(mcon1, "select * from tabusuario " + ;
 			"where (idusuario = ?midusua OR codigovax = ?mnidusua   OR nrodocumento= ?mnidusua   OR Leg_ID = ?mnidusua &cmmail ) "+;
 			" and password = ?mpasswU " + ;

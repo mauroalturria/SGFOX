@@ -1,55 +1,61 @@
-parameters tnOpcion, tcWhere, tcCursor,fecha1,fecha2
+Parameters tnOpcion, tcWhere, tcCursor,fecha1,fecha2
 
-if vartype(tcWhere) # "C"
+If Vartype(tcWhere) # "C"
 	tcWhere = ' '
-endif
-if vartype(fecha1)#"D"
+Endif
+If Vartype(fecha1)#"D"
 	fecha1 = sp_busco_fecha_serv("DD")
 	fecha2 = fecha1
-endif
+Endif
 mf1 = prg_dtoc(fecha1)
 mf2 = prg_dtoc(fecha2 + 1)
 
-if vartype(tcCursor) # "C"
+If Vartype(tcCursor) # "C"
 	tcCursor= 'mwkLLegadas'
-endif
+Endif
 
-mTIPOPAC = iif(vartype(mTIPOPAC) #"C","'INT'",mTIPOPAC)
-do case
-	case tnOpcion < 2
-		lcSql = 'SELECT	SOCIO.HoraLLegada, MOTIVOS.MotivoText,'+;
+mTIPOPAC = Iif(Vartype(mTIPOPAC) #"C","'INT'",mTIPOPAC)
+If mconsql = 0
+	sp_conecta_sqlserver()
+Endif
+If mconsql > 0  &&sqlserver
+
+	Do Case
+	Case tnOpcion < 2
+		mret = SQLExec(mconsql, 'SELECT	SOCIO.HoraLLegada, MOTIVOS.MotivoText,'+;
 			' SOCIO.ApellidoNombre, SOCIO.Observacion, '+;
 			' SOCIO.HoraAtencion,ObservaA, Horafinalizacion,'+;
 			' paciente,MOTIVOS.MotivoText, operadora, OperadoraA, '+;
 			' puestoatencion,  '+;
-			' SOCIO.IdSocio, MOTIVOS.IdMotivo,SOCIO.PrioridadAt, '+;
+			' SOCIO.IdSocio, MOTIVOS.IdMotivo,SOCIO.PrioridadAt,SOCIO.IdMotivoA, '+;
 			' ENT_DESCRIENT, entidexclu.fecpasiva as fecpasiva_Excl,codentidad ' + ;
-			' FROM	SOCIO ' + ;
-			' inner JOIN MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo ' + ;
-			' LEFT JOIN ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent ' + ;
-			' LEFT JOIN entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac in ('+mTIPOPAC +')' + ;
+			' FROM	sqluser.SOCIO ' + ;
+			' inner JOIN sqluser.MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo ' + ;
+			' LEFT JOIN sqluser.ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent ' + ;
+			' LEFT JOIN sqluser.entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac in ('+mTIPOPAC +')' + ;
 			' WHERE	SOCIO.HoraAtencion is Null AND SOCIO.Atendido=0 '+;
-			' ORDER	BY SOCIO.HoraLLegada '
-		
-		if !Prg_EjecutoSql(lcSql,tcCursor,.t.)
-			return .f.
-		endif
+			' ORDER	BY SOCIO.HoraLLegada ',tcCursor)
 
-	case tnOpcion = 2 &&Atendidos
-		mret = sqlexec(mcon1," SELECT HoraLLegada "+;
-			" FROM	SOCIO where Atendido = 1 ","mwkctrldia")
-		select mwkctrldia
-		if reccount('mwkctrldia')>0
-			calculate min(HoraLLegada) to limiteDia
-		else
-			limiteDia = dtot(ttod(mwkfecserv.fechahora))
-		endif
-		if fecha1 < fecha2
+		If mret < 0
+			Messagebox("Error al consultar Socios - 1. Verifique.",16,"Validación")
+			Return
+		Endif
+
+	Case tnOpcion = 2 &&Atendidos
+		mret = SQLExec(mconsql," SELECT HoraLLegada "+;
+			" FROM	sqluser.SOCIO where Atendido = 1 ","mwkctrldia")
+		Select mwkctrldia
+		If Reccount('mwkctrldia')>0
+			Calculate Min(HoraLLegada) To limiteDia
+		Else
+			limiteDia = Dtot(Ttod(mwkfecserv.fechahora))
+		Endif
+		If fecha1 < fecha2
 			tcWhere = tcWhere+ " AND SOCIO.HoraAtencion between ?mf1 and ?mf2 "
-		else
+		Else
 			fecha2 = fecha1 +1
 			tcWhere = tcWhere+ " AND SOCIO.HoraAtencion >= ?fecha1 and SOCIO.HoraAtencion < ?fecha2 "
-		endif
+		Endif
 
 		lcSql = " SELECT SOCIO.HoraLLegada, MOTIVOS.MotivoText, "+;
 			" SOCIO.ApellidoNombre, SOCIO.Observacion, "+;
@@ -58,17 +64,22 @@ do case
 			" puestoatencion, SOCIO.IdSocio, "+;
 			" MOTIVOS.IdMotivo,SOCIO.IdMotivoA,paciente,SOCIO.PrioridadAt, "+;
 			" ENT_DESCRIENT, entidexclu.fecpasiva as fecpasiva_Excl,codentidad " + ;
-			" FROM	SOCIO " + ;
-			" inner JOIN MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo " + ;
-			" inner JOIN MOTIVOS as A ON SOCIO.IdMotivoA = A.IdMotivo " + ;
-			" LEFT JOIN ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent " + ;
-			" LEFT JOIN entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac=?mTIPOPAC " + ;
+			" FROM	sqluser.SOCIO " + ;
+			" inner JOIN sqluser.MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo " + ;
+			" inner JOIN sqluser.MOTIVOS as A ON SOCIO.IdMotivoA = A.IdMotivo " + ;
+			" LEFT JOIN sqluser.ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent " + ;
+			" LEFT JOIN sqluser.entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac=?mTIPOPAC " + ;
 			" WHERE	 SOCIO.Atendido = 1 "+ tcWhere +;
 			" ORDER	BY SOCIO.HoraLLegada "
-		if !Prg_EjecutoSql(lcSql,"mwkAtendidoA",.t.)
-			return .f.
-		endif
-		if fecha1 < limiteDia
+
+		mret = SQLExec(mconsql,lcSql,"mwkAtendidoA")
+
+		If mret < 0
+			Messagebox("Error al consultar Socios - 2. Verifique.",16,"Validación")
+			Return
+		Endif
+
+		If fecha1 < limiteDia
 			lcSql = ' SELECT SOCIO.HoraLLegada, MOTIVOS.MotivoText, '+;
 				' SOCIO.ApellidoNombre, SOCIO.Observacion, '+;
 				' SOCIO.HoraAtencion, ObservaA, Horafinalizacion,'+;
@@ -76,58 +87,73 @@ do case
 				' puestoatencion, SOCIO.IdSocio, '+;
 				' MOTIVOS.IdMotivo,SOCIO.IdMotivoA,paciente,SOCIO.PrioridadAt, '+;
 				' ENT_DESCRIENT, entidexclu.fecpasiva as fecpasiva_Excl,codentidad ' + ;
-				' FROM	SOCIOHIS as SOCIO ' + ;
-				' inner JOIN MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo ' + ;
-				' inner JOIN MOTIVOS as A ON SOCIO.IdMotivoA = A.IdMotivo ' + ;
-				' LEFT JOIN ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent ' + ;
-				' LEFT JOIN entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac=?mTIPOPAC ' + ;
+				' FROM	sqluser.SOCIOHIS as SOCIO ' + ;
+				' inner JOIN sqluser.MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo ' + ;
+				' inner JOIN sqluser.MOTIVOS as A ON SOCIO.IdMotivoA = A.IdMotivo ' + ;
+				' LEFT JOIN sqluser.ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent ' + ;
+				' LEFT JOIN sqluser.entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac=?mTIPOPAC ' + ;
 				' WHERE	SOCIO.Atendido = 1 '+ tcWhere+;
 				' ORDER	BY SOCIO.HoraLLegada '
-			if !Prg_EjecutoSql(lcSql,'mwkAtendidoH',.t.)
-				return .f.
-			endif
-			select * from mwkAtendidoA;
+
+			mret = SQLExec(mconsql,lcSql,'mwkAtendidoH')
+
+			If mret < 0
+				Messagebox("Error al consultar Historico de Socios. Verifique.",16,"Validación")
+				Return
+			Endif
+
+*!*				if !Prg_EjecutoSql(lcSql,'mwkAtendidoH',.t.)
+*!*					return .f.
+*!*				endif
+
+			Select * From mwkAtendidoA;
 				union;
-				select * from mwkAtendidoh into cursor &tcCursor
-		else
+				select * From mwkAtendidoh Into Cursor &tcCursor
+		Else
 
-			select * from mwkAtendidoA;
-				into cursor &tcCursor
-		endif
+			Select * From mwkAtendidoA;
+				into Cursor &tcCursor
+		Endif
 
 
-	case tnOpcion = 3  && busqueda de protocolo en solic.cambio de cama
+	Case tnOpcion = 3  && busqueda de protocolo en solic.cambio de cama
 		lcSql = 'SELECT	HoraLLegada, ApellidoNombre, Observacion, '+;
 			'  HoraAtencion, Horafinalizacion, '+;
 			' paciente,operadora, OperadoraA, '+;
 			' puestoatencion, Atendido, ENT_DESCRIENT as entidad, '+;
 			' IdSocio,PrioridadAt,codentidad,ObservaA '+;
-			' FROM	SOCIO ' + ;
-				" LEFT JOIN ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent " + tcWhere +;
+			' FROM	sqluser.SOCIO ' + ;
+			" LEFT JOIN sqluser.ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent " + tcWhere +;
 			' ORDER	BY SOCIO.HoraLLegada '
 
-		if !Prg_EjecutoSql(lcSql,tcCursor,.t.)
-			return .f.
-		endif
-	case tnOpcion = 4  && busqueda de protocolo por criterio
+		mret = SQLExec(mconsql,lcSql,tcCursor)
+
+		If mret < 0
+			Messagebox("Error al consultar Socios - 3. Verifique.",16,"Validación")
+			Return
+		Endif
+	Case tnOpcion = 4  && busqueda de protocolo por criterio
 
 		lcSql = 'SELECT	SOCIO.HoraLLegada, MOTIVOS.MotivoText,'+;
 			' SOCIO.ApellidoNombre, SOCIO.Observacion, '+;
 			' SOCIO.HoraAtencion,ObservaA, Horafinalizacion,'+;
 			' paciente,MOTIVOS.MotivoText, operadora, OperadoraA, '+;
 			' puestoatencion,  '+;
-			' SOCIO.IdSocio, MOTIVOS.IdMotivo,SOCIO.PrioridadAt, '+;
+			' SOCIO.IdSocio, MOTIVOS.IdMotivo,SOCIO.PrioridadAt,SOCIO.IdMotivoA, '+;
 			' ENT_DESCRIENT, entidexclu.fecpasiva as fecpasiva_Excl,codentidad,CAST( HoraLLegada as date) as dia ' + ;
-			' FROM	SOCIO ' + ;
-			' inner JOIN MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo ' + ;
-			' LEFT JOIN ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent ' + ;
-			' LEFT JOIN entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac in ('+mTIPOPAC +')' + ;
-			 tcWhere +;
+			' FROM	sqluser.SOCIO ' + ;
+			' inner JOIN sqluser.MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo ' + ;
+			' LEFT JOIN sqluser.ENTIDADES ON SOCIO.codentidad = ENTIDADES.ENT_codent ' + ;
+			' LEFT JOIN sqluser.entidexclu On SOCIO.codentidad = entidexclu.codent And tpopac in ('+mTIPOPAC +')' + ;
+			tcWhere +;
 			' ORDER	BY SOCIO.HoraLLegada DESC '
-		if !Prg_EjecutoSql(lcSql,tcCursor,.t.)
-			return .f.
-		endif
 
-	otherwise
+		mret = SQLExec(mconsql,lcSql,tcCursor)
 
-endcase
+		If mret < 0
+			Messagebox("Error al consultar Socios - 4. Verifique.",16,"Validación")
+			Return
+		Endif
+	Otherwise
+	Endcase
+Endif

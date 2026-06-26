@@ -15,7 +15,7 @@ mbusco = ''
 Do Case
 Case  nOpcion = 1
 	If nxcodinsprest  >0
-		mbusco = ' and insumos.INS_codinsumo = ?nxcodinsprest '
+		mbusco = ' and insumos.INS_codpuntero = ?nxcodinsprest '
 	Endif
 	mret = SQLExec(mcon1,"select CAST(29 as integer) as  Agru,CAST(99 as integer) as Criterio,INS_CodPuntero, insumos.INS_descriinsumo " +;
 		" from Zabautinsprest "+;

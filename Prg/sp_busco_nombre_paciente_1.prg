@@ -16,9 +16,9 @@ If Vartype(mcursor )#"C"
 Endif
 mcursor1 = mcursor +"1"
 If mxambito >1
-		Select mwktabambito
-		Locate For Id = mxambito
-	mccpoambreg = " ENT_codagrup in ("+ALLTRIM(mwktabambito.tipoent)+") and "
+	Select mwktabambito
+	Locate For Id = mxambito
+	mccpoambreg = " ENT_codagrup in ("+Alltrim(mwktabambito.tipoent)+") and "
 *	mccpoambreg = " ENT_tipo = 'BRISTOL'  and "
 Else
 	mccpoambreg = ''
@@ -103,11 +103,11 @@ If lsigo
 					into Cursor &mcursor nofilter
 			Endif
 
-			Select REG_nroregistrac From &mcursor  Where  INLIST(nvl(TPV_Estado,0),1,3)  Into Cursor mwkpass
+			Select REG_nroregistrac From &mcursor  Where  Inlist(Nvl(TPV_Estado,0),1,3)  Into Cursor mwkpass
 
 			If Reccount('mwkpass')>0
-			
-				Do Form frmpass_sec WITH mwkpass.REG_nroregistrac To lret
+
+				Do Form frmpass_sec With mwkpass.REG_nroregistrac To lret
 				mhc = Transf(mwkpass.REG_nroregistrac)
 				If Type("miform") = "U"
 					miform = Window()
@@ -146,18 +146,17 @@ If lsigo
 				mbusco1 = "where preregistra.nombre LIKE '&mctexto%' and "
 			Endif
 		Endif
-
 		mret = SQLExec(mcon1,"select  cast('0000000000' as char(10)) as REG_nrohclinica, nombre as REG_nombrepac, direccion as REG_domicilio, " + ;
 			"entidades.ENT_descrient, nrodocumento as REG_numdocumento, " + ;
 			"fechaalta as REG_fecaltapadron, fechaalta as REG_fecregistra, fechabaja as AFI_fechabaja, afiliado as AFI_nroafiliado, fechanac as REG_fecnacimiento, " + ;
 			"telefono as REG_telefonos, fechabaja as REG_fecbajapadron, ENT_capita, ENT_tipo,ENT_nroprestadorexterno , " + ;
 			"ENT_fecpas, ENT_turnoshabilit, entidades.ENT_codent, preregistra.id as REG_nroregistrac, " + ;
-			"codpostal as REG_cpostal, tabpcia.descrip as REG_provincia, " + ;
-			"coddocu as REG_tipodocumento, tabloca.descrip as REG_localidad, " + ;
+			"preregistra.codpostal as REG_cpostal, tabpcia.descrip as REG_provincia, " + ;
+			"coddocu as REG_tipodocumento, tabloca1.descrip as REG_localidad, " + ;
 			"sexo as REG_sexo, 0 as REG_distrito,cast(0 as integer) as TPV_Estado " + ;
 			", 0 as TPV_Audit , space(300) as TPV_Observa, ENT_codagrup,email as REG_email, '' as REG_cuit,null as REG_fechaauditada ,cast(0 as integer) as afi_idplan "+;
-			"from preregistra, entidades, tabpcia, tabloca " + mbusco1 + ;
-			"preregistra.codloca = tabloca.id and " + ;
+			"from preregistra,entidades, tabpcia, tabloca1 " + mbusco1 + ;
+			"preregistra.codloca  = Tabloca1.id and " + ;
 			"preregistra.codpcia = tabpcia.id and " + ;
 			"preregistra.codent  = entidades.ENT_codent and " + mccpoambreg  +;
 			"preregistra.nroregistracio is null " + ;
@@ -166,6 +165,29 @@ If lsigo
 		If mret < 0
 			Do LOG_ERRORES With Error(), Message(), Message(1), Program(), Lineno()
 			Messagebox("ERROR EN LA GENERACION DEL CURSOR, REINTENTE",16, "VALIDACION")
+		Endif
+
+		If Reccount(mcursor)=0
+			mret = SQLExec(mcon1,"select  cast('0000000000' as char(10)) as REG_nrohclinica, nombre as REG_nombrepac, direccion as REG_domicilio, " + ;
+				"entidades.ENT_descrient, nrodocumento as REG_numdocumento, " + ;
+				"fechaalta as REG_fecaltapadron, fechaalta as REG_fecregistra, fechabaja as AFI_fechabaja, afiliado as AFI_nroafiliado, fechanac as REG_fecnacimiento, " + ;
+				"telefono as REG_telefonos, fechabaja as REG_fecbajapadron, ENT_capita, ENT_tipo,ENT_nroprestadorexterno , " + ;
+				"ENT_fecpas, ENT_turnoshabilit, entidades.ENT_codent, preregistra.id as REG_nroregistrac, " + ;
+				"codpostal as REG_cpostal, tabpcia.descrip as REG_provincia, " + ;
+				"coddocu as REG_tipodocumento, tabloca.descrip as REG_localidad, " + ;
+				"sexo as REG_sexo, 0 as REG_distrito,cast(0 as integer) as TPV_Estado " + ;
+				", 0 as TPV_Audit , space(300) as TPV_Observa, ENT_codagrup,email as REG_email, '' as REG_cuit,null as REG_fechaauditada ,cast(0 as integer) as afi_idplan "+;
+				"from preregistra, entidades, tabpcia, tabloca " + mbusco1 + ;
+				"preregistra.codloca = tabloca.id and " + ;
+				"preregistra.codpcia = tabpcia.id and " + ;
+				"preregistra.codent  = entidades.ENT_codent and " + mccpoambreg  +;
+				"preregistra.nroregistracio is null " + ;
+				"", mcursor )
+			If mret < 0
+				Do LOG_ERRORES With Error(), Message(), Message(1), Program(), Lineno()
+				Messagebox("ERROR EN LA GENERACION DEL CURSOR, REINTENTE",16, "VALIDACION")
+			Endif
+
 		Endif
 		If Reccount(mcursor)>0
 			If mpg=4
@@ -183,9 +205,9 @@ If lsigo
 					"left(nvl(TPV_Observa,''),250) as obser,'' as descestado,REG_fecbajapadron, ENT_fecpas, ENT_turnoshabilit, " + ;
 					"ENT_codent, REG_nroregistrac, REG_cpostal, REG_provincia, ENT_capita, ENT_tipo,ENT_nroprestadorexterno , " + ;
 					"REG_tipodocumento, REG_localidad, REG_sexo, " + ;
-					"blr_codigobloqueo, blr_descripcion, REG_bloq_comen, REG_distrito, TPV_Estado " + ;
+					"0 as blr_codigobloqueo, '' as blr_descripcion,'' as  REG_bloq_comen, REG_distrito, TPV_Estado " + ;
 					",TPV_Audit , TPV_Observa , ENT_codagrup,REG_email, REG_cuit,REG_fechaauditada, 1 as preacre, " + ;
-					"REG_bloq_fecha, REG_bloq_oper,afi_idplan  " + ;
+					" afi_idplan  " + ;
 					"from  "+mcursor  + mwhere +;
 					"ORDER BY REG_nombrepac into cursor "+mcursor1
 

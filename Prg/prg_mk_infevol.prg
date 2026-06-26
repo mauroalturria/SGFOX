@@ -11,6 +11,7 @@ Endif
 * Nueva versión de prg 2025-09-02 (Fabián)
 * Se cambia la forma de llamar al servicio usando otro componente más compatible
 * Tipo = recibe parámetro true / false para parametro (turnInicioTotem)
+* Actualización 2026-06-16
 
 Local lnpermiso
 
@@ -49,14 +50,24 @@ Case operacion = "informarevol"
 
 	lclink = lcURL
 	lclink = lclink + '?operacion=informarevol'   + '&'+'turnocodigo=' + Transform(xturnos)
-	lclink = lclink + '&' + 'turnInicioAtencion=false'
 	lclink = lclink + '&'+'evolucion=' +  xevol+ '&'+'evolestado=' +  xlestado
+
+Case operacion = "info_evol_informes"
+
+	If tipollamado
+		ltipollamado = "true"
+	Else
+		ltipollamado = "false"
+	Endif
+
+	lclink = lcURL
+	lclink = lclink + '?operacion=informarevol'   + '&'+'turnocodigo=' + Transform(xturnos)
+	lclink = lclink + '&'+'evolucion=' +  xevol+ '&'+'evolestado=' +  Alltrim(ltipollamado)
 
 Case operacion = "informaevolucion"  &&& para informes
 
 	lclink = lcURL
 	lclink = lclink + '?operacion=informaevolucion'   + '&'+'turnocodigo=' + Transform(xturnos)
-	lclink = lclink + '&' + 'turnInicioAtencion=false'
 	lclink = lclink + '&'+'entrEvolucion=' +  xevol+ '&'+'entrAtendido=' +  xlestado
 
 *!*	Case operacion = "informarllamadoconsultorio"  &&& para informes
@@ -93,7 +104,7 @@ Case  operacion ="informarllamadoconsultorio"
 Otherwise
 
 	lcresp = "Faltan Definir Parámetros para Informar a MK"
-	Return
+	Return lcresp
 
 Endcase
 

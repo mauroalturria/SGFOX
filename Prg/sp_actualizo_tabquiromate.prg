@@ -1,5 +1,8 @@
 *!*	sp_actualizo_Tabquiromate
-Parameters tnopcion,mid,mpedido,mcant,mfechacx,mnroreg,midusu,mxmateprovee, mxmateok,mxmateobs,mxproveedor,tcCurDat
+Parameters tnopcion,mid,mpedido,mcant,mfechacx,mnroreg,midusu,mxmateprovee, mxmateok,mxmateobs,mxproveedor,tcCurDat,mopciontabla
+If Vartype(mopciontabla)<>"N"
+	mopciontabla = 1 &&&id de tabquiromate 2-tabaut, 3-autprev,4-quirof
+Endif
 If Vartype(tcCurDat)<>"C"
 	tcCurDat=''
 Endif
@@ -9,14 +12,11 @@ Endif
 If Vartype(mnroreg)<>"N"
 	mnroreg = Null
 Endif
+If Vartype(mxmateprovee)<>"N"
+	mxmateprovee = 0
+Endif
 lcSql =''
 
-*!*	mret = SQLExec(mcon1, "select top 1 * from  Tabquiromaterial ","mwkctrqm")
-*!*	Select mwkctrqm
-*!*	lcSql = ''
-*!*	If  Empty(Field('qm_accionesfc'))
-*!*		Return
-*!*	Else
 Do Case
 Case tnopcion=1
 	cbuscaid = " QM_idAutprevias = ?mid "
@@ -25,7 +25,16 @@ Case Inlist(tnopcion,2,3)
 Case tnopcion=5 &&
 	cbuscaid =  " QM_idquiro = ?mid "
 Case Inlist(tnopcion,4,6) && actualizo por id
-	cbuscaid =  " id = ?mid "
+	Do Case
+	Case mopciontabla=1
+		cbuscaid =  " id = ?mid "
+	Case mopciontabla=2
+		cbuscaid =  " QM_idTabautprevias = ?mid "
+	Case mopciontabla=3
+		cbuscaid =  " QM_idAutprevias = ?mid "
+	Case mopciontabla=4
+		cbuscaid =  " QM_idquiro = ?mid "
+	Endcase
 Otherwise
 	cbuscaid =  " id = ?mid "
 Endcase
@@ -128,6 +137,7 @@ Case tnopcion = 8 && UPDATE CON CURSOR
 			mret = SQLExec(mcon1,lcSql )
 		Endscan
 	Endif
+
 Otherwise
 
 Endcase

@@ -1,4 +1,4 @@
-parameters mape, mid, mob,mdt,mForm,meven,mpac,dq,mprio,mids
+Parameters mape, mid, mob,mdt,mForm,meven,mpac,dq,mprio,mids
 *!************************************************************************************
 *!* Rutinas del Boton de Guardado:
 *!* Parametros Apellido y Nombre(mape);ID de Motivo (mid);Observacion(mob);
@@ -7,52 +7,63 @@ parameters mape, mid, mob,mdt,mForm,meven,mpac,dq,mprio,mids
 *!***********************************************
 *!* Traigo el mayor Id para generar el autonumerico
 *!***********************************************
-IF VARTYPE(mprio)="U"
+If Vartype(mprio)="U"
 	mprio = 0
-endif
-IF VARTYPE(mids)#"N"
-	mids = mpidsocio 
 ENDIF
-midsocio =  mids 
-mret=sqlexec(mcon1,"SELECT	MAX(IdSocio) as IdSocio FROM SOCIO","mwkrreg")
+GuardoDatosSQL = .T.
+If Vartype(mids)#"N"
+	If Vartype(mpidsocio)#"N"
+		mpidsocio = 0
+	Endif
+	mids = mpidsocio
+Endif
+midsocio =  mids
+If mconsql = 0
+	sp_conecta_sqlserver()
+Endif
+If mconsql > 0  &&sqlserver
 
-if mret < 0
-	do log_errores with error(), message(), message(1), program(), lineno()
-	messagebox("No se puede acceder a algunos Datos",0+64,"Usuario")
-	GuardoDatosSQL = .f.
-else
-	mnombre = allt(mwkusuario.idusuario)
-	maten   = sys(0)
-	mdtF    = sp_busco_fecha_serv('DT')
+	mret=SQLExec(mconsql,"SELECT MAX(IdSocio) as IdSocio FROM sqluser.SOCIO","mwkrreg")
+
+	If mret < 0
+		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+		Messagebox("No se puede acceder a algunos Datos - tabla SOCIOS",0+64,"Usuario")
+		GuardoDatosSQL = .F.
+	Else
+		mnombre = Allt(mwkusuario.idusuario)
+		maten   = Sys(0)
+		mdtF    = sp_busco_fecha_serv('DT')
 
 
-	if mForm = "frmMesa1"
-		midpers= nvl(mwkrreg.IdSocio,0) + 1
-		mret =sqlexec(mcon1,"INSERT INTO Socio(ApellidoNombre, Atendido, "+;
-			"HoraLLegada,IdMotivo,IdSocio,Observacion,Operadora,puestoAtencion,PrioridadAt,CodEntidad)"+;
-			"VALUES (?mape,0,?mdt,?mid,?midpers,?mob,?mnombre,?maten,?mprio, ?mCodEnt)")
-		if mret<0
-			do log_errores with error(), message(), message(1), program(), lineno()
-		endif
-		mret_v =sqlexec(mcon1,"select OperadorA from Socio "+;
-			" where Horallegada=?mdt and atendido = 0 "+;
-			" and Operadora= ?mnombre "+;
-			" and  IdSocio= ?midpers",'mwkQuienGraba')
-		if mret_v<0
-			do log_errores with error(), message(), message(1), program(), lineno()
-		endif
-	else
+		If mForm = "frmMesa1"
 
-		if meven=1
-			if dq = 0
-				mret =sqlexec(mcon1,"UPDATE Socio SET "+;
-					"HoraFinalizacion=?mdtf, atendido=1, "+;
-					"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
-					"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
-					"WHERE IdSocio= ?mids")
-				if mret<0
-					do log_errores with error(), message(), message(1), program(), lineno()
-				endif
+			midpers= Nvl(mwkrreg.IdSocio,0) + 1
+			mret =SQLExec(mconsql,"INSERT INTO sqluser.Socio(ApellidoNombre, Atendido, "+;
+				"HoraLLegada,IdMotivo,IdSocio,Observacion,Operadora,puestoAtencion,PrioridadAt,CodEntidad)"+;
+				"VALUES (?mape,0,?mdt,?mid,?midpers,?mob,?mnombre,?maten,?mprio, ?mCodEnt)")
+			If mret<0
+				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+			Endif
+			mret_v =SQLExec(mconsql,"select OperadorA from sqluser.Socio "+;
+				" where Horallegada=?mdt and atendido = 0 "+;
+				" and Operadora= ?mnombre "+;
+				" and  IdSocio= ?midpers",'mwkQuienGraba')
+			If mret_v<0
+				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+			Endif
+
+		Else
+
+			If meven=1
+				If dq = 0
+					mret =SQLExec(mconsql,"UPDATE sqluser.Socio SET "+;
+						"HoraFinalizacion=?mdtf, atendido=1, "+;
+						"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+						"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
+						"WHERE IdSocio= ?mids")
+					If mret<0
+						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+					Endif
 *!*					if mid = 57
 *!*						do sp_busco_socio with 3,' Where  SOCIO.paciente = "'+mpac+'" and IdMotivo = 27 ',"mwksocSI"
 *!*						select mwksocSI
@@ -66,36 +77,36 @@ else
 *!*						endscan
 *!*					endif
 
-			else
-				if dq = 8
-					mObsR = frmMesa2.pg.pgDatos.edtobservacion.Value
-					mret =sqlexec(mcon1,"UPDATE Socio SET "+;
-						"HoraFinalizacion=?mdtf, "+;
-						"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
-						"OperadoraA=?mnombre, Paciente=?mpac, prioridadat = ?mprio, "+;
-						"Observacion=?mobsr " + ;
-						"WHERE IdSocio= ?mids")
-					if mret<0
-						do log_errores with error(), message(), message(1), program(), lineno()
-					endif
-				else
+				Else
+					If dq = 8
+						mObsR = Left(frmMesa2.pg.pgDatos.edtobservacion.Value,250)
+						mret =SQLExec(mconsql,"UPDATE sqluser.Socio SET "+;
+							"HoraFinalizacion=?mdtf, "+;
+							"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+							"OperadoraA=?mnombre, Paciente=?mpac, prioridadat = ?mprio, "+;
+							"Observacion=?mobsr " + ;
+							"WHERE IdSocio= ?mids")
+						If mret<0
+							Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+						Endif
+					Else
 
-					mret =sqlexec(mcon1,"UPDATE Socio SET "+;
-						"HoraFinalizacion=?mdtf, "+;
-						"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
-						"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
-						"WHERE IdSocio= ?mids")
-					if mret<0
-						do log_errores with error(), message(), message(1), program(), lineno()
-					endif
-				endif
-			endif
-		else
-			if !empty(mape)
-				mret =sqlexec(mcon1,"UPDATE Socio SET HoraAtencion=?mdt,atendido =1, "+;
-					" OperadoraA= ?mnombre "+;
-					" WHERE IdSocio= ?midSocio and HoraAtencion is null ")
-				if mid = 57
+						mret =SQLExec(mconsql,"UPDATE sqluser.Socio SET "+;
+							"HoraFinalizacion=?mdtf, "+;
+							"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+							"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
+							"WHERE IdSocio= ?mids")
+						If mret<0
+							Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+						Endif
+					Endif
+				Endif
+			Else
+				If !Empty(mape)
+					mret =SQLExec(mconsql,"UPDATE sqluser.Socio SET HoraAtencion=?mdt,atendido =1, "+;
+						" OperadoraA= ?mnombre "+;
+						" WHERE IdSocio= ?midSocio and HoraAtencion is null ")
+					If mid = 57
 *!*						do sp_busco_socio with 3,' Where  SOCIO.paciente = "'+mpac+'" and IdMotivo = 27 ',"mwksocSI"
 *!*						select mwksocSI
 *!*						scan
@@ -106,55 +117,204 @@ else
 *!*								"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
 *!*								"WHERE IdSocio= ?midSocioSI ")
 *!*						endscan
-				endif
+					Endif
 
 
-			else
-				mret =sqlexec(mcon1,"UPDATE Socio SET HoraAtencion= null ,atendido = 0, "+;
-					" OperadoraA= null "+;
-					" WHERE IdSocio= ?mids")
-			endif
-			if mret<0
-				do log_errores with error(), message(), message(1), program(), lineno()
-			endif
+				Else
+					mret =SQLExec(mconsql,"UPDATE sqluser.Socio SET HoraAtencion= null ,atendido = 0, "+;
+						" OperadoraA= null "+;
+						" WHERE IdSocio= ?mids")
+				Endif
+				If mret<0
+					Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+				Endif
 
-		endif
-	endif
+			Endif
+		Endif
 
-	if mret > 0
-		if meven=1
-			messagebox("Se Guardaron los Datos Exitosamente!!!",0+64,"Usuario")
-			GuardoDatosSQL = .t.
-		else
-			if empty(mape)
-				mret_v =sqlexec(mcon1,"select OperadorA,horaAtencion from Socio "+;
-					" where IdSocio = ?midSocio and horaAtencion is null ",'mwkQuienGraba')
-				if reccount('mwkQuienGraba')>0
-					messagebox("Se Descartaron los Datos Exitosamente!!!",0+64,"Usuario")
-					GuardoDatosSQL = .t.
-				endif
-			else
-				mret_v =sqlexec(mcon1,"select OperadorA,horaAtencion from Socio "+;
-					" where OperadoraA like ?mnombre "+;
-					" and  IdSocio = ?midSocio and horaAtencion is not null ",'mwkQuienGraba')
-				if mret_v > 0
+		If mret > 0
+			If meven=1
+				Messagebox("Se Guardaron los Datos Exitosamente!!!",0+64,"Usuario")
+				GuardoDatosSQL = .T.
+			Else
+				If Empty(mape)
+					mret_v =SQLExec(mconsql,"select OperadorA,horaAtencion from sqluser.Socio "+;
+						" where IdSocio = ?midSocio and horaAtencion is null ",'mwkQuienGraba')
+					If Reccount('mwkQuienGraba')>0
+						Messagebox("Se Descartaron los Datos Exitosamente!!!",0+64,"Usuario")
+						GuardoDatosSQL = .T.
+					Endif
+				Else
+					mret_v =SQLExec(mconsql,"select OperadorA,horaAtencion from sqluser.Socio "+;
+						" where OperadoraA like ?mnombre "+;
+						" and  IdSocio = ?midSocio and horaAtencion is not null ",'mwkQuienGraba')
+					If mret_v > 0
 
-					if eof('mwkQuienGraba')
-						messagebox("Este Paciente fue llamado por Otro Operador ",64,'Usuario')
-						GuardoDatosSQL = .f.
-					else
-						GuardoDatosSQL = .t.
-					endif
-				else
-					do log_errores with error(), message(), message(1), program(), lineno()
-					GuardoDatosSQL = .f.
-				endif
-			endif
-		endif
-	else
+						If Eof('mwkQuienGraba')
+							Messagebox("Este Paciente fue llamado por Otro Operador ",64,'Usuario')
+							GuardoDatosSQL = .F.
+						Else
+							GuardoDatosSQL = .T.
+						Endif
+					Else
+						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+						GuardoDatosSQL = .F.
+					Endif
+				Endif
+			Endif
+		Else
 
-		messagebox("No se Actualizaron, avisar a sistemas del siguiente error",0+64,"Usuario")
-		GuardoDatosSQL = .f.
-	endif
-endif
-return GuardoDatosSQL
+			Messagebox("No se Actualizaron, avisar a sistemas del siguiente error",0+64,"Usuario")
+			GuardoDatosSQL = .F.
+		Endif
+	Endif
+
+Else
+
+	mret=SQLExec(mcon1,"SELECT	MAX(IdSocio) as IdSocio FROM SOCIO","mwkrreg")
+
+	If mret < 0
+		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+		Messagebox("No se puede acceder a algunos Datos",0+64,"Usuario")
+		GuardoDatosSQL = .F.
+	Else
+		mnombre = Allt(mwkusuario.idusuario)
+		maten   = Sys(0)
+		mdtF    = sp_busco_fecha_serv('DT')
+
+
+		If mForm = "frmMesa1"
+			midpers= Nvl(mwkrreg.IdSocio,0) + 1
+			mret =SQLExec(mcon1,"INSERT INTO Socio(ApellidoNombre, Atendido, "+;
+				"HoraLLegada,IdMotivo,IdSocio,Observacion,Operadora,puestoAtencion,PrioridadAt,CodEntidad)"+;
+				"VALUES (?mape,0,?mdt,?mid,?midpers,?mob,?mnombre,?maten,?mprio, ?mCodEnt)")
+			If mret<0
+				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+			Endif
+			mret_v =SQLExec(mcon1,"select OperadorA from Socio "+;
+				" where Horallegada=?mdt and atendido = 0 "+;
+				" and Operadora= ?mnombre "+;
+				" and  IdSocio= ?midpers",'mwkQuienGraba')
+			If mret_v<0
+				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+			Endif
+		Else
+
+			If meven=1
+				If dq = 0
+					mret =SQLExec(mcon1,"UPDATE Socio SET "+;
+						"HoraFinalizacion=?mdtf, atendido=1, "+;
+						"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+						"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
+						"WHERE IdSocio= ?mids")
+					If mret<0
+						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+					Endif
+*!*					if mid = 57
+*!*						do sp_busco_socio with 3,' Where  SOCIO.paciente = "'+mpac+'" and IdMotivo = 27 ',"mwksocSI"
+*!*						select mwksocSI
+*!*						scan
+*!*							midSocioSI = IdSocio
+*!*							mret =sqlexec(mcon1,"UPDATE Socio SET "+;
+*!*								"HoraFinalizacion=?mdtf, atendido=1, "+;
+*!*								"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+*!*								"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
+*!*								"WHERE IdSocio= ?midSocioSI ")
+*!*						endscan
+*!*					endif
+
+				Else
+					If dq = 8
+						mObsR = Left(frmMesa2.pg.pgDatos.edtobservacion.Value,250)
+						mret =SQLExec(mcon1,"UPDATE Socio SET "+;
+							"HoraFinalizacion=?mdtf, "+;
+							"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+							"OperadoraA=?mnombre, Paciente=?mpac, prioridadat = ?mprio, "+;
+							"Observacion=?mobsr " + ;
+							"WHERE IdSocio= ?mids")
+						If mret<0
+							Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+						Endif
+					Else
+
+						mret =SQLExec(mcon1,"UPDATE Socio SET "+;
+							"HoraFinalizacion=?mdtf, "+;
+							"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+							"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
+							"WHERE IdSocio= ?mids")
+						If mret<0
+							Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+						Endif
+					Endif
+				Endif
+			Else
+				If !Empty(mape)
+					mret =SQLExec(mcon1,"UPDATE Socio SET HoraAtencion=?mdt,atendido =1, "+;
+						" OperadoraA= ?mnombre "+;
+						" WHERE IdSocio= ?midSocio and HoraAtencion is null ")
+					If mid = 57
+*!*						do sp_busco_socio with 3,' Where  SOCIO.paciente = "'+mpac+'" and IdMotivo = 27 ',"mwksocSI"
+*!*						select mwksocSI
+*!*						scan
+*!*							midSocioSI = IdSocio
+*!*							mret =sqlexec(mcon1,"UPDATE Socio SET "+;
+*!*								"HoraFinalizacion=?mdtf, atendido=1, "+;
+*!*								"IdMotivoA=?mid, ObservaA=?mob, PuestoAtencion=?maten,"+;
+*!*								"OperadoraA=?mnombre,Paciente=?mpac,prioridadat = ?mprio "+;
+*!*								"WHERE IdSocio= ?midSocioSI ")
+*!*						endscan
+					Endif
+
+
+				Else
+					mret =SQLExec(mcon1,"UPDATE Socio SET HoraAtencion= null ,atendido = 0, "+;
+						" OperadoraA= null "+;
+						" WHERE IdSocio= ?mids")
+				Endif
+				If mret<0
+					Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+				Endif
+
+			Endif
+		Endif
+
+		If mret > 0
+			If meven=1
+				Messagebox("Se Guardaron los Datos Exitosamente!!!",0+64,"Usuario")
+				GuardoDatosSQL = .T.
+			Else
+				If Empty(mape)
+					mret_v =SQLExec(mcon1,"select OperadorA,horaAtencion from Socio "+;
+						" where IdSocio = ?midSocio and horaAtencion is null ",'mwkQuienGraba')
+					If Reccount('mwkQuienGraba')>0
+						Messagebox("Se Descartaron los Datos Exitosamente!!!",0+64,"Usuario")
+						GuardoDatosSQL = .T.
+					Endif
+				Else
+					mret_v =SQLExec(mcon1,"select OperadorA,horaAtencion from Socio "+;
+						" where OperadoraA like ?mnombre "+;
+						" and  IdSocio = ?midSocio and horaAtencion is not null ",'mwkQuienGraba')
+					If mret_v > 0
+
+						If Eof('mwkQuienGraba')
+							Messagebox("Este Paciente fue llamado por Otro Operador ",64,'Usuario')
+							GuardoDatosSQL = .F.
+						Else
+							GuardoDatosSQL = .T.
+						Endif
+					Else
+						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+						GuardoDatosSQL = .F.
+					Endif
+				Endif
+			Endif
+		Else
+
+			Messagebox("No se Actualizaron, avisar a sistemas del siguiente error",0+64,"Usuario")
+			GuardoDatosSQL = .F.
+		Endif
+	Endif
+
+Endif
+
+Return GuardoDatosSQL

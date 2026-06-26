@@ -28,7 +28,7 @@ If formulario = 1 or formulario = 0
 		" SOCIO.HoraAtencion,ObservaA, Horafinalizacion,"+;
 		" paciente,MOTIVOS.MotivoText, operadora, OperadoraA, "+;
 		" puestoatencion,  "+;
-		" SOCIO.IdSocio, MOTIVOS.IdMotivo,SOCIO.PrioridadAt, "+;
+		" SOCIO.IdSocio, MOTIVOS.IdMotivo,SOCIO.PrioridadAt,SOCIO.IdMotivoA, "+;
 		" ENT_DESCRIENT, entidexclu.fecpasiva as fecpasiva_Excl " + ;
 		" FROM	SOCIO " + ;
 		" inner JOIN MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo " + ;
@@ -83,7 +83,7 @@ Else
 				" SOCIO.HoraAtencion, ObservaA, Horafinalizacion,"+;
 				" A.MotivoText, operadora, OperadoraA,"+;
 				" puestoatencion, SOCIO.IdSocio, "+;
-				" MOTIVOS.IdMotivo,SOCIO.IdMotivoA,paciente,SOCIO.PrioridadAt, "+;
+				" MOTIVOS.IdMotivo,SOCIO.IdMotivoA,paciente,SOCIO.PrioridadAt,SOCIO.IdMotivoA, "+;
 				" ENT_DESCRIENT, entidexclu.fecpasiva as fecpasiva_Excl " + ;
 				" FROM	SOCIOHIS as SOCIO " + ;
 				" inner JOIN MOTIVOS ON SOCIO.IdMotivo = MOTIVOS.IdMotivo " + ;

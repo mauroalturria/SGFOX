@@ -1440,7 +1440,7 @@ If mlmodifIC
 Endif
 
 If myip = '172.16.1.7'
-	Set Step On
+*	Set Step On
 Endif
 If musua = 0		&&&& datos medicos
 	If mlcambioepicris Or mlfinepicris

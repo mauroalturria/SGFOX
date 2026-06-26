@@ -61,7 +61,7 @@ mret = SQLExec(mcon1, " SELECT tabquirofano.ID , Anestesista ,Ayudante as Instru
 	",tabusuario.nomape,TabQuirofano.FechaHora, Codadmision, TQC_HoraLlega, TQC_HoraIngQX, TQC_HoraSalida, " + ;
 	"TQC_HoraIniAnesMed, TQC_HoraFinAnesMed, TQC_NroQuiro, tabquirofano.TQC_FecHorCita, " + ;
 	"PRESTACIONS.PRE_duracion, Nvl(tabprotquir.TipoPac,0) as TipoPac, tabquirofano.aislaInfecto, registracio.Reg_Sexo, tabquirofano.AlergiaLatex, " + ;
-	"TabQuirofano.TQC_codadmision, tabprotquir.codadmision as tqp_admision,tabEstados.estado as tipoest,Registracio.REG_nombrepac " +;
+	"TabQuirofano.TQC_codadmision, tabprotquir.codadmision as tqp_admision,tabEstados.estado as tipoest,Registracio.REG_nombrepac,TQS_sala " +;
 	" FROM TabQuirofano " + ;
 	" left join tabprotquir on tabprotquir.quirofano = tabquirofano.id "+;
 	" left join tabEstados on tabEstados.id = TabQuirofano.estado "+;

@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 07/07/2025         AUDITORIAMENU.MPR          14:00:14  
+*       * 23/06/2026         AUDITORIAMENU.MPR          08:49:34  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,30 +26,30 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7830u0jf1 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7hw0iwt5v OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7830u0jf2 OF _MSYSMENU PROMPT "Auditoria" COLOR SCHEME 3 ;
+DEFINE PAD _7hw0iwt5w OF _MSYSMENU PROMPT "Auditoria" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7830u0jf3 OF _MSYSMENU PROMPT "Guardia" COLOR SCHEME 3 ;
+DEFINE PAD _7hw0iwt5x OF _MSYSMENU PROMPT "Guardia" COLOR SCHEME 3 ;
 	KEY ALT+G, ""
-DEFINE PAD _7830u0jf4 OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
+DEFINE PAD _7hw0iwt5y OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7830u0jf5 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7hw0iwt5z OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7830u0jf6 OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+DEFINE PAD _7hw0iwt60 OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-ON PAD _7830u0jf1 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7830u0jf2 OF _MSYSMENU ACTIVATE POPUP auditoria
-ON PAD _7830u0jf3 OF _MSYSMENU ACTIVATE POPUP guardia
-ON PAD _7830u0jf4 OF _MSYSMENU ACTIVATE POPUP informesge
-ON PAD _7830u0jf5 OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7830u0jf6 OF _MSYSMENU ACTIVATE POPUP password
+ON PAD _7hw0iwt5v OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7hw0iwt5w OF _MSYSMENU ACTIVATE POPUP auditoria
+ON PAD _7hw0iwt5x OF _MSYSMENU ACTIVATE POPUP guardia
+ON PAD _7hw0iwt5y OF _MSYSMENU ACTIVATE POPUP informesge
+ON PAD _7hw0iwt5z OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7hw0iwt60 OF _MSYSMENU ACTIVATE POPUP password
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7830u0jf7 ;
+	DO _7hw0iwt61 ;
 	IN LOCFILE("MNU\AUDITORIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is AUDITORIAMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -57,8 +57,10 @@ DEFINE POPUP auditoria MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF auditoria PROMPT "Planilla Diaria de Control"
 DEFINE BAR 2 OF auditoria PROMPT "Consulta de Pacientes" ;
 	SKIP FOR type('mfrmarchivo63') = 'U'
+DEFINE BAR 3 OF auditoria PROMPT "Cambio de Centromedico"
 ON SELECTION BAR 1 OF auditoria do form frmaudit01
 ON SELECTION BAR 2 OF auditoria do form frmaudit02
+ON SELECTION BAR 3 OF auditoria do form frmagen01 with 1
 
 DEFINE POPUP guardia MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF guardia PROMPT "Consulta entre Fechas" ;
@@ -83,7 +85,7 @@ ON SELECTION BAR 2 OF informesge do form frmplan08
 ON SELECTION BAR 3 OF informesge do form frmplan07
 ON SELECTION BAR 4 OF informesge do form frmplan11
 ON SELECTION BAR 5 OF informesge ;
-	DO _7830u0jf8 ;
+	DO _7hw0iwt62 ;
 	IN LOCFILE("MNU\AUDITORIAMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is AUDITORIAMENU?")
 ON SELECTION BAR 6 OF informesge do form frmturno89
 
@@ -99,7 +101,7 @@ ON SELECTION BAR 1 OF password do form frmpass_amb
 
 *       *********************************************************
 *       *                                                         
-*       * _7830U0JF7  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7HW0IWT61  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -110,25 +112,25 @@ ON SELECTION BAR 1 OF password do form frmpass_amb
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7830u0jf7
+PROCEDURE _7hw0iwt61
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7830U0JF8  ON SELECTION BAR 5 OF POPUP informesge      
+*       * _7HW0IWT62  ON SELECTION BAR 5 OF POPUP informesge      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
-*       * From Menu:  AUDITORIAMENU.MPR,            Record:   20  
+*       * From Menu:  AUDITORIAMENU.MPR,            Record:   21  
 *       * Called By:  ON SELECTION BAR 5 OF POPUP informesge      
 *       * Prompt:     Informe Altas                               
 *       * Snippet:    2                                           
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7830u0jf8
+PROCEDURE _7hw0iwt62
 public mtfhoy
 do sp_conexion
 do sp_tablas_loca_pcia

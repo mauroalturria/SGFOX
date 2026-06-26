@@ -37,7 +37,7 @@ If  Used("mwkserver1")
 	Do sp_busco_estados With 7,' and tipo = 51 and estado = ?mxambito and subestado = ?mxcentromedico ','mwkhabclave'
 	lsigue = (Reccount('mwkhabclave')>0)
 Endif
-If lsigue
+If lsigue OR myip='172.16.1.7'
 	Return   ((nnum >0 And nmay>0 And nmin>0 And nsigno>0 And Len(Alltrim(tcclave))>=8) Or Empty(tcclave))
 Else
 	Return  .T.

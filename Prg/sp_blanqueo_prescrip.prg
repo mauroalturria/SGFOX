@@ -5,6 +5,7 @@ Local cRespuesta
 Local mGuian
 Local mCodIns
 Local mDale
+LOCAL lRespuesta
 
 If oForm.lblanqueaprescrip
 ** ya presiono el boton de blanqueo.
@@ -16,6 +17,7 @@ cRespuesta = ""
 mGuian = ""
 mCodIns = ""
 mDale = .T.
+lRespuesta = .t.
 
 mfec = sp_busco_fecha_serv("DD")
 mFechaHoy = sp_busco_fecha_serv("DT")
@@ -155,7 +157,7 @@ If lPermiteBlanqueo
 							mHoraPrescripcion = Right(Ttoc(mwkRegistro.APV_horasolicitud),8)
 						Endcase
 
-						mFecHorPres = Ctot(Dtoc(mFechaPrescripcion) + " " + mHoraPrescripcion)
+						mfechorpres = Ctot(Dtoc(mFechaPrescripcion) + " " + mHoraPrescripcion)
 
 ** El blanqueo se producira cuando la prescripcion haya tenido una antiguedad mayor a 24hs.
 ** Marcelo Torres, 08/09/2015.
@@ -222,11 +224,14 @@ If lPermiteBlanqueo
 ** _idopt = 3 o 4 o 6 o 7
 ** 19/01/2022
 
-				If (mFechaHoy - mFecHorPres ) >= 86400
+				If (mFechaHoy - mfechorpres ) >= 86400
 
 					mGuian = &mTabla.._Guia
 					mCodIns = Alltrim(&mTabla.._codins)
 					Do Case
+					Case nIn = 2
+*                       dosis maxima
+*						Update mwkIgrid2 Set _estado = 0 Where _Guia = mGuian And _estado = 1 And Alltrim(_codins) = mCodIns And _MotivoDosisMaxima > 0
 					Case nIn = 4
 						Select mwkIgrid3
 *Delete From mwkIgrid3 Where mwkIgrid3._Guia = mGuian And mwkIgrid3._estado = 1 And Alltrim(mwkIgrid3._codins) = (mCodIns) And (_idopt = 3 Or _idopt = 4)
@@ -236,6 +241,8 @@ If lPermiteBlanqueo
 **Delete From mwkIgrid33 Where mwkIgrid33._Guia = mGuian And mwkIgrid3._estado = 1 And Alltrim(mwkIgrid33._codins) = (mCodIns) And (_idopt = 3 Or _idopt = 4)
 						Update mwkIgrid33 Set _estado = 0 Where _Guia = mGuian And _estado = 1 And Alltrim(_codins) = mCodIns And Inlist(_idopt,3,4,6,7)
 *** (_idopt = 3 Or _idopt = 4 Or _idopt = 6 Or _idopt = 7)
+*                       dosis maxima
+*                       UPDATE mwkIgrid33 SET _estado = 0 WHERE _Guia = mGuian And _estado = 1 And Alltrim(_codins) = mCodIns AND _MotivoDosisMaxima > 0
 					Endcase
 
 				Endif
@@ -249,17 +256,31 @@ If lPermiteBlanqueo
 
 	Next nIn
 
+* SET STEP ON
+
 ** ---------- Borramos los urgentes - Marcelo Torres 07/08/2019
 	Select mwkIgrid33
 	Go Top
 	Update mwkIgrid33 Set _Urge = ''
 	Go Top
 	If Used('mwkIvelinf')
-		Select mwkIvelinf
-		Go Top
-		Update mwkIvelinf Set _chkurg = 0
-		Go Top
-	Endif
+	  Select mwkIvelinf
+	  Go Top
+	  Update mwkIvelinf Set _chkurg = 0
+	  Go Top
+    Endif
+** --------- Inicialización: Borramos las Dosis Maximas - Marcelo Torres, 23/06/2026
+	Select mwkIgrid2
+	Go Top
+	Update mwkIgrid2 Set _estado = 0 Where _MotivoDosisMaxima > 0
+	Go Top
+
+	Select mwkIgrid33
+	Go Top
+	Update mwkIgrid33 Set _estado = 0 Where _MotivoDosisMaxima > 0
+	Go Top
+
+
 	oForm.lblanqueaprescrip = .T.
 
 	oForm.pgconsulta.pgindic.pgindicaciones.page2.cntsueros.pgSueros.page1.txtultimaPres.Value = "Nueva Prescripción"
@@ -268,6 +289,7 @@ If lPermiteBlanqueo
 
 Else
 	Messagebox("No se puede Inicializar. Hay una prescripción vigente del dia.","Prescripción")
+	lRespuesta = .f.
 Endif
 
 **Endif
@@ -316,4 +338,7 @@ Use In Select("mwkRegistro")
 
 If !Empty(cRespuesta)
 	Messagebox("Los siguientes items no se inicializan por haber sido prescriptos dentro de las 24hs: " +Chr(13)+ cRespuesta + Chr(13) + "Verifique.","Inicializar")
-Endif
+ENDIF
+
+RETURN lRespuesta
+

@@ -41,7 +41,7 @@ else
 		" AnestesiaTipo,MatInstancia, FechaInternac,AnestesistaCod,AnestesiaTipo,"+;
 		" AyudanteCod as InstrumentistaCod,codent, HemoOk,MatCondicional,bpresta.Nombre as nomanest1, "+;
 		" mateok,TabQuirofano.Telefono,torre,MateProvee,anestesistanom, REG_fecnacimiento,"+;
-		" REG_nrohclinica,CamaSolic, CamaSector,verificado, ProgrOrigen, TipoPacte, Servicio, SER_descripserv, TabQuirofano.codesp "+;
+		" REG_nrohclinica,CamaSolic, CamaSector,verificado, ProgrOrigen, TipoPacte, Servicio, SER_descripserv, TabQuirofano.codesp,TQS_sala  "+;
 		" FROM TabQuirofano "+;
 		" left join tabprotquir on tabprotquir.quirofano = tabquirofano.id "+;
 		" left join tabEstados on tabEstados.id = TabQuirofano.estado "+;
