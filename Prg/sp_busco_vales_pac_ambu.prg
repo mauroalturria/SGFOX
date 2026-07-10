@@ -1,9 +1,12 @@
 *
 * Busqueda de vales de Pacientes Ambulatorios
 *
-Lparameters mnreg,  midmedico,mncodprest, mcCursor,mdesde,mcursor,mcodserv
+Lparameters mnreg,  midmedico,mncodprest, mcCursor,mdesde,mcursor,mcodserv,lsoloactivo
 If Vartype(midmedico)<>"N"
 	midmedico= 0
+ENDIF
+If Vartype(lsoloactivo)<>"N"
+	lsoloactivo= 0
 Endif
 If Vartype(mcursor)<>"C"
 	mcursor = "mwkvaleambu"
@@ -30,7 +33,9 @@ Endif
 If Val(Transform(mncodprest)) > 0
 	mbusamb =  mbusamb +  ' and  codprest = ?mncodprest '
 Endif
-
+If lsoloactivo >0
+	mbusamb = mbusamb + " and demanda in (0,1) "
+Endi
 If Vartype(mcCursor)# "C"
 	mcCursor = "mwkvaleambu"
 Endif

@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 23/06/2026           ALTACMENU.MPR            09:02:03  
+*       * 02/07/2026           ALTACMENU.MPR            11:19:32  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,36 +26,36 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7hw0jchiy OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vsy OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7hw0jchiz OF _MSYSMENU PROMPT "Autorizaciones - INT" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vsz OF _MSYSMENU PROMPT "Autorizaciones - INT" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7hw0jchj0 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vt0 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7hw0jchj1 OF _MSYSMENU PROMPT "Autorizaciones - AMB" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vt1 OF _MSYSMENU PROMPT "Autorizaciones - AMB" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7hw0jchj2 OF _MSYSMENU PROMPT "Compras" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vt2 OF _MSYSMENU PROMPT "Compras" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7hw0jchj3 OF _MSYSMENU PROMPT "Farmacia" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vt3 OF _MSYSMENU PROMPT "Farmacia" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7hw0jchj4 OF _MSYSMENU PROMPT "Correo" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vt4 OF _MSYSMENU PROMPT "Correo" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7hw0jchj5 OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7i50o9vt5 OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7hw0jchiy OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7hw0jchiz OF _MSYSMENU ACTIVATE POPUP autorizaci
-ON PAD _7hw0jchj0 OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _7hw0jchj1 OF _MSYSMENU ACTIVATE POPUP _4ab0zprwx
-ON PAD _7hw0jchj2 OF _MSYSMENU ACTIVATE POPUP compras
-ON PAD _7hw0jchj3 OF _MSYSMENU ACTIVATE POPUP farmacia
-ON PAD _7hw0jchj4 OF _MSYSMENU ACTIVATE POPUP correo
-ON PAD _7hw0jchj5 OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7i50o9vsy OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7i50o9vsz OF _MSYSMENU ACTIVATE POPUP autorizaci
+ON PAD _7i50o9vt0 OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7i50o9vt1 OF _MSYSMENU ACTIVATE POPUP _4ab0zprwx
+ON PAD _7i50o9vt2 OF _MSYSMENU ACTIVATE POPUP compras
+ON PAD _7i50o9vt3 OF _MSYSMENU ACTIVATE POPUP farmacia
+ON PAD _7i50o9vt4 OF _MSYSMENU ACTIVATE POPUP correo
+ON PAD _7i50o9vt5 OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de.."
 ON SELECTION BAR 1 OF salir ;
-	DO _7hw0jchj6 ;
+	DO _7i50o9vt6 ;
 	IN LOCFILE("MNU\ALTACMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is ALTACMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -132,14 +132,14 @@ DEFINE BAR 2 OF usuario PROMPT "Usuario"
 DEFINE BAR 3 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7hw0jchje ;
+	DO _7i50o9vt7 ;
 	IN LOCFILE("MNU\ALTACMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is ALTACMENU?")
 ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7HW0JCHJ6  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7I50O9VT6  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -150,7 +150,7 @@ ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7hw0jchj6
+PROCEDURE _7i50o9vt6
 *!*	on error do omita
 *!*	=sqldisconnect(mcon1)
 *!*	on error
@@ -163,7 +163,7 @@ quit
 
 *       *********************************************************
 *       *                                                         
-*       * _7HW0JCHJE  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7I50O9VT7  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -174,7 +174,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7hw0jchje
+PROCEDURE _7i50o9vt7
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

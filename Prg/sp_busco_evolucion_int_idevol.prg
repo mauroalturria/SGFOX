@@ -5,22 +5,26 @@ Parameter idevol,xctipo,mevol,lorden,xncantreg,copciones,mtipousu
 
 If Vartype(xctipo)#"C"
 	xctipo = ""
-ENDIF
+Endif
 
 If Vartype(mevol)#"C"
 	mevol = ""
+Endif
+If Vartype(idevol)="C"
+	mret = SQLExec(mcon1, "select id,IH_admision  from TabintHCE "+;
+		" where tabintHCE.IH_admision  = ?idevol order by id desc ", "mwkotro")
 Endif
 If Vartype(mtipousu)#"N"
 	mtipousu = 0
 Endif
 cfecha = prg_dtoc(Dtot(sp_busco_fecha_serv("DD")-1))
-If left(mevol,8) = LEFT(cfecha,8)   
+If Left(mevol,8) = Left(cfecha,8)
 	cfecha = mevol
 Endif
 
-IF myip='172.16.1.7'
-*SET STEP ON 
-endif
+If myip='172.16.1.7'
+* SET STEP ON
+Endif
 If Vartype(copciones)#"C"
 	copciones = '' &&&"EISsVMCN"    N nutricion
 Endif
@@ -224,6 +228,26 @@ Case xctipo = "EM"
 			"             tabintHCE.IH_admision = ?idevol ) a on a.id = tabintevolmed.EIM_idevol "+;
 			" inner join tabusuario on tabusuario.idcodmed = tabintevolmed.EIM_codmed ) b   "+;
 			" Order by id " +miorden  , "mwkEvolmed")
+		If mret<1 &&&busqueda de contingencia
+			Use In Select("mwkEvolmeda")
+			Select mwkotro
+			Scan
+				mid = mwkotro.Id
+				mret = SQLExec(mcon1, "SELECT &xcantreg tabintevolmed.*,nomape as nombre,idcodmed as ucodmed,leg_id "+;
+					" FROM tabintevolmed  "+;
+					" inner join tabusuario on tabusuario.idcodmed = tabintevolmed.EIM_codmed " + ;
+					" where EIM_idevol = ?mid group by tabintevolmed.id order by tabintevolmed.id "+	miorden , "mwkEvolmedo")
+				If !Used("mwkEvolmeda")
+					Select * From mwkEvolmedo Into Cursor mwkEvolmeda
+				Else
+					Select * From mwkEvolmedo Union All Select * From mwkEvolmed Into Cursor mwkEvolmeda
+				Endif
+				If Reccount('mwkEvolmeda)>=xncantreg
+					Exit
+				Endif
+			Endscan
+			Select  * From mwkEvolmeda Order By  Id &miorden Into Cursor mwkEvolmed
+		Endif
 	Endif
 
 	mevol = Iif(Reccount("mwkEvolmed")=0,"SIN INFORMACION","")
@@ -257,6 +281,25 @@ Case xctipo = "II"
 			"             tabintHCE.IH_admision = ?idevol ) a on a.id = tabintevolmed.EIM_idevol "+;
 			" inner join tabusuario on tabusuario.idcodmed = tabintevolmed.EIM_codmed ) b "+;
 			" Order by  id "+miorden , "mwkEvolmed")
+		If mret<1 &&&busqueda de contingencia
+			Use In Select("mwkEvolmeda")
+			Select mwkotro
+			Scan
+				mid = mwkotro.Id
+				mret = SQLExec(mcon1, "SELECT &xcantreg tabintevolmed.*,nomape as nombre,idcodmed as ucodmed,leg_id   FROM tabintevolmed  "+;
+					" inner join tabusuario on tabusuario.idcodmed = tabintevolmed.EIM_codmed " + ;
+					" where EIM_idevol = ?mid group by tabintevolmed.id order by tabintevolmed.id "+	miorden , "mwkEvolmedo")
+				If !Used("mwkEvolmeda")
+					Select * From mwkEvolmedo Into Cursor mwkEvolmeda
+				Else
+					Select * From mwkEvolmedo Union All Select * From mwkEvolmed Into Cursor mwkEvolmeda
+				Endif
+				If Reccount('mwkEvolmeda)>=xncantreg
+					Exit
+				Endif
+			Endscan
+			Select   * From mwkEvolmeda Order By  Id &miorden Into Cursor mwkEvolmed
+		Endif
 	Endif
 
 	If Empty(xcantreg)
@@ -473,7 +516,7 @@ Else
 		Select mwkevolparcial.* ,matriculas,SF_NroMatricula,Tipomat ;
 			From mwkevolparcial ;
 			Left Join mwkMedicointall On ucodmed = mwkMedicointall.Id ;
-			Left Join MwkLegajo On MwkLegajo.LEG_ID = mwkevolparcial.LEG_ID ;
+			Left Join MwkLegajo On MwkLegajo.leg_id = mwkevolparcial.leg_id ;
 			Into Cursor mwkevolparciald
 		Select * From mwkevolparciald Into Cursor mwkevolparcial
 		Use In Select("mwkevolparciald" )

@@ -53,11 +53,12 @@ If mwkAgendaMK.estado = 1
 			,turnCodigo N(12),turnFecha D,consCodigoInterno c(20);
 			,turnFechaInicio T,turnFechaFin T,turnLlegada T,paciCodigo N(10),paciCodigoInterno N(10);
 			,paciHistoriaClinica c(10),paciPaciente c(50),paciNroDocumento N(15); &&,mediCodigoInterno N(5)
-			,mediCodigo N(5),mediMedico c(50),cobeDescripcion c(50),planDescripcion c(50),cobeCodigoInterno N(5);
+		,mediCodigo N(5),mediMedico c(50),cobeDescripcion c(50),planDescripcion c(50),cobeCodigoInterno N(5);
 			,planCodigoInterno N(5),turnCodigoAdmision c(50),turnCodigoVale c(50),turnPrioridad c(50);
 			,turnSobreTurno L,turnEspontaneo L,tuprCodigo N(10),procCodigoInterno N(10),procDescripcion c(50);
 			,procVirtual L,turnSeRetira T ,turnReemplazo L,mediCodigoReemplazado N(5),mediMedicoReemplazado c(50);
-			,tconCodigoInterno c(1),tconDescripcion c(20),turnAdmitido L,turnMostrar L)
+			,tconCodigoInterno c(1),tconDescripcion c(20),turnAdmitido L,turnMostrar L,tuprCodigoInterno c(20),turCodigoInterno N(10);
+			)
 
 
 		Do While Len(Alltrim(lcresp))>20
@@ -77,9 +78,9 @@ If mwkAgendaMK.estado = 1
 			lcpaciHistoriaClinica = json(lcresp,'paciHistoriaClinica',0)
 			lcpaciPaciente = json(lcresp,'paciPaciente',0)
 			lcpaciNroDocumento = Val(json(lcresp,'paciNroDocumento',0))
-		  	lcconsCodigoInterno = json(lcresp,'consCodigoInterno',0)
-			DO sp_busco_medico_cuit WITH lcmediCodigoInterno 
-			lcmediCodigo = MwkDatMedcuit.id                &&&Val(json(lcresp,'mediCodigo',0)) trae el valor de mk
+			lcconsCodigoInterno = json(lcresp,'consCodigoInterno',0)
+			Do sp_busco_medico_cuit With lcmediCodigoInterno
+			lcmediCodigo = MwkDatMedcuit.Id                &&&Val(json(lcresp,'mediCodigo',0)) trae el valor de mk
 			lcmediMedico = json(lcresp,'mediMedico',0)
 			lccobeDescripcion = json(lcresp,'cobeDescripcion',0)
 			lcplanDescripcion = json(lcresp,'planDescripcion',0)
@@ -107,23 +108,32 @@ If mwkAgendaMK.estado = 1
 			lcprocVirtual =  (lcjason<>'false')
 			lcjason =  json(lcresp,'turnSeRetira',0)
 			lcturnSeRetira = prg_ctod(Iif(lcjason ='null', "1900-01-01T00:00:00" ,lcjason ))
-
-
-			Insert Into mwkjson  (MedicoCodigo,mediCodigoInterno,Medico,turnCodigoInterno,turnCodigo,turnFecha,turnFechaInicio,;
-				turnFechaFin,turnLlegada,paciCodigo,paciCodigoInterno,paciHistoriaClinica,paciPaciente,paciNroDocumento,;
-				mediCodigo,mediMedico,cobeDescripcion,planDescripcion,cobeCodigoInterno,planCodigoInterno,; &&mediCodigoInterno,
-				turnCodigoAdmision,turnCodigoVale,turnPrioridad,turnSobreTurno,turnEspontaneo,tuprCodigo,;
-				procCodigoInterno,procDescripcion,procVirtual,turnSeRetira,turnReemplazo ,mediCodigoReemplazado ,mediMedicoReemplazado,;
-				tconCodigoInterno,tconDescripcion,consCodigoInterno  )  ;  &&,turnAdmitido,turnMostrar
-			Values (lcMedicoCodigo,lcmediCodigoInterno,lcMedico,lcturnCodigoInterno,lcturnCodigo,lcturnFecha,lcturnFechaInicio,;
-				lcturnFechaFin,lcturnLlegada,lcpaciCodigo,lcpaciCodigoInterno,lcpaciHistoriaClinica,lcpaciPaciente,lcpaciNroDocumento,;
-				lcmediCodigo,lcmediMedico,lccobeDescripcion,lcplanDescripcion,lccobeCodigoInterno,lcplanCodigoInterno,;&&lcmediCodigoInterno,
-				lcturnCodigoAdmision,lcturnCodigoVale,lcturnPrioridad,lcturnSobreTurno,lcturnEspontaneo,lctuprCodigo,;
-				lcprocCodigoInterno,lcprocDescripcion,lcprocVirtual,lcturnSeRetira,lcturnReemplazo ,lcmediCodigoReemplazado  ,lcmediMedicoReemplazado,;
-				lctconCodigoInterno,lctconDescripcion,lcconsCodigoInterno  )  &&,lcturnAdmitido,lcturnMostrar
-
-			npositem = At('procVirtual',lcresp)+20
+			npositem = At('procedimientos',lcresp)+14
 			lcresp =Substr(lcresp ,npositem)
+			Do While Len(Alltrim(lcresp))>20 AND AT(']',Alltrim(lcresp))>10
+				lctuprCodigoInterno = json(lcresp,'tuprCodigoInterno',0)
+				lcturCodigoInterno = Val(subStr(lctuprCodigoInterno ,At("ID",lctuprCodigoInterno )+3))
+				lcprocCodigoInterno = Val(json(lcresp,'procCodigoInterno',0))
+				lcprocDescripcion = json(lcresp,'procDescripcion',0)
+				lcturnFechaInicio =  prg_ctod(Strtran(Left(json(lcresp,'turnFechaInicio',0),19),"T"," "),'T')
+				lcjason =  json(lcresp,'procVirtual',0)
+				lcprocVirtual =  (lcjason<>'false')
+				Insert Into mwkjson  (MedicoCodigo,mediCodigoInterno,Medico,turnCodigoInterno,turnCodigo,turnFecha,turnFechaInicio,;
+					turnFechaFin,turnLlegada,paciCodigo,paciCodigoInterno,paciHistoriaClinica,paciPaciente,paciNroDocumento,;
+					mediCodigo,mediMedico,cobeDescripcion,planDescripcion,cobeCodigoInterno,planCodigoInterno,;
+					turnCodigoAdmision,turnCodigoVale,turnPrioridad,turnSobreTurno,turnEspontaneo,tuprCodigo,;
+					procCodigoInterno,procDescripcion,procVirtual,turnSeRetira,turnReemplazo ,mediCodigoReemplazado ,mediMedicoReemplazado,;
+					tconCodigoInterno,tconDescripcion,consCodigoInterno,tuprCodigoInterno,turCodigoInterno )  ;  
+				Values (lcMedicoCodigo,lcmediCodigoInterno,lcMedico,lcturnCodigoInterno,lcturnCodigo,lcturnFecha,lcturnFechaInicio,;
+					lcturnFechaFin,lcturnLlegada,lcpaciCodigo,lcpaciCodigoInterno,lcpaciHistoriaClinica,lcpaciPaciente,lcpaciNroDocumento,;
+					lcmediCodigo,lcmediMedico,lccobeDescripcion,lcplanDescripcion,lccobeCodigoInterno,lcplanCodigoInterno,;
+					lcturnCodigoAdmision,lcturnCodigoVale,lcturnPrioridad,lcturnSobreTurno,lcturnEspontaneo,lctuprCodigo,;
+					lcprocCodigoInterno,lcprocDescripcion,lcprocVirtual,lcturnSeRetira,lcturnReemplazo ,lcmediCodigoReemplazado  ,lcmediMedicoReemplazado,;
+					lctconCodigoInterno,lctconDescripcion,lcconsCodigoInterno,lctuprCodigoInterno ,lcturCodigoInterno  )   
+				 
+				npositem = At('}',lcresp)+1
+				lcresp =Substr(lcresp ,npositem)
+			Enddo
 		Enddo
 	Endif
 Endif

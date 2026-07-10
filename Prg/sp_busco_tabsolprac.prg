@@ -32,7 +32,13 @@ do case
 			" left join servicios on pre_codservicio = ser_codserv "+;
 			" left join tabbacteriotipomuestra on TabSolPract.ASP_codmuestra = tabbacteriotipomuestra.id " +;
 			tcWhere
-	otherwise
+	case tnOpcion = 3
+		lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio, ser_descripserv "+;
+			" from TabSolPract  " + ;
+			" INNER join prestacions on ASP_codprest = pre_codprest "+;
+			" INNER join servicios on pre_codservicio = ser_codserv "+;
+			tcWhere
+		otherwise
 		lcSql =''
 endcase
 if !Prg_EjecutoSql(lcSql,tcCursor,.f.)

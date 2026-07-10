@@ -15,7 +15,7 @@ Next
  mcon1 = SQLConnect("conec01")
 *** ultima actualizacion 04/11/2019
 *mret = SQLExec(mcon1,"select * FROM TabMedFoto where  FechaBaja = ?mfecpas and tipo = 2 and idmedico in (5463) order by id desc ","mprofFotList")
-mret = SQLExec(mcon1,"select * FROM TabMedFoto where  FechaToma >= '2025-07-11' and tipo = 2 order by id desc ","mprofFotoctr")
+mret = SQLExec(mcon1,"select * FROM TabMedFoto where   tipo = 2 order by id desc ","mprofFotoctr")
 *Mret = SQLExec(mcon1,"select idmedico  FROM TabMedFoto where   FechaBaja = ?mfecpas and tipo = 2  order by id desc ","mprofFotoctr")
 *!*	mret = SQLExec(mcon1,"select Tabmedfoto.ID, Tabmedfoto.FechaBaja, Tabmedfoto.FechaToma,"+;
 *!*		" Tabmedfoto.IdMedico, Tabmedfoto.Tipo,fecpasivap FROM TabMedFoto,prestadores  where  idmedico=prestadores.id and idmedico =     5680 "+;

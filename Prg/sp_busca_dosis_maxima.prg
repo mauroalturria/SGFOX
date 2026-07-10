@@ -20,6 +20,8 @@ lError = .F.
 nVale = Iif(Vartype(cVale) = "C",Round(Val(cVale),0),0)
 cAdmision = ""
 
+*Set Step On
+
 * Habilitamos el chequeo de dosis maxima
 If !fHabDosisMaxima()
 	Return .T.
@@ -29,7 +31,7 @@ Wait "CONSULTANDO DOSIS MAXIMA ..." Window Nowait
 
 cAlias = Alias()
 
-Set Step On
+* Set Step On
 
 * ---------------------------------------------------
 If nVale > 0
@@ -76,13 +78,13 @@ Else
 
 	cInsumo = mwkInsumoMax.ins_codinsumo
 
-	Use In Select("mwkInsumoMax")	
+	Use In Select("mwkInsumoMax")
 
 Endif
 
 
 * ---------------------------------------------------
-If !USED("mwkPmVales") .or. Reccount("mwkPmVales") = 0
+If !Used("mwkPmVales") .Or. Reccount("mwkPmVales") = 0
 
 *cAdmision = mwkValVales.val_codadmision
 
@@ -105,15 +107,15 @@ If !USED("mwkPmVales") .or. Reccount("mwkPmVales") = 0
 
 		nIdevol = mwkTabIntPmSolu.Idevol
 
-*   La medicación requiere AC.
-		mret = SQLExec(mcon1,"select PA_insumo as insumo, NVL(PA_IdOptDMax,0) as IdOptMax, NVL(PA_ObsDMax,'') as ObsDMax, PA_fecpasiva as fecpasiva, PA_fechormodif as fechormodif from TabIntPmAgre " +;
-			"where PA_idevol = ?nIdevol and PA_insumo = ?cInsumo and PA_fecpasiva = '1900-01-01' ","mwkTabIntPmAgre")
+*!*	*   La medicación requiere AC.
+*!*			mret = SQLExec(mcon1,"select PA_insumo as insumo, NVL(PA_IdOptDMax,0) as IdOptMax, NVL(PA_ObsDMax,'') as ObsDMax, PA_fecpasiva as fecpasiva, PA_fechormodif as fechormodif from TabIntPmAgre " +;
+*!*				"where PA_idevol = ?nIdevol and PA_insumo = ?cInsumo and PA_fecpasiva = '1900-01-01' ","mwkTabIntPmAgre")
 
-		If mret < 0
-			Messagebox("ERROR EN LA LECTURA DE LA TABLA TABINTPMAGRE",26,"Dosis Máxima 1")
-			Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			Return nIdOptMax
-		Endif
+*!*			If mret < 0
+*!*				Messagebox("ERROR EN LA LECTURA DE LA TABLA TABINTPMAGRE",26,"Dosis Máxima 1")
+*!*				Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()
+*!*				Return nIdOptMax
+*!*			Endif
 
 		mret = SQLExec(mcon1,"select PP_insumo as insumo, NVL(PP_IdOptDMax,0) as IdOptMax, NVL(PP_ObsDMax,'') as ObsDMax, PP_fecpasiva as fecpasiva, PP_fechormodif as fechormodif from TabIntPmPlan " +;
 			"where PP_idevol = ?nIdevol and PP_insumo = ?cInsumo and PP_fecpasiva = '1900-01-01' ","mwkTabIntPmPlan")
@@ -137,10 +139,55 @@ If !USED("mwkPmVales") .or. Reccount("mwkPmVales") = 0
 *!*			SELECT * From mwkTabIntPmPlanLG ;
 *!*			INTO Cursor mwkInsuMax
 
+	Endif
+
+** ----------------------- Ahora buscamos los agregados. Estos no estan en la tabla principal
+	mret = SQLExec(mcon1,"select MAX(PA_idevol) as Idevol " +;
+		"from TabIntPmAgre " +;
+		"where PA_admision = ?cAdmision and PA_insumo = ?cInsumo and PA_fecpasiva = '1900-01-01' ","mwkTabIntPmAgre")
+
+	If mret < 0
+		Messagebox("ERROR EN LA LECTURA DE LA TABLA TABINTPMSOLU",26,"Dosis Máxima 1")
+		Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()
+		Return nIdOptMax
+	Endif
+
+	nIdevol = Nvl(mwkTabIntPmAgre.Idevol,0)
+
+	Use In Select("mwkTabIntPmAgre")
+
+	If nIdevol > 0
+*   La medicación requiere AC.
+		mret = SQLExec(mcon1,"select PA_insumo as insumo, NVL(PA_IdOptDMax,0) as IdOptMax, NVL(PA_ObsDMax,'') as ObsDMax, PA_fecpasiva as fecpasiva, PA_fechormodif as fechormodif "+;
+			"from TabIntPmAgre " +;
+			"where PA_idevol = ?nIdevol and PA_insumo = ?cInsumo and PA_fecpasiva = '1900-01-01' ","mwkTabIntPmAgre")
+
+		If mret < 0
+			Messagebox("ERROR EN LA LECTURA DE LA TABLA TABINTPMAGRE",26,"Dosis Máxima 1")
+			Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()
+			Return nIdOptMax
+		Endif
+	Endif
+
+**      unimos los dos cursores, en caso de existir
+
+	Do Case
+	Case Used("mwkTabIntPmAgre") And Used("mwkTabIntPmPlan")
 		Select * From mwkTabIntPmAgre ;
 			UNION All ;
 			SELECT * From mwkTabIntPmPlan ;
 			INTO Cursor mwkInsuMax
+
+	Case Used("mwkTabIntPmAgre")
+		Select * From mwkTabIntPmAgre ;
+			INTO Cursor mwkInsuMax
+
+	Case Used("mwkTabIntPmPlan")
+		Select * From mwkTabIntPmPlan ;
+			INTO Cursor mwkInsuMax
+	Otherwise
+		Return nIdOptMax
+	Endcase
 
 * Establecer la fecha de modificación para ver aquellos insumos pasivados
 *!*			Select mwkValVales
@@ -150,21 +197,21 @@ If !USED("mwkPmVales") .or. Reccount("mwkPmVales") = 0
 
 *!*			Select * From mwkInsuMax Where fechormodif >= dtfechahoravale Into Cursor mwkInsuMaxb
 
-        Select * From mwkInsuMax Into Cursor mwkInsuMaxb
+	Select * From mwkInsuMax Into Cursor mwkInsuMaxb
 
 * En este caso, no se puede conocer con exactitud si el vale tiene ID de dosis maxima
-		Select mwkInsuMaxb
-		Go Top
+	Select mwkInsuMaxb
+	Go Top
 
-		Scan All
-			If mwkInsuMaxb.IdOptMax > 0
-				nIdOptMax = mwkInsuMaxb.IdOptMax
-				cObsMax = mwkInsuMaxb.ObsDMax
-				Exit
-			Endif
-		Endscan
+	Scan All
+		If mwkInsuMaxb.IdOptMax > 0
+			nIdOptMax = mwkInsuMaxb.IdOptMax
+			cObsMax = mwkInsuMaxb.ObsDMax
+			Exit
+		Endif
+	Endscan
 
-	Endif
+**Endif
 
 
 Else
@@ -291,21 +338,21 @@ Return .T.
 
 
 * --------------------------------------
-FUNCTION fHabDosisMaxima()
+Function fHabDosisMaxima()
 
-LOCAL lResult
+Local lResult
 
-lResult = .f.
+lResult = .F.
 
 Do sp_busco_estados With 57, " and tipo = 28  ","mwkHabDosisMax"
 
-SELECT mwkHabDosisMax
-GO top
+Select mwkHabDosisMax
+Go Top
 
-IF mwkHabDosisMax.Estado = 1
-   lResult = .t.
-ENDIF 
+If mwkHabDosisMax.Estado = 1
+	lResult = .T.
+Endif
 
-USE IN SELECT("mwkHabDosisMax")
+Use In Select("mwkHabDosisMax")
 
-RETURN lResult
+Return lResult
