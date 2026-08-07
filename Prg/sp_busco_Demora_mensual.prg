@@ -149,9 +149,6 @@ Next
 
 
 
-Set Step On 
-
-
 If (Reccount('mwkinfo')>0)
 	Select mwkinfo.*,Iif(Isnull(mwkInfoAUX.Id),Val_CodPun,mwkInfoAUX.Id) As idinfo, PRE_retiroestudios, ;
 		Pre_CodPrest,Space(10) As Demorado,mwkMedicosall1.nombre ;

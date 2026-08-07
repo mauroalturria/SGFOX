@@ -13,12 +13,13 @@ do case
 		lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio, ser_descripserv "+;
 			",guardia.codcie9 ,tabambulatorio.codcie9,pre_especialidad,pre_tipomuestra,tabambulatorio.codent as codentamb "+;
 			",guardia.codent as codentgua, tabbacteriotipomuestra.BAC_descripmuestra,TabSolPract.ASP_codmuestra"+;
-			",tabbacteriotipomuestra.BAC_codigomuestra,tabambulatorio.centromedico " +;
+			",tabbacteriotipomuestra.BAC_codigomuestra,tabambulatorio.centromedico,Tabciap2e.descrabrev  " +;
 			" from TabSolPract  " + ;
 			" left join prestacions on ASP_codprest = pre_codprest "+;
 			" left join tabambulatorio on ASP_protocolo = tabambulatorio.protocolo "+;
 			" left join guardia on ASP_protocolo = guardia.protocolo "+;
 			" left join servicios on pre_codservicio = ser_codserv "+;
+			" left join Tabciap2e on asp_codcie9  = Tabciap2e.id "+;
 			" left join tabbacteriotipomuestra on TabSolPract.ASP_codmuestra = tabbacteriotipomuestra.id " +;
 			tcWhere
 	case tnOpcion = 2

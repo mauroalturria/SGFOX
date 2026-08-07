@@ -4,7 +4,7 @@
 
 public mcon1, midusu, mpassw, mcodvax, mcon1, mresplog,myip,miform,mintcall,mxambito ,mxcentromedico
 mxambito  = 1
-mxcentromedico=1
+mxcentromedico=2
 set ansi on
 set bell off
 set cent on

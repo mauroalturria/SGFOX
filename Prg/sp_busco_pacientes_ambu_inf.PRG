@@ -1,5 +1,5 @@
 *!*	Gustavo Fittipaldi, 17/07/2012
-*!*	V5 - varias consultas 
+*!*	V5 - varias consultas
 *!*	-----------------------------------------------------
 *!*	Busqueda de Pacientes Ambulatorios
 *!*	-----------------------------------------------------
@@ -45,7 +45,7 @@ Endif
 mccpoamb = ''
 If mxambito >1
 	mccpoamb = "  and Tabambulatorio.codambito = ?mxambito "
-Endif 
+Endif
 
 mret = SQLExec(mcon1,"select PRE_descriprest as prestacion, PRE_codservicio, TabAmbulatorio.*, " + ;
 	" tabtipoaltas.tipoest, tabtipoaltas.descrip, TAM_mensaje, " + ;
@@ -54,10 +54,10 @@ mret = SQLExec(mcon1,"select PRE_descriprest as prestacion, PRE_codservicio, Tab
 	" inner join Prestacions on pre_codprest = TabAmbulatorio.codprest " + ;
 	" inner join tabtipoaltas on TabAmbulatorio.codestado = tabtipoaltas.id " + ;
 	" left join TabAmbMsg on TAM_protocolo = Tabambulatorio.protocolo " + ;
-    "    Left join (select * from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde  " + ;
-    "            and informes.EstadoInforme < 5) b " + ;
-    "            on Tabambulatorio.NroVale = b.nrovale " + ;
-    "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
+	"    Left join (select * from informes where tipoArch in ('TXT','PDF') and fechainforme >= ?mdesde  " + ;
+	"            and informes.EstadoInforme < 5) b " + ;
+	"            on Tabambulatorio.NroVale = b.nrovale " + ;
+	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
 	" where 1=1 and " + mbus + mbusAmb + mccpoamb  ,"mwkambula")
 
 If mret <= 0
@@ -83,7 +83,7 @@ mret = SQLExec(mcon1,"select fechahoraing,fechahoraate,REG_nombrepac as paciente
 	"TabAmbulatorio.id,TabAmbulatorio.codmed,TabAmbulatorio.codent,TabAmbulatorio.codestado,"+ ;
 	"Pre_Especialidad,Pre_CodServicio,Prestadores.NOMBRE as nombre,TabAmbulatorio.codprest"+ ;
 	",tabtipoaltas.tipoest,tabtipoaltas.descrip, REG_nroregistrac, TabAmbulatorio.nrovale, "+;
-	" TabEstados.Descrip as DescripInf, b.Id as InformesId, tipoArch , b.EstadoInforme " + ;
+	" TabEstados.Descrip as DescripInf, b.Id as InformesId, tipoArch , b.EstadoInforme,TabAmbulatorio.fechaarchivado  " + ;
 	" from TabAmbulatorio "+;
 	" join REgistracio on REG_nroregistrac = TabAmbulatorio.nroregistrac"+ ;
 	" join Prestacions on pre_codprest = TabAmbulatorio.codprest"+ ;
@@ -91,10 +91,10 @@ mret = SQLExec(mcon1,"select fechahoraing,fechahoraate,REG_nombrepac as paciente
 	" join tabtipoaltas on TabAmbulatorio.codestado = tabtipoaltas.id " + ;
 	" left join TabAmbMsg on TAM_protocolo = Tabambulatorio.protocolo "+ ;
 	" left join Prestadores on Prestadores.Id = CodMed " + ;
-    "    Left join (select * from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde  " + ;
-    "            and informes.EstadoInforme < 5) b " + ;
-    "            on Tabambulatorio.NroVale = b.nrovale " + ;
-    "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
+	"    Left join (select * from informes where tipoArch in ('TXT','PDF')  and fechainforme >= ?mdesde  " + ;
+	"            and informes.EstadoInforme < 5) b " + ;
+	"            on Tabambulatorio.NroVale = b.nrovale " + ;
+	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
 	" where TabAmbulatorio.demanda = 1 and " + mbus + ;
 	iif(Len(Alltrim(msel_med))>0," and TabAmbulatorio.codmed=?midmedico " ,"")+ ;
 	mbusAmb + mccpoamb  + " group by Tabambulatorio.id ","mwkdemanda")
@@ -109,7 +109,7 @@ mfectur1 = mdesde
 mccpoamb = ''
 If mxambito >1
 	mccpoamb = "  and turnos.codambito = ?mxambito "
-Endif 
+Endif
 
 mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos.codesp, " + ;
 	"turnos.diasem, turnos.codprest, afi_nroafiliado, reg_telefonos, " + ;
@@ -126,23 +126,23 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 	" from turnos " + ;
 	"Inner join registracio on turnos.afiliado = registracio.reg_nroregistrac " + ;
 	"Inner join afiliacion on registracio.reg_nroregistrac = afiliacion.registracio and " + ;
-		"turnos.codent = afiliacion.afi_codentidad " + ;
+	"turnos.codent = afiliacion.afi_codentidad " + ;
 	"Inner join medpresta on " + ;
-		"turnos.codmed   = medpresta.codmed and " + ;
-		"turnos.codprest = medpresta.codprest and " + ; 
-		"turnos.diasem	 = medpresta.diasem and " + ;
-		"turnos.fechatur >= medpresta.fecvigend and " + ;
-		"medpresta.fecvigend <> medpresta.fecvigenh and " + ;
-		"turnos.fechatur <  medpresta.fecvigenh and " + ;
-		"turnos.hhmmtur >= medpresta.hhmmdes and " + ;
-		"turnos.hhmmtur < medpresta.hhmmhas " + ;
+	"turnos.codmed   = medpresta.codmed and " + ;
+	"turnos.codprest = medpresta.codprest and " + ;
+	"turnos.diasem	 = medpresta.diasem and " + ;
+	"turnos.fechatur >= medpresta.fecvigend and " + ;
+	"medpresta.fecvigend <> medpresta.fecvigenh and " + ;
+	"turnos.fechatur <  medpresta.fecvigenh and " + ;
+	"turnos.hhmmtur >= medpresta.hhmmdes and " + ;
+	"turnos.hhmmtur < medpresta.hhmmhas " + ;
 	" join Prestacions on pre_codprest = turnos.codprest"+ ;
 	" left join Prestadores on Prestadores.Id = turnos.CodMed " + ;
-    "    Left join (select * from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde   " + ;
-    "            and informes.EstadoInforme < 5) b " + ;
-    "            on turnos .NroVale = b.nrovale " + ;
-    "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
-	" where 1=1 " + IIF(upper(LEFT(MSEL_med,3))="AND",''," AND ")+msel_med + mbusft + mBusTur + mccpoamb + ;
+	"    Left join (select * from informes where tipoArch in ('TXT','PDF') and fechainforme >= ?mdesde   " + ;
+	"            and informes.EstadoInforme < 5) b " + ;
+	"            on turnos .NroVale = b.nrovale " + ;
+	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
+	" where 1=1 " + Iif(Upper(Left(msel_med,3))="AND",''," AND ")+msel_med + mbusft + mBusTur + mccpoamb + ;
 	" group by turnos.fechatur, afi_nroafiliado, turnos.codreserva, turnos.codprest, turnos.nrovale ", "mwkphorario1")
 
 If mret <= 0
@@ -154,7 +154,7 @@ Endif
 mccpoamb = ''
 If mxambito >1
 	mccpoamb = "  and turnos.codambito = ?mxambito "
-Endif 
+Endif
 
 mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos.codesp,"+;
 	"preregistra.telefono as REG_telefonos," + ;
@@ -181,11 +181,11 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 	"turnos.hhmmtur < medpresta.hhmmhas " + ;
 	" join Prestacions on pre_codprest = turnos.codprest "+ ;
 	" left join Prestadores on Prestadores.Id = turnos.CodMed " + ;
-    "    Left join (select informes.* from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde  " + ;
-    "            and informes.EstadoInforme < 5) b " + ;
-    "            on turnos.NroVale = b.nrovale " + ;
-    "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
-    "where  1=1 and " + mbusft + mBusTur + mccpoamb +;
+	"    Left join (select informes.* from informes where tipoArch in ('TXT','PDF')  and fechainforme >= ?mdesde  " + ;
+	"            and informes.EstadoInforme < 5) b " + ;
+	"            on turnos.NroVale = b.nrovale " + ;
+	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
+	"where  1=1 and " + mbusft + mBusTur + mccpoamb +;
 	" group by turnos.fechatur,preregistra.afiliado,turnos.codreserva,turnos.codprest,turnos.nrovale","mwkphorario2")
 
 If mret <= 0
@@ -193,7 +193,7 @@ If mret <= 0
 	Messagebox("EN CONSULTA DE TURNOS PREREGISTRADOS" + Chr(10) + "AVISE A SISTEMAS",16,"ERROR")
 	Return .F.
 Endif
- 
+
 
 *!*	---------------------------------------------------------------------------------------
 *!*	FIN DE CONSULTAS AL MOTOR
@@ -203,7 +203,7 @@ Select horatur,reg_nombrepac,codprest,codent,fechanac,reg_nroregistrac,sala,codm
 	codserv,PRE_codservicio, Pre_Especialidad As CodEsp, nombre,codreserva,fechatur,fechaconfirma,Id As tid, ;
 	DescripInf, InformesId,  idturnoexterno,tipoturno ;
 	from mwkphorario1 ;
-Union ;
+	Union ;
 	select horatur,reg_nombrepac,codprest,codent,fechanac,0 As reg_nroregistrac,sala,codmed,nrovale,prestacion, ;
 	codserv, PRE_codservicio, Pre_Especialidad, nombre,codreserva,fechatur,fechaconfirma,Id As tid, ;
 	DescripInf, InformesId, idturnoexterno, tipoturno ;
@@ -214,7 +214,7 @@ Union ;
 *!*	Select horatur,reg_nombrepac,codprest,codent,fechanac,reg_nroregistrac,sala,codmed,nrovale,prestacion, ;
 *!*		codserv,PRE_codservicio, Pre_Especialidad As CodEsp, nombre,codreserva,fechatur,fechaconfirma,Id As tid, ;
 *!*		DescripInf, InformesId, tipoturno ;
-*!*		from mwkphorario3 ;	
+*!*		from mwkphorario3 ;
 
 Select * ;
 	From mwkphorariossin;
@@ -228,8 +228,8 @@ Select horatur,;
 	sala,mwkphorarios.codmed,mwkphorarios.codent,mwkAmbula.codent As codent1,Nvl(demanda,0) As demanda ,;
 	codestado,CodEsp,codserv,nombre,reg_nroregistrac,mwkphorarios.codprest,mwkAmbula.nrovale ;
 	,tipoest, idturnoexterno, ;
-	Iif(tipoturno = 3,'GI' + Space(50), Descrip) as Descrip,; 
-	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId ;
+	Iif(tipoturno = 3,'GI' + Space(50), Descrip) As Descrip,;
+	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId,fechaarchivado   ;
 	from mwkphorarios;
 	left Join mwkentidad On ENT_codent=mwkphorarios.codent ;
 	left Join mwkAmbula On (mwkAmbula.codprest = mwkphorarios.codprest ;
@@ -245,8 +245,8 @@ Select horatur,;
 	sala,mwkphorarios.codmed,mwkphorarios.codent,mwkAmbula.codent As codent1,Nvl(demanda,0) As demanda,;
 	codestado,CodEsp,codserv,nombre,reg_nroregistrac,mwkphorarios.codprest,mwkAmbula.nrovale ;
 	,tipoest,idturnoexterno,;
-	Iif(tipoturno = 3,'GI' + Space(50), Descrip) as Descrip,;
-	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId;
+	Iif(tipoturno = 3,'GI' + Space(50), Descrip) As Descrip,;
+	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId,fechaarchivado  ;
 	from mwkphorarios;
 	left Join mwkentidad On ENT_codent=mwkphorarios.codent ;
 	inner Join mwkAmbula On mwkAmbula.nrovale = mwkphorarios.nrovale;
@@ -254,12 +254,26 @@ Select horatur,;
 	group By reg_nroregistrac,horatur,mwkphorarios.codprest ;
 	into Cursor mwkambu1xv
 
+***   tabambula sin turno
+
+Select fechahoraing As horatur, fechahoraing,;
+	sp_busco_npac(mwkAmbula.nroregistrac ,8 ) As paciente, prestacion,	 ENT_descrient,ENT_nroprestadorexterno,;
+	sp_busco_npac(mwkAmbula.nroregistrac ,10 ) As fechanac,Space(200) As mensaje,  protocolo,;
+	mwkAmbula.Id,Space(10) As sala,codmed, codent, codent As codent1, fechaarchivado, demanda,;
+	codestado,CodEsp,PRE_codservicio As codserv,nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
+	nroregistrac As reg_nroregistrac, codprest, nrovale ;
+	,tipoest,Descrip,fechahoraate As fechaconfirma,0 As tid,SPACE(16) As idturnoexterno;
+	,DescripInf,  InformesId, tipoArch ,    EstadoInforme ;
+	from mwkAmbula ;
+	inner Join mwkentidad On ENT_codent= codent Left Join mwkmedicoamb On mwkmedicoamb.Id = codmed ;
+	group By reg_nroregistrac,horatur,codprest;
+	into Cursor mwkambu1st
 *
 Select * ;
 	From mwkambu1xp ;
 	Where Nvl(demanda,0) # 8 ;
 	union  ;
-Select * ;
+	Select * ;
 	From mwkambu1xv ;
 	Where Nvl(demanda,0) # 8 And nrovale ;
 	not In (Select nrovale From mwkambu1xp Where !Isnull(protocolo));
@@ -283,24 +297,52 @@ If Reccount('mwkdemanda')>0
 	Select horatur,Nvl(fechahoraing, Dtot({//})) As fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,Iif(Isnull(codent1),codent,codent1) As codent,;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  Nvl(DescripInf,Space(lnLenInf)) as DescripInf, InformesId ;
-	from mwkambu1;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId,fechaarchivado   ;
+		from mwkambu1;
 		union;
-	select fechahoraing As horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,Left(TAM_mensaje,200) As mensaje,;
+		select fechahoraing As horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,Left(TAM_mensaje,200) As mensaje,;
 		protocolo,Id,Space(20) As sala,codmed,codent,codestado,Pre_Especialidad,PRE_codservicio,nombre,;
 		demanda, reg_nroregistrac,codprest;
-		,tipoest,SPACE(16) as idturnoexterno,Descrip,fechahoraing As fechaconfirma,999999999-999999999 As tid, nrovale, ;
-		Nvl(DescripInf,Space(lnLenInf)) as DescripInf, InformesId;
-	from mwkdemanda ;
-	Where demanda # 8;
-	into Cursor &mcCursor
-	
+		,tipoest,Space(16) As idturnoexterno,Descrip,fechahoraing As fechaconfirma,999999999-999999999 As tid, nrovale, ;
+		Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId,fechaarchivado;
+		from mwkdemanda ;
+		Where demanda # 8;
+		into Cursor mwkambu1p
+
 Else
 
 	Select horatur,Nvl(fechahoraing, Dtot({//})) As fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,Iif(Isnull(codent1),codent,codent1) As codent,  ;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale, Nvl(DescripInf,Space(lnLenInf)) as DescripInf, InformesId;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale, Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId,fechaarchivado;
 		from mwkambu1;
+		into Cursor mwkambu1p
+ENDIF
+
+
+Select mwkambu1st.*,mwkambu1p.codprest As PRESTA10 From mwkambu1st Left Join mwkambu1p On ( mwkambu1st.codprest=mwkambu1p.codprest;
+	and mwkambu1st.protocolo=mwkambu1p.protocolo) Into Cursor MWKprevio
+ 
+Select * From MWKprevio Where Isnull(PRESTA10) Into Cursor  mwkambu1_st
+If Reccount('mwkambu1_st')>0
+	Select horatur,  fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
+		protocolo,Id,sala,codmed, codent,  ;
+		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId,fechaarchivado;
+		from mwkambu1p;
+		union;
+		SELECT horatur,  fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
+		protocolo,Id,sala,codmed, codent,  ;
+		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId,fechaarchivado;
+		from mwkambu1_st;
+		into Cursor &mcCursor
+Else
+	Select horatur,  fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
+		protocolo,Id,sala,codmed,  codent,  ;
+		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId,fechaarchivado;
+		from mwkambu1p;
 		into Cursor &mcCursor
 Endif
+

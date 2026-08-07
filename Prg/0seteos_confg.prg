@@ -100,7 +100,8 @@ lnexec = 1
 *	where Val_fechasolicitud >= DATEADD('dd',-12,current_date) AND 
 *  -RLV 16/10/2025: Agrego también la suma de las Cantidades de los items, para ver si hay vales que ANULAR completos:
 TEXT To lcsql Textmerge Noshow Pretext 7
-	select VAL_fechasolicitud, ser_codserv, VAL_codmnemoserv,VAL_codvaleasist, val_tipopaciente, val_nroprotocolo ,ser_descripserv, pacientes.pac_codhce,
+	select VAL_fechasolicitud, ser_codserv, VAL_codmnemoserv, VAL_codvaleasist, val_tipopaciente, val_nroprotocolo ,
+	    VAL_lugar_origen, ser_descripserv, pacientes.pac_codhce,
 	    SUM(PIA_cantsolicitada) as TotalSolicit,
 		Cast("" AS CHAR(20)) AS PACS, 
 		Cast("" AS CHAR(20)) AS INF, 
@@ -158,6 +159,29 @@ Scan All
 	mcantvales = mcantvales + 1
 	mvale = mwkaux.VAL_codvaleasist
 	? mcantvales, mvale, mwkaux.VAL_fechasolicitud, mwkaux.VAL_codmnemoserv, mwkaux.pac_codhce, mwkaux.val_nroprotocolo, mwkaux.val_tipopaciente
+	?? mwkaux.VAL_lugar_origen
+
+	** -RLV 27/07/2026: Analizo vales que vienen por admisión Markey:
+	*   esos casos, para conformarlos (y que pasen a SAP) deberían tener Nro. Vale Markey.
+	*   caso contrario, dejarlos sin conformar:
+	IF mwkaux.VAL_lugar_origen = '4' && Significa que el circuito de Admisión fue Markey
+		** Busco la existencia del Vale Markey:
+		SET STEP ON
+		
+		TEXT To lcsqlvalmk Textmerge Noshow Pretext 7
+		   SELECT CodigoValeMK
+	       FROM MDB.ZabHomoloVale
+	       WHERE NroValeSG = ?mwkaux.VAL_codvaleasist
+	    ENDTEXT
+		If SqlExec(mcon1,lcsqlvalmk,"mwkvalmk")<=0
+			Aerror(eros)
+			?eros(3)
+			Return .F.
+		ENDIF
+		IF RECCOUNT("mwkvalmk") = 0 OR EMPTY(mwkvalmk.CodigoValeMK)
+			LOOP  && Lo saltea
+		endif
+	ENDIF
 
 	* Reviso si todos los items están en CERO (para anular el conforme)
 	IF mwkAux.TotalSolicit = 0
@@ -215,6 +239,7 @@ Scan All
 			SELECT mwkValRel
 		ENDSCAN
 	
+
 		IF FlagConformable
 
 		 	??  mwkValRel.NroProtocolo, FechaHoraRealizado, FechaHoraImagen, ' *** CONFORMABLE!  ',lccriterio

@@ -30,14 +30,14 @@ Do Case
 Case lxcentro= 0 OR mxambito >1
 	mccentro = ''
 Case lxcentro=1
-	mccentro =  " and (sala not like '%LIMA%' AND sala not like '%CP%' ) "
+	mccentro =  " and (sala not like '%LI%' AND sala not like '%CP%' ) "
 Case lxcentro=2
-	mccentro =   " and sala like '%LIMA%' "
+	mccentro =   " and sala like '%LI%' "
 Case lxcentro=3
 	mccentro =   " and sala like '%CP%' "
 Case lxcentro=9
-	mccentro = Iif(mxcentromedico =1," and (sala not like '%LIMA%' AND sala not like '%CP%' ) ",;
-		Iif(mxcentromedico =2, " and sala like '%LIMA%' "," AND sala like '%CP%' "  ))
+	mccentro = Iif(mxcentromedico =1," and (sala not like '%LI%' AND sala not like '%CP%' ) ",;
+		Iif(mxcentromedico =2, " and sala like '%LI%' "," AND sala like '%CP%' "  ))
 Endcase
 
 mccpoamb = mccentro

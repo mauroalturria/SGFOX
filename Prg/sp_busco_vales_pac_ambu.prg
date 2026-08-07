@@ -39,7 +39,7 @@ Endi
 If Vartype(mcCursor)# "C"
 	mcCursor = "mwkvaleambu"
 Endif
-mret = SQLExec(mcon1,"select TabAmbulatorio.* "+;
+mret = SQLExec(mcon1,"select TabAmbulatorio.*,pre_codservicio as codiserv "+;
 	" from TabAmbulatorio inner join prestacions on codprest = pre_codprest"+;
 	" where fechaate  = ?mdesde  " +mbusamb ,mcursor)
 If mret < 0

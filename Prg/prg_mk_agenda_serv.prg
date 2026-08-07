@@ -1,12 +1,15 @@
-Lparameters xfdesde,xconsul,xcuil ,xserv
+Lparameters xfdesde,xconsul,xcuil ,xserv,xlok
 If myip='172.16.1.7'
 *	Set Step On
+Endif
+If Vartype(xlok)<>"L"
+	xlok = .F.
 Endif
 *https://serviciosqas.sg.com.ar/interfaces/markey_obtsalaespimg.php
 *    ?fecha=2026-01-09&consultorio=&profesional=23-33075564-4&servicio=
 Do sp_busco_estados With 57,' and tipo = 92 and subestado = ?mxcentromedico ','mwkAgendaMK'&&
 
-If mwkAgendaMK.estado = 1
+If mwkAgendaMK.estado = 1  Or xlok
 	lclink = Alltrim(mwkAgendaMK.Descrip)
 	lclink = lclink + '?fecha=' + Alltrim(xfdesde) + '&'+'consultorio=' + Transform(xconsul)
 	lclink = lclink + '&'+'profesional=' + Alltrim(xcuil ) + '&'+'servicio=' + Transform(xserv)
@@ -58,7 +61,7 @@ If mwkAgendaMK.estado = 1
 			,turnSobreTurno L,turnEspontaneo L,tuprCodigo N(10),procCodigoInterno N(10),procDescripcion c(50);
 			,procVirtual L,turnSeRetira T ,turnReemplazo L,mediCodigoReemplazado N(5),mediMedicoReemplazado c(50);
 			,tconCodigoInterno c(1),tconDescripcion c(20),turnAdmitido L,turnMostrar L,tuprCodigoInterno c(20),turCodigoInterno N(10);
-			)
+			, tuprCantidad N(2))
 
 
 		Do While Len(Alltrim(lcresp))>20
@@ -79,7 +82,7 @@ If mwkAgendaMK.estado = 1
 			lcpaciPaciente = json(lcresp,'paciPaciente',0)
 			lcpaciNroDocumento = Val(json(lcresp,'paciNroDocumento',0))
 			lcconsCodigoInterno = json(lcresp,'consCodigoInterno',0)
-			Do sp_busco_medico_cuit With lcmediCodigoInterno
+			Do sp_busco_medico_cuit With lcmediCodigoInterno,0  &&& con 0 no busca datos de poli
 			lcmediCodigo = MwkDatMedcuit.Id                &&&Val(json(lcresp,'mediCodigo',0)) trae el valor de mk
 			lcmediMedico = json(lcresp,'mediMedico',0)
 			lccobeDescripcion = json(lcresp,'cobeDescripcion',0)
@@ -110,27 +113,31 @@ If mwkAgendaMK.estado = 1
 			lcturnSeRetira = prg_ctod(Iif(lcjason ='null', "1900-01-01T00:00:00" ,lcjason ))
 			npositem = At('procedimientos',lcresp)+14
 			lcresp =Substr(lcresp ,npositem)
-			Do While Len(Alltrim(lcresp))>20 AND AT(']',Alltrim(lcresp))>10
+			Do While Len(Alltrim(lcresp))>20 And At(']',Alltrim(lcresp))>10
 				lctuprCodigoInterno = json(lcresp,'tuprCodigoInterno',0)
-				lcturCodigoInterno = Val(subStr(lctuprCodigoInterno ,At("ID",lctuprCodigoInterno )+3))
+				lcturCodigoInterno = Val(Substr(lctuprCodigoInterno ,At("ID",lctuprCodigoInterno )+3))
 				lcprocCodigoInterno = Val(json(lcresp,'procCodigoInterno',0))
 				lcprocDescripcion = json(lcresp,'procDescripcion',0)
 				lcturnFechaInicio =  prg_ctod(Strtran(Left(json(lcresp,'turnFechaInicio',0),19),"T"," "),'T')
 				lcjason =  json(lcresp,'procVirtual',0)
 				lcprocVirtual =  (lcjason<>'false')
+				LtuprCantidad = Val(json(lcresp,'tuprCantidad',0))
+				If LtuprCantidad = 0
+					LtuprCantidad = 1
+				Endif
 				Insert Into mwkjson  (MedicoCodigo,mediCodigoInterno,Medico,turnCodigoInterno,turnCodigo,turnFecha,turnFechaInicio,;
 					turnFechaFin,turnLlegada,paciCodigo,paciCodigoInterno,paciHistoriaClinica,paciPaciente,paciNroDocumento,;
 					mediCodigo,mediMedico,cobeDescripcion,planDescripcion,cobeCodigoInterno,planCodigoInterno,;
 					turnCodigoAdmision,turnCodigoVale,turnPrioridad,turnSobreTurno,turnEspontaneo,tuprCodigo,;
 					procCodigoInterno,procDescripcion,procVirtual,turnSeRetira,turnReemplazo ,mediCodigoReemplazado ,mediMedicoReemplazado,;
-					tconCodigoInterno,tconDescripcion,consCodigoInterno,tuprCodigoInterno,turCodigoInterno )  ;  
-				Values (lcMedicoCodigo,lcmediCodigoInterno,lcMedico,lcturnCodigoInterno,lcturnCodigo,lcturnFecha,lcturnFechaInicio,;
+					tconCodigoInterno,tconDescripcion,consCodigoInterno,tuprCodigoInterno,turCodigoInterno,tuprCantidad )  ;
+					Values (lcMedicoCodigo,lcmediCodigoInterno,lcMedico,lcturnCodigoInterno,lcturnCodigo,lcturnFecha,lcturnFechaInicio,;
 					lcturnFechaFin,lcturnLlegada,lcpaciCodigo,lcpaciCodigoInterno,lcpaciHistoriaClinica,lcpaciPaciente,lcpaciNroDocumento,;
 					lcmediCodigo,lcmediMedico,lccobeDescripcion,lcplanDescripcion,lccobeCodigoInterno,lcplanCodigoInterno,;
 					lcturnCodigoAdmision,lcturnCodigoVale,lcturnPrioridad,lcturnSobreTurno,lcturnEspontaneo,lctuprCodigo,;
 					lcprocCodigoInterno,lcprocDescripcion,lcprocVirtual,lcturnSeRetira,lcturnReemplazo ,lcmediCodigoReemplazado  ,lcmediMedicoReemplazado,;
-					lctconCodigoInterno,lctconDescripcion,lcconsCodigoInterno,lctuprCodigoInterno ,lcturCodigoInterno  )   
-				 
+					lctconCodigoInterno,lctconDescripcion,lcconsCodigoInterno,lctuprCodigoInterno ,lcturCodigoInterno,LtuprCantidad  )
+
 				npositem = At('}',lcresp)+1
 				lcresp =Substr(lcresp ,npositem)
 			Enddo

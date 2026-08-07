@@ -142,7 +142,7 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 	"turnos.hhmmtur < medpresta.hhmmhas " + mccpoambmp +;
 	" join Prestacions on pre_codprest = turnos.codprest"+ ;
 	" left join Prestadores on Prestadores.Id = turnos.CodMed " + ;
-	" where  " +mbuscocm + Iif(Upper(Left(MSEL_med,3))="AND",''," AND ")+msel_med + mbusft + mBusTur + mccpoamb + ;
+	" where  " +mbuscocm + Iif(Upper(Left(msel_med,3))="AND",''," AND ")+msel_med + mbusft + mBusTur + mccpoamb + ;
 	" group by turnos.horatur, afi_nroafiliado, turnos.codreserva, turnos.codprest, turnos.nrovale "+;
 	" order by turnos.horatur desc, afi_nroafiliado,turnos.codprest, turnos.nrovale ", "mwkphorario1") && turnos.codreserva,
 If mret <= 0
@@ -196,17 +196,17 @@ Select horatur,reg_nombrepac,codprest,codent,fechanac,reg_nrohclinica,REG_nroreg
 	codserv,PRE_codservicio, Pre_Especialidad As CodEsp, nombre,codreserva,fechatur,fechaconfirma,Id As tid,idturnoexterno ;
 	from mwkphorario1 ;
 	union ;
-	select horatur,reg_nombrepac,codprest,codent,fechanac,Space(10) As reg_nrohclinica,0 As reg_nroregistrac,sala,codmed,nrovale,prestacion, ;
+	select horatur,reg_nombrepac,codprest,codent,fechanac,Space(10) As reg_nrohclinica,0 As REG_nroregistrac,sala,codmed,nrovale,prestacion, ;
 	codserv, PRE_codservicio, Pre_Especialidad, nombre,codreserva,fechatur,fechaconfirma,Id As tid,idturnoexterno ;
 	from mwkphorario2 ;
 	into Cursor mwkphorariossin
 
 Select * From mwkphorariossin;
-	order By fechatur, reg_nroregistrac,  codprest,horatur Desc, nrovale;
+	order By fechatur, REG_nroregistrac,  codprest,horatur Desc, nrovale;
 	into Cursor mwkphorariossp
 
 Select * From mwkphorariossp;
-	group By fechatur,reg_nroregistrac,codprest;  &&,codreserva
+	group By fechatur,REG_nroregistrac,codprest;  &&,codreserva
 Into Cursor mwkphorarios
 
 Select horatur,;
@@ -242,11 +242,11 @@ Select horatur,;
 Select fechahoraing As horatur, fechahoraing,;
 	sp_busco_npac(mwkAmbula.nroregistrac ,8 ) As paciente, prestacion,	 ENT_descrient,ENT_nroprestadorexterno,sp_busco_npac(mwkAmbula.nroregistrac ,10 ) As fechanac,Space(200) As mensaje,  protocolo,;
 	mwkAmbula.Id,Space(10) As sala,codmed, codent, codent As codent1, archivado, demanda,;
-	codestado,CodEsp,pre_codservicio As codserv,nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
+	codestado,CodEsp,PRE_codservicio As codserv,nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
 	nroregistrac As REG_nroregistrac, codprest, nrovale ;
 	,tipoest,Descrip,fechahoraate As fechaconfirma,0 As tid,0 As idturnoexterno;
 	from mwkAmbula ;
-	inner Join mwkentidad On ENT_codent= codent Left Join mwkmedicoamb On mwkmedicoamb.Id = CodMed ;
+	inner Join mwkentidad On ENT_codent= codent Left Join mwkmedicoamb On mwkmedicoamb.Id = codmed ;
 	group By REG_nroregistrac,horatur,codprest;
 	into Cursor mwkambu1st
 
@@ -262,8 +262,15 @@ Select * From mwkambu10 ;
 
 Select * From mwkambu1_ Group By REG_nroregistrac,horatur,codprest;
 	into Cursor mwkambu1_1
-Select * From mwkambu1st Where protocolo Not In (Select protocolo From mwkambu10);
-	into Cursor mwkambu1_st
+
+Select mwkambu1st.*,mwkambu10.codprest As PRESTA10 From mwkambu1st Left Join mwkambu10 On ( mwkambu1st.codprest=mwkambu10.codprest;
+	and mwkambu1st.protocolo=mwkambu10.protocolo) Into Cursor MWKprevio
+
+Select * From MWKprevio Where Isnull(PRESTA10) Into Cursor  mwkambu1_st
+
+*!*
+*!*	Select * From mwkambu1st Where ALLTRIM(protocolo)+TRANSFORM(codprest) Not In (Select ALLTRIM(protocolo)+TRANSFORM(codprest) From mwkambu10);
+*!*		into Cursor mwkambu1_st
 
 If Reccount('mwkdemanda')>0
 	Select mwkdemanda
@@ -296,28 +303,28 @@ If Reccount('mwkambu1_st')>0
 	Select horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,codent, archivado, ;
 		codestado, CodEsp, codserv, nombre,demanda,reg_nrohclinica,REG_nroregistrac,codprest ;
-		,tipoest,Descrip,fechaconfirma,tid, nrovale,idturnoexterno,sp_busco_plan_reg_ent(REG_nroregistrac,codent) as plan;
+		,tipoest,Descrip,fechaconfirma,tid, nrovale,idturnoexterno,sp_busco_plan_reg_ent(REG_nroregistrac,codent) As plan;
 		from mwkambu1p;
 		union;
 		Select fechahoraing As horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac, mensaje,;
 		protocolo,Id, sala,codmed,codent,archivado,codestado, CodEsp, codserv,nombre,;
 		demanda, reg_nrohclinica,REG_nroregistrac,codprest;
-		,tipoest,Descrip, fechaconfirma,999999999-999999999 As tid, nrovale,Space(16) As idturnoexterno,sp_busco_plan_reg_ent(REG_nroregistrac,codent) as plan;
+		,tipoest,Descrip, fechaconfirma,999999999-999999999 As tid, nrovale,Space(16) As idturnoexterno,sp_busco_plan_reg_ent(REG_nroregistrac,codent) As plan;
 		from mwkambu1_st;
 		into Cursor &mcCursor
 Else
 	Select horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,codent, archivado, ;
 		codestado, CodEsp, codserv, nombre,demanda,reg_nrohclinica,REG_nroregistrac,codprest ;
-		,tipoest,Descrip,fechaconfirma,tid, nrovale,idturnoexterno,sp_busco_plan_reg_ent(REG_nroregistrac,codent) as plan;
+		,tipoest,Descrip,fechaconfirma,tid, nrovale,idturnoexterno,sp_busco_plan_reg_ent(REG_nroregistrac,codent) As plan;
 		from mwkambu1p;
 		into Cursor &mcCursor
 Endif
 
-USE IN SELECT('mwkambu1p')
-USE IN SELECT('mwkambu1_st')
-USE IN SELECT('mwkambu1_1')
-USE IN SELECT('mwkambu10')
-USE IN SELECT('mwkambu1st')
-USE IN SELECT('mwkambu1xv')
-USE IN SELECT('mwkambu1xp') 
+Use In Select('mwkambu1p')
+Use In Select('mwkambu1_st')
+Use In Select('mwkambu1_1')
+Use In Select('mwkambu10')
+Use In Select('mwkambu1st')
+Use In Select('mwkambu1xv')
+Use In Select('mwkambu1xp')

@@ -22,8 +22,8 @@ mccpoamb = ''
 mccpocmed = ''
 mccentro =''
 If lxcentro=1
-	mccentro = Iif(mxambito = 1,Iif(mxcentromedico =1," and (sala not like '%LIMA%' AND sala not like '%CP%' ) ",;
-		Iif(mxcentromedico =2, " and sala like '%LIMA%' "," AND sala like '%CP%' "  )),' ')
+	mccentro = Iif(mxambito = 1,Iif(mxcentromedico =1," and (sala not like '%LI%' AND sala not like '%CP%' ) ",;
+		Iif(mxcentromedico =3, " AND sala like '%CP%' "," and sala like '%LI%' "  )),' ')
 Endif
 mccpoamb = mccentro
 If mxambito >1

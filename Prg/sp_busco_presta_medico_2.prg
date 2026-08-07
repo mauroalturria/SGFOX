@@ -12,8 +12,8 @@ If mxambito >1
 	mccpoamb = "  and medpresta.codambito = ?mxambito "
 Endif
 
-mccentro = Iif(mxambito = 1,Iif(mxcentromedico =1," and (sala not like '%LIMA%' AND sala not like '%CP%' ) ",;
-		Iif(mxcentromedico =2, " and sala like '%LIMA%' "," AND sala like '%CP%' "  )),' ')
+mccentro = Iif(mxambito = 1,Iif(mxcentromedico =1," and (sala not like '%LI%' AND sala not like '%CP%' ) ",;
+		Iif(mxcentromedico =2, " and sala like '%LI%' "," AND sala like '%CP%' "  )),' ')
 
 If Type('mfecdiat') = "D"
 	mdiasemana = Dow(mfecdiat)

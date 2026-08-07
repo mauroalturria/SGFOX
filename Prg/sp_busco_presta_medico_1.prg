@@ -6,8 +6,8 @@ Parameter mcodmed,mfecdiat,lsolofecha
 If Vartype(lsolofecha)#"N"
 	lsolofecha = 0
 Endif
-mccentro = Iif(mxambito = 1,Iif(mxcentromedico =1," and (sala not like '%LIMA%' AND sala not like '%CP%' ) ",;
-		Iif(mxcentromedico =2, " and sala like '%LIMA%' "," AND sala like '%CP%' "  )),' ')
+mccentro = Iif(mxambito = 1,Iif(mxcentromedico =1," and (sala not like '%LI%' AND sala not like '%CP%' ) ",;
+		Iif(mxcentromedico =2, " and sala like '%LI%' "," AND sala like '%CP%' "  )),' ')
 
 Use In Select("mwkbustexto")
 

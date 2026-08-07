@@ -1,4 +1,5 @@
 Lparameters mOpcion, lnIdAmb, lnDemanda, lnVale,lnestado
+*SET STEP ON 
 
 Do Case 
 

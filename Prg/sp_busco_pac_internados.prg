@@ -1,7 +1,7 @@
 ****
 ** busco internados
 ****
-Parameters mbusco1, msql_pac, lpacvip, lnevaluado
+Parameters mbusco1, msql_pac, lpacvip, lnevaluado,lcondiag
 
 If !Used('mwkusuariosall')
 	Do sp_busco_usuarios_all
@@ -13,6 +13,9 @@ If Vartype(lpacvip)#"N"
 	lpacvip = 0
 Endif
 
+If Vartype(lcondiag)#"N"
+	lcondiag = 1
+Endif
 msep = ":"
 If !Used('mwkplanpre')
 
@@ -100,13 +103,20 @@ mwhere = Iif( lpacvip = 0,' where !INLIST(Nvl(TPV_Estado,0),1,3) ','')
 
 mret = SQLExec(mcon1, "select fecpasiva,codent from entidexclu where tpopac='INT'  and tipoturno = 0","mwkentex")
 
-Select *,sp_busco_diagHCI(PAC_codadmision) As diagnoint,PAC_descripdiagn As diagnoadm;
-	,alertaegreso(PAC_codhci,1) As alertas,Padr(alertaegreso(PAC_codhci,2),200) As calertas;
-	From mwkpacint0;  &&sp_busco_diagHCI(PAC_codadmision) as diagnoint
-Left Join mwkentex On mwkentex.codent = ENT_codent;
-	&mwhere Into Cursor mwkpacint0
-
-
+If lcondiag= 1
+	Select *,sp_busco_diagHCI(PAC_codadmision) As diagnoint,PAC_descripdiagn As diagnoadm;
+		,alertaegreso(PAC_codhci,1) As alertas,Padr(alertaegreso(PAC_codhci,2),200) As calertas;
+		From mwkpacint0;
+		Left Join mwkentex On mwkentex.codent = ENT_codent;
+		&mwhere Into Cursor mwkpacint0
+ ELSE
+ 	Select *,PAC_descripdiagn  As diagnoint,PAC_descripdiagn As diagnoadm;
+		,0 As alertas,SPACE(200) As calertas;
+		From mwkpacint0;
+		Left Join mwkentex On mwkentex.codent = ENT_codent;
+		&mwhere Into Cursor mwkpacint0
+ 
+Endif
 midiahoy = sp_busco_fecha_serv("DD")
 If Inlist(mwkexe.nomexe ,'ADMISION', 'CONSULTAS')
 
@@ -124,7 +134,7 @@ If Inlist(mwkexe.nomexe ,'ADMISION', 'CONSULTAS')
 		,ORICodAutoriz,ORINroOrden, ORIObservac, ORItipoorden, ORIVigDesde,;
 		pac_denuncia,pac_fotocrechab,pac_fotocdni,pac_fotoccarnetos,pac_ordeninternac,PAC_urgenprogramad,altatadm,;
 		REG_tipodocumento, REG_numdocumento, lid, lregistracion, SEC_circaltas,;
-		PAC_nombrerespons,PAC_motivoadmision,ORIDIASVIGENCIA,tipogermen(PAC_codadmision,PAC_categoria) As germenes,diagnoadm,alertas ;
+		PAC_nombrerespons,PAC_motivoadmision,oridiasvigencia,tipogermen(PAC_codadmision,PAC_categoria) As germenes,diagnoadm,alertas ;
 		From mwkpacint0 ;
 		left Join  mwkusuariosall As tabusuario1 On PAC_operadm  = tabusuario1.codigovax;
 		left Join  mwkusuariosall As tabusuario2 On PAC_operalta = tabusuario2.codigovax;
@@ -148,7 +158,7 @@ Else
 		,ORICodAutoriz,ORINroOrden, ORIObservac, ORItipoorden, ORIVigDesde,;
 		pac_denuncia,pac_fotocrechab,pac_fotocdni,pac_fotoccarnetos,pac_ordeninternac,PAC_urgenprogramad,altatadm, SEC_circaltas,;
 		PAC_nombrerespons,PAC_motivoadmision ;
-		,REG_tipodocumento, REG_numdocumento,ORIDIASVIGENCIA,tipogermen(PAC_codadmision,PAC_categoria) As germenes,diagnoadm,alertas   ;
+		,REG_tipodocumento, REG_numdocumento,oridiasvigencia,tipogermen(PAC_codadmision,PAC_categoria) As germenes,diagnoadm,alertas   ;
 		From mwkpacint0 ;
 		left Join  mwkusuariosall As tabusuario1 On PAC_operadm  = tabusuario1.codigovax;
 		left Join  mwkusuariosall As tabusuario2 On PAC_operalta = tabusuario2.codigovax;

@@ -53,7 +53,7 @@ If mxambito=1
 	lfechaturno      	= mwkTurnoid.fechatur
 	lhoraturno		= mwkTurnoid.hhmmTur
 
-	lcSql = "select * from MedPresta where codprest = ?lnbuscopresta and codmed = ?lnbuscomedico and diasem = ?lndiasemana and  (?lfechaturno BETWEEN fecVigend and fecVigenH) and (?lhoraturno BETWEEN hhmmDes AND hhmmHas) AND sala like '%LIMA%'"
+	lcSql = "select * from MedPresta where codprest = ?lnbuscopresta and codmed = ?lnbuscomedico and diasem = ?lndiasemana and  (?lfechaturno BETWEEN fecVigend and fecVigenH) and (?lhoraturno BETWEEN hhmmDes AND hhmmHas) AND sala like '%LI%'"
 	If !Prg_EjecutoSql(lcSql,'mwkLima')
 		Return .F.
 	Endif

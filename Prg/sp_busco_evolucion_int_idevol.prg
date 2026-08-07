@@ -242,7 +242,7 @@ Case xctipo = "EM"
 				Else
 					Select * From mwkEvolmedo Union All Select * From mwkEvolmed Into Cursor mwkEvolmeda
 				Endif
-				If Reccount('mwkEvolmeda)>=xncantreg
+				If Reccount('mwkEvolmeda')>=xncantreg
 					Exit
 				Endif
 			Endscan
@@ -294,7 +294,7 @@ Case xctipo = "II"
 				Else
 					Select * From mwkEvolmedo Union All Select * From mwkEvolmed Into Cursor mwkEvolmeda
 				Endif
-				If Reccount('mwkEvolmeda)>=xncantreg
+				If Reccount('mwkEvolmeda')>=xncantreg
 					Exit
 				Endif
 			Endscan

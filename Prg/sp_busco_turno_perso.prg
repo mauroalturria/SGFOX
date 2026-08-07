@@ -15,8 +15,8 @@ If mxambito >1
 	mccpoamb = "  t.codambito = ?mxambito and medpresta.codambito = ?mxambito and "
 Endif
 *mccentro = Iif(mcentro=1,' where  AT("LIMA",sala)=0 ', ' where  AT("LIMA",sala)>0 ')
-mccentro =  Iif(mxambito = 1,Iif(mcentro=1,' where  (AT("LIMA",sala)=0 and  AT("CP",sala)=0) ', ;
-	Iif(mcentro=2,' where   AT("LIMA",sala)>0 ', ' where  AT("CP",sala)>0 ')),' ')
+mccentro =  Iif(mxambito = 1,Iif(mcentro=1,' where  (AT("LI",sala)=0 and  AT("CP",sala)=0) ', ;
+	Iif(mcentro=2,' where   AT("LI",sala)>0 ', ' where  AT("CP",sala)>0 ')),' ')
 If Type('mfecha')#"D"
 	mfecha = Ctod("01/01/1900")
 Endif

@@ -120,7 +120,7 @@ Else
 				" iif(diasem = 2, 'Lun', iif(diasem = 3, 'Mar', " + ;
 				" iif(diasem = 4, 'Mie', iif(diasem = 5, 'Jue', " + ;
 				" iif(diasem = 6, 'Vie', iif(diasem = 7, 'Sab', 'Dom')))))) as dia,"+;
-				" IIF(AT('LIMA',sala)>0,'CL',IIF(AT('CP',sala)>0,'CC','  ')) as cm, " + ;
+				" IIF(AT('LI',sala)>0,'CL',IIF(AT('CP',sala)>0,'CC','  ')) as cm, " + ;
 				" left(ttoc(horadesde,2), 5) as desde,reservados,liberable, " + ;
 				" left(ttoc(horahasta,2), 5) as hasta, id, sala, codmed, diasem, fechatur, horatur, codesp, fechagenera " + ;
 				iif(lbcampo,", Myambi" , ", mxambito as Myambi") +;

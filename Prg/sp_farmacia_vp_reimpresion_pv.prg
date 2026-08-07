@@ -5,17 +5,17 @@
 Lparameters nIdPre, pChkVer, mTipo, mVale
 
 *Set Step On
-LOCAL cWhere
+Local cWhere
 
-IF VARTYPE(mVale) <> "N"
-   mVale = 0
-ENDIF
+If Vartype(mVale) <> "N"
+	mVale = 0
+Endif
 
 cWhere = ""
 
-IF mVale > 0
-   cWhere = " and TVE_vale = " + TRANSFORM(mVale) + " "
-ENDIF 
+If mVale > 0
+	cWhere = " and TVE_vale = " + Transform(mVale) + " "
+Endif
 
 Do sp_farmacia_vp_tomados_pv With ,"I",nIdPre
 
@@ -55,39 +55,39 @@ Select TVE_vale As _vale, ;
 
 
 *!*	TEXT To cSql Textmerge Noshow Pretext 7
-*!*	Select TVE_vale As _vale, 
-*!*		TVE_insumocodigo As _codins, 
-*!*		ins_descriinsumo As _insumo, 
-*!*		PAC_nombrepaciente As _paciente,  
-*!*		TVE_Soli As _cantidad, 
-*!*		TVE_Entrega As _entregad, 
-*!*		TVE_TipoEnt As _tipo , 
-*!*		TVE_Frio As _frio, 
-*!*		TVE_ObsItem As _observ, 
-*!*		TVE_Sector As _sector, 
-*!*		VAL_habitacion As _hab, 
-*!*		VAL_cama As _cama, 
-*!*		DTOC(VAL_fechasolicitud) As _fechaval, 
-*!*		VAL_codadmision As _cta, 
-*!*		VAL_horasolicitud As _horaVal, 
-*!*		0 As _secu, 
-*!*		'' As _verifica, 
-*!*		0 As lpuntero, 
-*!*		0 As mlcolor, 
-*!*		transform(PAC_edad) As _PAC_edad, 
-*!*		'' As _ENT_descrient, 
-*!*		0 As enPyxis, 
-*!*		'' As _gtin, 
+*!*	Select TVE_vale As _vale,
+*!*		TVE_insumocodigo As _codins,
+*!*		ins_descriinsumo As _insumo,
+*!*		PAC_nombrepaciente As _paciente,
+*!*		TVE_Soli As _cantidad,
+*!*		TVE_Entrega As _entregad,
+*!*		TVE_TipoEnt As _tipo ,
+*!*		TVE_Frio As _frio,
+*!*		TVE_ObsItem As _observ,
+*!*		TVE_Sector As _sector,
+*!*		VAL_habitacion As _hab,
+*!*		VAL_cama As _cama,
+*!*		DTOC(VAL_fechasolicitud) As _fechaval,
+*!*		VAL_codadmision As _cta,
+*!*		VAL_horasolicitud As _horaVal,
+*!*		0 As _secu,
+*!*		'' As _verifica,
+*!*		0 As lpuntero,
+*!*		0 As mlcolor,
+*!*		transform(PAC_edad) As _PAC_edad,
+*!*		'' As _ENT_descrient,
+*!*		0 As enPyxis,
+*!*		'' As _gtin,
 *!*		'' As _serie, ;
-*!*		IIF(TVE_tipo = 'E',.T.,.F.) As esExterno, 
-*!*		PAC_nombrepaciente, 
-*!*		TVE_Entrega , 
-*!*		TVE_ParaAlta As FPT_paraalta, 
-*!*		TRANSFORM(REG_numdocumento) As PAC_ldocumento 
-*!*		FROM mwkconpre1 
-*!*		WHERE TVE_tipo = '<<mTipo>>' <<cWhere>> 
+*!*		IIF(TVE_tipo = 'E',.T.,.F.) As esExterno,
+*!*		PAC_nombrepaciente,
+*!*		TVE_Entrega ,
+*!*		TVE_ParaAlta As FPT_paraalta,
+*!*		TRANSFORM(REG_numdocumento) As PAC_ldocumento
+*!*		FROM mwkconpre1
+*!*		WHERE TVE_tipo = '<<mTipo>>' <<cWhere>>
 *!*		INTO Cursor mwkFarm49a
-*!*	ENDTEXT 
+*!*	ENDTEXT
 
 *!*	EVALUATE(cSql)
 
@@ -98,7 +98,12 @@ If Reccount() > 0
 * Arma e imprime los tickets
 	armoticket(nIdPre,pChkVer)
 Else
-	Messagebox("No se encontraron registros para esta selección: " +CHR(10)+ CHR(10) + IIF(mTipo= "K", "KARDEX", "EXTERNOS"),16,"Re Impresión")
+	If mVale > 0
+		Messagebox("No se encontraron registros para esta selección: " +Chr(10)+ "Vale : " + Transform(mVale)+Chr(10) + Iif(mTipo= "K", "KARDEX", "EXTERNOS"),16,"Re Impresión")
+	Else
+		Messagebox("No se encontraron registros para esta selección: " +Chr(10)+ Chr(10) + Iif(mTipo= "K", "KARDEX", "EXTERNOS"),16,"Re Impresión")
+	Endif
+
 	Use In Select("mwkFarm49a")
 Endif
 

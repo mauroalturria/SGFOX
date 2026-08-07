@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 27/05/2026         CONSULTASMENU.MPR          12:48:37  
+*       * 29/07/2026         CONSULTASMENU.MPR          11:18:39  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,48 +26,48 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7h50rggk3 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opp OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7h50rggk4 OF _MSYSMENU PROMPT "Mesa de Admision" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opq OF _MSYSMENU PROMPT "Mesa de Admision" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
-DEFINE PAD _7h50rggk5 OF _MSYSMENU PROMPT "Admisión" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opr OF _MSYSMENU PROMPT "Admisión" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7h50rggk6 OF _MSYSMENU PROMPT "Guardia" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8ops OF _MSYSMENU PROMPT "Guardia" COLOR SCHEME 3 ;
 	KEY ALT+G, ""
-DEFINE PAD _7h50rggk7 OF _MSYSMENU PROMPT "Archivo" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opt OF _MSYSMENU PROMPT "Archivo" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7h50rggk8 OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opu OF _MSYSMENU PROMPT "Turnos" COLOR SCHEME 3 ;
 	KEY ALT+T, ""
-DEFINE PAD _7h50rggk9 OF _MSYSMENU PROMPT "Internación" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opv OF _MSYSMENU PROMPT "Internación" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7h50rggka OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opw OF _MSYSMENU PROMPT "Informes Generales" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7h50rggkb OF _MSYSMENU PROMPT "HDO" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opx OF _MSYSMENU PROMPT "HDO" COLOR SCHEME 3 ;
 	KEY ALT+H, ""
-DEFINE PAD _7h50rggkc OF _MSYSMENU PROMPT "Ambulatorio" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opy OF _MSYSMENU PROMPT "Ambulatorio" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7h50rggkd OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8opz OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7h50rggke OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
+DEFINE PAD _7iw0o8oq0 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7h50rggk3 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7h50rggk4 OF _MSYSMENU ACTIVATE POPUP mesadeadmi
-ON PAD _7h50rggk5 OF _MSYSMENU ACTIVATE POPUP admisión
-ON PAD _7h50rggk6 OF _MSYSMENU ACTIVATE POPUP guardia
-ON PAD _7h50rggk7 OF _MSYSMENU ACTIVATE POPUP archivo
-ON PAD _7h50rggk8 OF _MSYSMENU ACTIVATE POPUP turnos
-ON PAD _7h50rggk9 OF _MSYSMENU ACTIVATE POPUP internació
-ON PAD _7h50rggka OF _MSYSMENU ACTIVATE POPUP informesge
-ON PAD _7h50rggkb OF _MSYSMENU ACTIVATE POPUP hdo
-ON PAD _7h50rggkc OF _MSYSMENU ACTIVATE POPUP ambulatori
-ON PAD _7h50rggkd OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7h50rggke OF _MSYSMENU ACTIVATE POPUP usuarios
+ON PAD _7iw0o8opp OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7iw0o8opq OF _MSYSMENU ACTIVATE POPUP mesadeadmi
+ON PAD _7iw0o8opr OF _MSYSMENU ACTIVATE POPUP admisión
+ON PAD _7iw0o8ops OF _MSYSMENU ACTIVATE POPUP guardia
+ON PAD _7iw0o8opt OF _MSYSMENU ACTIVATE POPUP archivo
+ON PAD _7iw0o8opu OF _MSYSMENU ACTIVATE POPUP turnos
+ON PAD _7iw0o8opv OF _MSYSMENU ACTIVATE POPUP internació
+ON PAD _7iw0o8opw OF _MSYSMENU ACTIVATE POPUP informesge
+ON PAD _7iw0o8opx OF _MSYSMENU ACTIVATE POPUP hdo
+ON PAD _7iw0o8opy OF _MSYSMENU ACTIVATE POPUP ambulatori
+ON PAD _7iw0o8opz OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7iw0o8oq0 OF _MSYSMENU ACTIVATE POPUP usuarios
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7h50rggkf ;
+	DO _7iw0o8oq1 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -77,10 +77,10 @@ DEFINE BAR 1 OF mesadeadmi PROMPT "Operador de Box" ;
 DEFINE BAR 2 OF mesadeadmi PROMPT "Listados" ;
 	SKIP FOR type('mFRMMESA4') = 'U'
 ON SELECTION BAR 1 OF mesadeadmi ;
-	DO _7h50rggkg ;
+	DO _7iw0o8oq2 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 2 OF mesadeadmi ;
-	DO _7h50rggkh ;
+	DO _7iw0o8oq3 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 
 DEFINE POPUP admisión MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -182,10 +182,10 @@ DEFINE BAR 1 OF archivo PROMPT "H.Clinicas Unificadas" ;
 DEFINE BAR 2 OF archivo PROMPT "Informe H.C.Unif y Pasajes Consum" ;
 	SKIP FOR type('mfrmturno89') = 'U'
 ON SELECTION BAR 1 OF archivo ;
-	DO _7h50rggki ;
+	DO _7iw0o8oq5 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 2 OF archivo ;
-	DO _7h50rggkj ;
+	DO _7iw0o8oq6 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 
 DEFINE POPUP turnos MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -251,10 +251,10 @@ DEFINE BAR 31 OF turnos PROMPT "Diagnosticos de Alta" ;
 DEFINE BAR 32 OF turnos PROMPT "Producción Enfermería" ;
 	SKIP FOR type('mfrmambula37') = 'U'
 ON SELECTION BAR 1 OF turnos ;
-	DO _7h50rggkk ;
+	DO _7iw0o8oq7 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 2 OF turnos ;
-	DO _7h50rggkl ;
+	DO _7iw0o8oq8 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 3 OF turnos do form frmmedicos03
 ON SELECTION BAR 4 OF turnos do form frmmedicos04
@@ -263,45 +263,45 @@ ON SELECTION BAR 6 OF turnos do form frmturno72
 ON SELECTION BAR 7 OF turnos do form frmturno16b
 ON SELECTION BAR 8 OF turnos do form frmturno16
 ON SELECTION BAR 10 OF turnos ;
-	DO _7h50rggkm ;
+	DO _7iw0o8oq9 ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 11 OF turnos ;
-	DO _7h50rggkn ;
+	DO _7iw0o8oqa ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 12 OF turnos ;
-	DO _7h50rggko ;
+	DO _7iw0o8oqb ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 13 OF turnos ;
-	DO _7h50rggkp ;
+	DO _7iw0o8oqc ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 14 OF turnos ;
-	DO _7h50rggkq ;
+	DO _7iw0o8oqd ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 15 OF turnos ;
-	DO _7h50rggkr ;
+	DO _7iw0o8oqe ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 16 OF turnos ;
-	DO _7h50rggks ;
+	DO _7iw0o8oqf ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 17 OF turnos ;
-	DO _7h50rggkt ;
+	DO _7iw0o8oqg ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 18 OF turnos ;
-	DO _7h50rggku ;
+	DO _7iw0o8oqh ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 19 OF turnos ;
-	DO _7h50rggkv ;
+	DO _7iw0o8oqi ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 20 OF turnos ;
-	DO _7h50rggkw ;
+	DO _7iw0o8oqj ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 21 OF turnos do form frmturno79
 ON SELECTION BAR 22 OF turnos do form frmturno80
 ON SELECTION BAR 23 OF turnos ;
-	DO _7h50rggkx ;
+	DO _7iw0o8oqk ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 24 OF turnos ;
-	DO _7h50rggky ;
+	DO _7iw0o8oql ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 25 OF turnos do form frmturno65
 ON SELECTION BAR 26 OF turnos do form frmturno94
@@ -377,7 +377,7 @@ ON SELECTION BAR 7 OF informesge do form frmplan09
 ON SELECTION BAR 8 OF informesge do form frmplan19
 ON SELECTION BAR 9 OF informesge do form frmplan11
 ON SELECTION BAR 10 OF informesge ;
-	DO _7h50rggkz ;
+	DO _7iw0o8oqm ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 11 OF informesge do form frmconsul10
 ON SELECTION BAR 13 OF informesge do form frmcaja00
@@ -431,14 +431,14 @@ DEFINE BAR 2 OF usuarios PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuarios PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuarios do form frmpass_amb
 ON SELECTION BAR 2 OF usuarios ;
-	DO _7h50rggl0 ;
+	DO _7iw0o8oqn ;
 	IN LOCFILE("MNU\CONSULTASMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is CONSULTASMENU?")
 ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKF  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7IW0O8OQ1  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -449,14 +449,14 @@ ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkf
+PROCEDURE _7iw0o8oq1
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKG  ON SELECTION BAR 1 OF POPUP mesadeadmi      
+*       * _7IW0O8OQ2  ON SELECTION BAR 1 OF POPUP mesadeadmi      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -467,7 +467,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkg
+PROCEDURE _7iw0o8oq2
 do mesaconsulta.exe
 do consultasmenu.mpr
 read event
@@ -478,7 +478,7 @@ read event
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKH  ON SELECTION BAR 2 OF POPUP mesadeadmi      
+*       * _7IW0O8OQ3  ON SELECTION BAR 2 OF POPUP mesadeadmi      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -489,7 +489,7 @@ read event
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkh
+PROCEDURE _7iw0o8oq3
 do mesalistado.exe
 do consultasmenu.mpr
 read event
@@ -498,7 +498,7 @@ read event
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKI  ON SELECTION BAR 1 OF POPUP archivo         
+*       * _7IW0O8OQ5  ON SELECTION BAR 1 OF POPUP archivo         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -509,7 +509,7 @@ read event
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggki
+PROCEDURE _7iw0o8oq5
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -520,7 +520,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKJ  ON SELECTION BAR 2 OF POPUP archivo         
+*       * _7IW0O8OQ6  ON SELECTION BAR 2 OF POPUP archivo         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -531,7 +531,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkj
+PROCEDURE _7iw0o8oq6
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -542,7 +542,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKK  ON SELECTION BAR 1 OF POPUP turnos          
+*       * _7IW0O8OQ7  ON SELECTION BAR 1 OF POPUP turnos          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -553,7 +553,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkk
+PROCEDURE _7iw0o8oq7
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -563,7 +563,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKL  ON SELECTION BAR 2 OF POPUP turnos          
+*       * _7IW0O8OQ8  ON SELECTION BAR 2 OF POPUP turnos          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -574,7 +574,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkl
+PROCEDURE _7iw0o8oq8
 public mtfhoy,mfecturno
 do sp_conexion
 do sp_medicos
@@ -588,7 +588,7 @@ do sp_desconexion with "consulta_ turno18"
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKM  ON SELECTION BAR 10 OF POPUP turnos         
+*       * _7IW0O8OQ9  ON SELECTION BAR 10 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -599,7 +599,7 @@ do sp_desconexion with "consulta_ turno18"
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkm
+PROCEDURE _7iw0o8oq9
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -610,7 +610,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKN  ON SELECTION BAR 11 OF POPUP turnos         
+*       * _7IW0O8OQA  ON SELECTION BAR 11 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -621,7 +621,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkn
+PROCEDURE _7iw0o8oqa
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -632,7 +632,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKO  ON SELECTION BAR 12 OF POPUP turnos         
+*       * _7IW0O8OQB  ON SELECTION BAR 12 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -643,7 +643,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggko
+PROCEDURE _7iw0o8oqb
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -654,7 +654,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKP  ON SELECTION BAR 13 OF POPUP turnos         
+*       * _7IW0O8OQC  ON SELECTION BAR 13 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -665,7 +665,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkp
+PROCEDURE _7iw0o8oqc
 lcdirlocal  = "C:\qepd1a1\Exe\listarendi.EXE"
 mcrun = lcdirlocal + "  " + TRANSFORM(mxcentromedico)+","+TRANSFORM(mxambito)+",2"
 Run /N &mcrun
@@ -675,7 +675,7 @@ Run /N &mcrun
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKQ  ON SELECTION BAR 14 OF POPUP turnos         
+*       * _7IW0O8OQD  ON SELECTION BAR 14 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -686,7 +686,7 @@ Run /N &mcrun
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkq
+PROCEDURE _7iw0o8oqd
 lcdirlocal  = "C:\qepd1a1\Exe\listarendi.EXE"
 mcrun = lcdirlocal + "  " + TRANSFORM(mxcentromedico)+","+TRANSFORM(mxambito)+",1"
 Run /N &mcrun
@@ -696,7 +696,7 @@ Run /N &mcrun
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKR  ON SELECTION BAR 15 OF POPUP turnos         
+*       * _7IW0O8OQE  ON SELECTION BAR 15 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -707,7 +707,7 @@ Run /N &mcrun
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkr
+PROCEDURE _7iw0o8oqe
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -718,7 +718,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKS  ON SELECTION BAR 16 OF POPUP turnos         
+*       * _7IW0O8OQF  ON SELECTION BAR 16 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -729,7 +729,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggks
+PROCEDURE _7iw0o8oqf
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -740,7 +740,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKT  ON SELECTION BAR 17 OF POPUP turnos         
+*       * _7IW0O8OQG  ON SELECTION BAR 17 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -751,7 +751,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkt
+PROCEDURE _7iw0o8oqg
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -763,7 +763,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKU  ON SELECTION BAR 18 OF POPUP turnos         
+*       * _7IW0O8OQH  ON SELECTION BAR 18 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -774,7 +774,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggku
+PROCEDURE _7iw0o8oqh
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -786,7 +786,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKV  ON SELECTION BAR 19 OF POPUP turnos         
+*       * _7IW0O8OQI  ON SELECTION BAR 19 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -797,7 +797,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkv
+PROCEDURE _7iw0o8oqi
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -809,7 +809,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKW  ON SELECTION BAR 20 OF POPUP turnos         
+*       * _7IW0O8OQJ  ON SELECTION BAR 20 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -820,7 +820,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkw
+PROCEDURE _7iw0o8oqj
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -832,7 +832,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKX  ON SELECTION BAR 23 OF POPUP turnos         
+*       * _7IW0O8OQK  ON SELECTION BAR 23 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -843,7 +843,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkx
+PROCEDURE _7iw0o8oqk
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -855,7 +855,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKY  ON SELECTION BAR 24 OF POPUP turnos         
+*       * _7IW0O8OQL  ON SELECTION BAR 24 OF POPUP turnos         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -866,7 +866,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggky
+PROCEDURE _7iw0o8oql
 public mtfhoy,mfecturno
 mtfhoy    = datetime()
 mfecturno = ttod(mtfhoy)
@@ -877,7 +877,7 @@ release mtfhoy,mfecturno
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGKZ  ON SELECTION BAR 10 OF POPUP informesge     
+*       * _7IW0O8OQM  ON SELECTION BAR 10 OF POPUP informesge     
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -888,7 +888,7 @@ release mtfhoy,mfecturno
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggkz
+PROCEDURE _7iw0o8oqm
 public mtfhoy
 do sp_conexion
 do sp_tablas_loca_pcia
@@ -901,7 +901,7 @@ release mtfhoy
 
 *       *********************************************************
 *       *                                                         
-*       * _7H50RGGL0  ON SELECTION BAR 2 OF POPUP usuarios        
+*       * _7IW0O8OQN  ON SELECTION BAR 2 OF POPUP usuarios        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -912,7 +912,7 @@ release mtfhoy
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h50rggl0
+PROCEDURE _7iw0o8oqn
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

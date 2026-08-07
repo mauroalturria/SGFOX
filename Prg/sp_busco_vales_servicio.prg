@@ -1,12 +1,17 @@
 ****
 ** busco consumo por SERVICIO
 ****
- 
+
 Parameters xcodser, msql_cons,mfecdes,lfiltracm
-IF VARTYPE(lfiltracm)<>"N"
-lfiltracm = 0
-ENDIF
-mcbuscaCM = IIF(lfiltracm=0,""," and pac_centromedico = ?mxcentromedico ")
+If Vartype(lfiltracm)<>"N"
+	lfiltracm = 0
+Endif
+If At(",",Transform(xcodser))>0
+	mbusserv = ' VAL_codservvale in ( '+Alltrim(xcodser)+")"
+Else
+	mbusserv = ' VAL_codservvale = '+Transform(xcodser)
+Endif
+mcbuscaCM = Iif(lfiltracm=0,""," and pac_centromedico = ?mxcentromedico ")
 mret = SQLExec(mcon1, "select VAL_codadmision, VAL_tipopaciente, VAL_fechasolicitud, VAL_horasolicitud,pre_descriprest, " + ;
 	"VAL_codvaleasist,PAC_nombrepaciente, PAC_sectorinternac,PAC_cama,PAC_habitacion, val_prestador,val_codservvale " + ;
 	",VAL_observaciones,"+;
@@ -16,8 +21,8 @@ mret = SQLExec(mcon1, "select VAL_codadmision, VAL_tipopaciente, VAL_fechasolici
 	" inner join presinsuvas on presinsuvas.pia_valesasist  = valesasist.VAL_codpun "+;
 	" inner join PRESTACIONS 	on prestacions.pre_codprest		= presinsuvas.pia_codprest" + ;
 	" inner join servicios on VAL_codservvale = ser_codserv " + ;
-	" where PAC_codadmision = VAL_codadmision and " + ;
-	" VAL_codservvale = ?xcodser and VAL_fechasolicitud=?mfecdes  "+mcbuscacm  , "mwkconsumos1")
+	" where PAC_codadmision = VAL_codadmision and " +mbusserv + ;
+	"  and VAL_fechasolicitud=?mfecdes  "+mcbuscaCM  , "mwkconsumos1")
 
 If mret <= 0
 	Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()

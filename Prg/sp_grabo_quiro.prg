@@ -1072,7 +1072,7 @@ If mabm < 9
 
 		If Reccount("mwkBuscoq") = 0
 
-			Do sp_busco_pac_internados With  mbusco && mwkpacint
+			Do sp_busco_pac_internados With  mbusco ,,,0&& mwkpacint
 
 			If Reccount('mwkpacint') > 0
 				Select mwkpacint

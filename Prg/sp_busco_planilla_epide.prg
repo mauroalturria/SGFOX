@@ -94,7 +94,7 @@ Do Case
 			" and " + mbuscar,"mwkepidem")
 		
 		If !Used("mwkpacint")
-			Do sp_busco_pac_internados With '',''
+			Do sp_busco_pac_internados With '','',,0
 		Endif 	
 		
 		Select * From mwkepidem Left Join mwkpacint On nroregistrac = PAC_codhci ;

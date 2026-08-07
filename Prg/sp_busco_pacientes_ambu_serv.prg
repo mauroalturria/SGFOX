@@ -36,7 +36,7 @@ mret = SQLExec(mcon1,"select PRE_descriprest as prestacion, PRE_codservicio, Tab
 	" inner join Prestacions on pre_codprest = TabAmbulatorio.codprest " + ;
 	" inner join tabtipoaltas on TabAmbulatorio.codestado = tabtipoaltas.id " + ;
 	" left join TabAmbMsg on TAM_protocolo = Tabambulatorio.protocolo " + ;
-    "    Left join (select * from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde  " + ;
+    "    Left join (select * from informes where tipoArch in ( 'TXT','PDF') and fechainforme >= ?mdesde  " + ;
     "            and informes.EstadoInforme < 5) b " + ;
     "            on Tabambulatorio.NroVale = b.nrovale " + ;
     "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
@@ -72,11 +72,11 @@ mret = SQLExec(mcon1,"select fechahoraing,fechahoraate,REG_nombrepac as paciente
 	" join tabtipoaltas on TabAmbulatorio.codestado = tabtipoaltas.id " + ;
 	" left join TabAmbMsg on TAM_protocolo = Tabambulatorio.protocolo "+ ;
 	" left join Prestadores on Prestadores.Id = CodMed " + ;
-    "    Left join (select * from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde  " + ;
+    "    Left join (select * from informes where tipoArch in ( 'TXT','PDF') and fechainforme >= ?mdesde  " + ;
     "            and informes.EstadoInforme < 5) b " + ;
     "            on Tabambulatorio.NroVale = b.nrovale " + ;
     "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
-	" where TabAmbulatorio.demanda in(0, 1 ,8) and fechaate = ?mdesde "  + ;
+	" where TabAmbulatorio.demanda in(0, 1 ) and fechaate = ?mdesde "  + ;
 	" and Tabambulatorio.centromedico = ?mxcentromedico and TabAmbulatorio.codmed in("+midmedico+") " +;
 	" and PRE_codservicio= ?mcodserv   " + mccpoamb +" group by Tabambulatorio.id ","mwkdemanda")
 
@@ -123,7 +123,7 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 		"turnos.hhmmtur < medpresta.hhmmhas " + ;
 	" join Prestacions on pre_codprest = turnos.codprest"+ ;
 	" left join Prestadores on Prestadores.Id = turnos.CodMed " + ;
-    "    Left join (select * from informes where tipoArch = 'TXT' and fechainforme >= ?mdesde   " + ;
+    "    Left join (select * from informes where tipoArch in ( 'TXT','PDF') and fechainforme >= ?mdesde   " + ;
     "            and informes.EstadoInforme < 5) b " + ;
     "            on turnos .NroVale = b.nrovale " + ;
     "    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
@@ -186,13 +186,13 @@ Select horatur,;
 
 *
 Select * ;
-	From mwkambu1xp ;
+	From mwkambu1xv ;
 	Where Nvl(demanda,0) # 8 ;
 	union  ;
 Select * ;
-	From mwkambu1xv ;
+	From mwkambu1xp ;
 	Where Nvl(demanda,0) # 8 And nrovale ;
-	not In (Select nrovale From mwkambu1xp Where !Isnull(protocolo));
+	not In (Select nrovale From mwkambu1xv Where !Isnull(protocolo));
 	into Cursor mwkambu10
 
 Select * ;

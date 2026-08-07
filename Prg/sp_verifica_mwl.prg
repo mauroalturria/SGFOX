@@ -1,6 +1,6 @@
 Lparameters mcidvale,mccprest
 If myip= '172.16.1.7'
-	Set Step On
+*	Set Step On
 Endif
 If Vartype(mccprest)#"C"
 	mccprest= ""
@@ -21,7 +21,11 @@ Do While nintento <2
 		Do sp_desconexion
 		Do sp_conexion With mwkexe.nomexe
 	Else
-		Return Reccount('mwkctrwl')>0
+		If Used('mwkctrwl')
+			Return Reccount('mwkctrwl')>0
+		Else
+			Return .F.
+		Endif
 	Endif
 Enddo
 Do Log_errores With mierr ,mimsg ,mimsg1 ,miprg ,miline

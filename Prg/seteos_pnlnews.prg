@@ -56,7 +56,7 @@ create cursor registra ;
 ****
 
  
-_screen.windowstate = 0
+_screen.windowstate = 2
 _screen.MaxHeight =1200
 _screen.MaxWidth = 1600
 _screen.MaxButton = .T.

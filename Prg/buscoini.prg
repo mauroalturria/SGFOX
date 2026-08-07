@@ -2,297 +2,296 @@
 * Busco INI
 *
 
-lparameters mieje
+Lparameters mieje
 cpass = ";Uid=cacheapp;Pwd=KaxHe025"
 *!*	IF DATE()=CTOD("15/05/2025")
- *	cpass = ";Uid=_system;Pwd=sys"
+*	cpass = ";Uid=_system;Pwd=sys"
 *!*	endif
-private liniserv
+Private liniserv
 *cpass = ";Uid=SGGENERAL;Pwd=sg2021"
 
 *Set Step On
 
-lleoini = .t.
-if used("mwkambitoini")
-	if reccount("mwkambitoini")>0
-		lleoini = .f.
-	endif
-endif
-zzvolumen = left(justpath(sys(16,0)),2)
-zzvolumen = iif(substr(zzvolumen, 2,1) <> ':', "C:", zzvolumen)
+lleoini = .T.
+If Used("mwkambitoini")
+	If Reccount("mwkambitoini")>0
+		lleoini = .F.
+	Endif
+Endif
+zzvolumen = Left(Justpath(Sys(16,0)),2)
+zzvolumen = Iif(Substr(zzvolumen, 2,1) <> ':', "C:", zzvolumen)
 mServer = ''
-if file("X:\Qepd1a1\Exe\inicio\ini.txt")
-	cldsk = "X:"+substr(justpath(sys(16,0)),3)
-	liniserv = .t.
-else
-	if file("H:\Qepd1a1\Exe\inicio\ini.txt")
-		cldsk = "H:"+substr(justpath(sys(16,0)),3)
-		liniserv = .t.
-	else
-		cldsk = alltrim(justpath(sys(16,0)))
-		liniserv = (upper(mieje) = "SISTEMAS")
-	endif
-endif
+If File("X:\Qepd1a1\Exe\inicio\ini.txt")
+	cldsk = "X:"+Substr(Justpath(Sys(16,0)),3)
+	liniserv = .T.
+Else
+	If File("H:\Qepd1a1\Exe\inicio\ini.txt")
+		cldsk = "H:"+Substr(Justpath(Sys(16,0)),3)
+		liniserv = .T.
+	Else
+		cldsk = Alltrim(Justpath(Sys(16,0)))
+		liniserv = (Upper(mieje) = "SISTEMAS")
+	Endif
+Endif
 
-if prg_ipsistemas()
-	cldsk = alltrim(justpath(sys(16,0)))
-	liniserv = .f.
-	lleoini = .t.
-endif
+If prg_ipsistemas()
+	cldsk = Alltrim(Justpath(Sys(16,0)))
+	liniserv = .F.
+	lleoini = .T.
+Endif
 
-lcErrorAnt = on("ERROR")
-on error = aerr(eros)
+lcErrorAnt = On("ERROR")
+On Error = Aerr(eros)
 mfile = cldsk + "\inicio\ini.txt"
-* messageBOX(mfile)
-if at("EXE",upper(mfile))=0
+*Messagebox(mfile)
+If At("EXE",Upper(mfile))=0
 	mfile = "..\exe\inicio\ini.txt"
-endif
-if lleoini
-	mcadcon = filetostr(mfile)
-* 	 messageBOX( "mcadcon" )
-else
+Endif
+If lleoini
+	mcadcon = Filetostr(mfile)
+Else
 	mcadcon = mwkambitoini.ini
 * 	 MESSAGEBOX( "mwkambitoini" )
-endif
+Endif
+
 *  messageBOX( left(mcadcon,255) )
-on error &lcErrorAnt
+On Error &lcErrorAnt
 
-if type('mcadcon') = "C" and !empty(mcadcon)
-	nlineas = alines(mimatini,mcadcon)
+If Type('mcadcon') = "C" And !Empty(mcadcon)
+	nlineas = Alines(mimatini,mcadcon)
 	If mieje <> "OTROAMBITO"
-		for timmy = 1 to 9
-			miservidor = "[SERVER"+alltrim(transform(timmy))+"]"
-			mifinservidor = "[FINSERVER"+alltrim(transform(timmy))+"]"
-			lSRV1 = ascan(mimatini,miservidor)
-			if lSRV1 >0
-				lmsg = ascan(mimatini,"[MSG]",lSRV1 )
-				lfinsrv1 = ascan(mimatini,mifinservidor )
-				csiip = iif(lSRV1  >0 and lSRV1 < lmsg,mimatini(lSRV1  +1 ),"")
-				lgenerico = (right(alltrim(csiip ),1)=".")
-				lSrv1  = lSrv1  +1
-				do while left(alltrim(csiip),9) # mifinservidor  ;
-						and !(csiip $ myip) and !empty(csiip)
-					if lgenerico and csiip $ myip or (lSrv1 = lmsg)
-						exit
-					endif
+		For timmy = 1 To 9
+			miservidor = "[SERVER"+Alltrim(Transform(timmy))+"]"
+			mifinservidor = "[FINSERVER"+Alltrim(Transform(timmy))+"]"
+			lSRV1 = Ascan(mimatini,miservidor)
+			If lSRV1 >0
+				lmsg = Ascan(mimatini,"[MSG]",lSRV1 )
+				lfinsrv1 = Ascan(mimatini,mifinservidor )
+				csiip = Iif(lSRV1  >0 And lSRV1 < lmsg,mimatini(lSRV1  +1 ),"")
+				lgenerico = (Right(Alltrim(csiip ),1)=".")
+				lSRV1  = lSRV1  +1
+				Do While Left(Alltrim(csiip),9) # mifinservidor  ;
+						and !(csiip $ myip) And !Empty(csiip)
+					If lgenerico And csiip $ myip Or (lSRV1 = lmsg)
+						Exit
+					Endif
 
-					csiip = iif(lSrv1  >0,mimatini(lSrv1  +1 ),"")
-					lgenerico = (right(alltrim(csiip ),1)=".")
-					lSrv1  = lSrv1 +1
-				enddo
-				if (csiip $ myip and lgenerico ) or csiip = myip
-					lEXE = ascan(mimatini,mifinservidor , lSRV1 )
+					csiip = Iif(lSRV1  >0,mimatini(lSRV1  +1 ),"")
+					lgenerico = (Right(Alltrim(csiip ),1)=".")
+					lSRV1  = lSRV1 +1
+				Enddo
+				If (csiip $ myip And lgenerico ) Or csiip = myip
+					lEXE = Ascan(mimatini,mifinservidor , lSRV1 )
 					lsrvini  = lEXE +1
-					mServer 	= alltrim(mimatini(1+lEXE   ))
-					mDatabase 	= alltrim(mimatini(2+lEXE))
-					mPort 		= alltrim(mimatini(4+lEXE))
+					mServer 	= Alltrim(mimatini(1+lEXE   ))
+					mDatabase 	= Alltrim(mimatini(2+lEXE))
+					mPort 		= Alltrim(mimatini(4+lEXE))
 					lcStringConn="Driver={InterSystems ODBC};" + mPort + ;
 						";" + mServer + ;
 						";" + mDatabase + ;
 						cpass
-	*!*						";Uid=" +;
-	*!*						";Pwd="
-	*BOX( lcStringConn)
+*!*						";Uid=" +;
+*!*						";Pwd="
+*BOX( lcStringConn)
 
-					loleserver = ascan(mimatini,"[OLESERVER]", lsrvini  )
-					coleserver = iif(loleserver>0,mimatini(loleserver +1 ),"")
+					loleserver = Ascan(mimatini,"[OLESERVER]", lsrvini  )
+					coleserver = Iif(loleserver>0,mimatini(loleserver +1 ),"")
 *	 	 messageBOX( lcStringConn)
-					limagen = ascan(mimatini,"[NOVERIMAGEN]", lsrvini  )
-					lnoverimagen = iif(limagen>0,val(mimatini(limagen+1 )),0)
+					limagen = Ascan(mimatini,"[NOVERIMAGEN]", lsrvini  )
+					lnoverimagen = Iif(limagen>0,Val(mimatini(limagen+1 )),0)
 
-					lalerta = ascan(mimatini,"[ALERTA]", lsrvini  )
-					nalerta = iif(lalerta >0,val(mimatini(lalerta +1 )),0)
-					lmsg = ascan(mimatini,"[MSG]", lsrvini  )
-					if liniserv
-						lvolumen = ascan(mimatini,"[VOLUMEN]", lsrvini  )
-						zzvolumen = iif(lvolumen >0 and lvolumen < lmsg ,alltrim(mimatini(lvolumen +1 )),"H:")
-					endif
+					lalerta = Ascan(mimatini,"[ALERTA]", lsrvini  )
+					nalerta = Iif(lalerta >0,Val(mimatini(lalerta +1 )),0)
+					lmsg = Ascan(mimatini,"[MSG]", lsrvini  )
+					If liniserv
+						lvolumen = Ascan(mimatini,"[VOLUMEN]", lsrvini  )
+						zzvolumen = Iif(lvolumen >0 And lvolumen < lmsg ,Alltrim(mimatini(lvolumen +1 )),"H:")
+					Endif
 
-					if nalerta >0
-						cmsg = iif(lmsg > 0,mimatini( lmsg + 1 ),0)
-						messagebox(cmsg, 16, "SISTEMAS")
-					endif
-					if nalerta <=1
+					If nalerta >0
+						cmsg = Iif(lmsg > 0,mimatini( lmsg + 1 ),0)
+						Messagebox(cmsg, 16, "SISTEMAS")
+					Endif
+					If nalerta <=1
 						mNameSpaces = mimatini(3+lEXE)
-						mNameSpaces =alltrim(substr(mNameSpaces,at("=",mNameSpaces)+1))
-						if !empty('mNameSpaces') and used('mwktabcfg')
-							select mwktabcfg
-							go top
-							replace olespaces with mNameSpaces
-							if !empty(coleserver)
-								replace oleserver with coleserver
-							endif
-							return
-						endif
-					else
-						cancel
-					endif
-				endif
+						mNameSpaces =Alltrim(Substr(mNameSpaces,At("=",mNameSpaces)+1))
+						If !Empty('mNameSpaces') And Used('mwktabcfg')
+							Select mwktabcfg
+							Go Top
+							Replace olespaces With mNameSpaces
+							If !Empty(coleserver)
+								Replace OLEServer With coleserver
+							Endif
+							Return
+						Endif
+					Else
+						Cancel
+					Endif
+				Endif
 
-			endif
+			Endif
 
-			lSRV1 = ascan(mimatini,miservidor )
-			if lSRV1 >0
-				lmsg = ascan(mimatini,"[MSG]",lSRV1 )
-				lfinsrv1 = ascan(mimatini,mifinservidor )
-				csiip = iif(lSRV1  >0 and lSRV1 < lmsg,mimatini(lSRV1  +1 ),"")
-				lgenerico = (right(alltrim(csiip ),1)=".")
-				lSrv1  = lSrv1  +1
-				do while left(alltrim(csiip),9) # mifinservidor  ;
-						and !(csiip $ myip) and !empty(csiip)
-					if lgenerico and csiip $ myip or (lSrv1 = lmsg)
-						exit
-					endif
+			lSRV1 = Ascan(mimatini,miservidor )
+			If lSRV1 >0
+				lmsg = Ascan(mimatini,"[MSG]",lSRV1 )
+				lfinsrv1 = Ascan(mimatini,mifinservidor )
+				csiip = Iif(lSRV1  >0 And lSRV1 < lmsg,mimatini(lSRV1  +1 ),"")
+				lgenerico = (Right(Alltrim(csiip ),1)=".")
+				lSRV1  = lSRV1  +1
+				Do While Left(Alltrim(csiip),9) # mifinservidor  ;
+						and !(csiip $ myip) And !Empty(csiip)
+					If lgenerico And csiip $ myip Or (lSRV1 = lmsg)
+						Exit
+					Endif
 
-					csiip = iif(lSrv1  >0,mimatini(lSrv1  +1 ),"")
-					lgenerico = (right(alltrim(csiip ),1)=".")
-					lSrv1  = lSrv1 +1
-				enddo
-				if (csiip $ myip and lgenerico ) or csiip = myip
-					lEXE = ascan(mimatini,mifinservidor , lSRV1 )
+					csiip = Iif(lSRV1  >0,mimatini(lSRV1  +1 ),"")
+					lgenerico = (Right(Alltrim(csiip ),1)=".")
+					lSRV1  = lSRV1 +1
+				Enddo
+				If (csiip $ myip And lgenerico ) Or csiip = myip
+					lEXE = Ascan(mimatini,mifinservidor , lSRV1 )
 					lsrvini  = lEXE +1
-					mServer 	= alltrim(mimatini(1+lEXE   ))
-					mDatabase 	= alltrim(mimatini(2+lEXE))
-					mPort 		= alltrim(mimatini(4+lEXE))
+					mServer 	= Alltrim(mimatini(1+lEXE   ))
+					mDatabase 	= Alltrim(mimatini(2+lEXE))
+					mPort 		= Alltrim(mimatini(4+lEXE))
 					lcStringConn="Driver={InterSystems ODBC};" + mPort + ;
 						";" + mServer + ;
 						";" + mDatabase + ;
 						cpass
-	*!*						";Uid=" +;
-	*!*						";Pwd="
-	*BOX( lcStringConn)
+*!*						";Uid=" +;
+*!*						";Pwd="
+*BOX( lcStringConn)
 
-					loleserver = ascan(mimatini,"[OLESERVER]", lsrvini  )
-					coleserver = iif(loleserver>0,mimatini(loleserver +1 ),"")
+					loleserver = Ascan(mimatini,"[OLESERVER]", lsrvini  )
+					coleserver = Iif(loleserver>0,mimatini(loleserver +1 ),"")
 * 	 messageBOX( lcStringConn)
-					limagen = ascan(mimatini,"[NOVERIMAGEN]", lsrvini  )
-					lnoverimagen = iif(limagen>0,val(mimatini(limagen+1 )),0)
+					limagen = Ascan(mimatini,"[NOVERIMAGEN]", lsrvini  )
+					lnoverimagen = Iif(limagen>0,Val(mimatini(limagen+1 )),0)
 
-					lalerta = ascan(mimatini,"[ALERTA]", lsrvini  )
-					nalerta = iif(lalerta >0,val(mimatini(lalerta +1 )),0)
-					lmsg = ascan(mimatini,"[MSG]", lsrvini  )
-					if liniserv
-						lvolumen = ascan(mimatini,"[VOLUMEN]", lsrvini  )
-						zzvolumen = iif(lvolumen >0 and lvolumen < lmsg ,alltrim(mimatini(lvolumen +1 )),"H:")
-					endif
+					lalerta = Ascan(mimatini,"[ALERTA]", lsrvini  )
+					nalerta = Iif(lalerta >0,Val(mimatini(lalerta +1 )),0)
+					lmsg = Ascan(mimatini,"[MSG]", lsrvini  )
+					If liniserv
+						lvolumen = Ascan(mimatini,"[VOLUMEN]", lsrvini  )
+						zzvolumen = Iif(lvolumen >0 And lvolumen < lmsg ,Alltrim(mimatini(lvolumen +1 )),"H:")
+					Endif
 
-					if nalerta >0
-						cmsg = iif(lmsg > 0,mimatini( lmsg + 1 ),0)
-						messagebox(cmsg, 16, "SISTEMAS")
-					endif
-					if nalerta <=1
+					If nalerta >0
+						cmsg = Iif(lmsg > 0,mimatini( lmsg + 1 ),0)
+						Messagebox(cmsg, 16, "SISTEMAS")
+					Endif
+					If nalerta <=1
 						mNameSpaces = mimatini(3+lEXE)
-						mNameSpaces =alltrim(substr(mNameSpaces,at("=",mNameSpaces)+1))
-						if !empty('mNameSpaces') and used('mwktabcfg')
-							select mwktabcfg
-							go top
-							replace olespaces with mNameSpaces
-							if !empty(coleserver)
-								replace oleserver with coleserver
-							endif
-							return
-						endif
-					else
-						cancel
-					endif
-				endif
+						mNameSpaces =Alltrim(Substr(mNameSpaces,At("=",mNameSpaces)+1))
+						If !Empty('mNameSpaces') And Used('mwktabcfg')
+							Select mwktabcfg
+							Go Top
+							Replace olespaces With mNameSpaces
+							If !Empty(coleserver)
+								Replace OLEServer With coleserver
+							Endif
+							Return
+						Endif
+					Else
+						Cancel
+					Endif
+				Endif
 
-			endif
+			Endif
 
-		next timmy
-	Endif 
+		Next timmy
+	Endif
 ******************************************************
 *Set Step On
-
-	if empty(mServer )
-		lEXE = ascan(mimatini,"["+ alltrim(mieje) +"]")
+	
+	If Empty(mServer )
+		lEXE = Ascan(mimatini,"["+ Alltrim(mieje) +"]")
 		lnoexe = (lEXE = 0)
 		lexeini = lEXE +1
-		mServer 	= alltrim(mimatini(1+lEXE   ))
-		mDatabase 	= alltrim(mimatini(2+lEXE))
-		mPort 		= alltrim(mimatini(4+lEXE))
+		mServer 	= Alltrim(mimatini(1+lEXE   ))
+		mDatabase 	= Alltrim(mimatini(2+lEXE))
+		mPort 		= Alltrim(mimatini(4+lEXE))
 		lcStringConn="Driver={InterSystems ODBC};" + mPort + ;
 			";" + mServer + ;
 			";" + mDatabase + ;
 			cpass
 *!*				";Uid=" +;
 *!*				";Pwd="
- *messageBOX( lcStringConn)
+		loleserver = Ascan(mimatini,"[OLESERVER]", lexeini)
+		coleserver = Iif(loleserver>0,mimatini(loleserver +1 ),"")
 
-		loleserver = ascan(mimatini,"[OLESERVER]", lexeini)
-		coleserver = iif(loleserver>0,mimatini(loleserver +1 ),"")
+		limagen = Ascan(mimatini,"[NOVERIMAGEN]", lexeini)
+		lnoverimagen = Iif(limagen>0,Val(mimatini(limagen+1 )),0)
 
-		limagen = ascan(mimatini,"[NOVERIMAGEN]", lexeini)
-		lnoverimagen = iif(limagen>0,val(mimatini(limagen+1 )),0)
+		lalerta = Ascan(mimatini,"[ALERTA]", lexeini)
+		nalerta = Iif(lalerta >0,Val(mimatini(lalerta +1 )),0)
+		lmsg    = Ascan(mimatini,"[MSG]", lexeini)
 
-		lalerta = ascan(mimatini,"[ALERTA]", lexeini)
-		nalerta = iif(lalerta >0,val(mimatini(lalerta +1 )),0)
-		lmsg    = ascan(mimatini,"[MSG]", lexeini)
+		If liniserv
+			lvolumen  = Ascan(mimatini,"[VOLUMEN]", lexeini)
+			zzvolumen = Iif(lvolumen >0 And lvolumen < lmsg ,Alltrim(mimatini(lvolumen +1 )),"H:")
+			zzvolumen = Iif(Substr(zzvolumen, 2,1) <> ':', "C:", zzvolumen)
+		Endif
 
-		if liniserv
-			lvolumen  = ascan(mimatini,"[VOLUMEN]", lexeini)
-			zzvolumen = iif(lvolumen >0 and lvolumen < lmsg ,alltrim(mimatini(lvolumen +1 )),"H:")
-			zzvolumen = iif(substr(zzvolumen, 2,1) <> ':', "C:", zzvolumen)
-		endif
-
-		if nalerta >0
-			cmsg = iif(lmsg > 0,mimatini( lmsg + 1 ),0)
-			messagebox(cmsg, 16, "SISTEMAS")
-		endif
-		lmiambito = ascan(mimatini,"[AMBITO]", lexeini)
-		cmiambito = iif(lmiambito>0,mimatini(lmiambito+1 ),"1")
-		mxambito = val(cmiambito)
-		mxambito = IIF(mxambito =0,1,mxambito )
+		If nalerta >0
+			cmsg = Iif(lmsg > 0,mimatini( lmsg + 1 ),0)
+			Messagebox(cmsg, 16, "SISTEMAS")
+		Endif
+		lmiambito = Ascan(mimatini,"[AMBITO]", lexeini)
+		cmiambito = Iif(lmiambito>0,mimatini(lmiambito+1 ),"1")
+		mxambito = Val(cmiambito)
+		mxambito = Iif(mxambito =0,1,mxambito )
 
 
-		if nalerta <=1
+		If nalerta <=1
 			mNameSpaces = mimatini(3+lEXE)
-			mNameSpaces =alltrim(substr(mNameSpaces,at("=",mNameSpaces)+1))
-			if !empty('mNameSpaces') and used('mwktabcfg')
-				select mwktabcfg
-				go top
-				on error &lcErrorAnt
-				replace olespaces with mNameSpaces
-				if !empty(coleserver)
-					replace oleserver with coleserver
-				endif
-			endif
-			lnoip = ascan(mimatini,"[NOIP]", lexeini)
-			cnoip = iif(lnoip >0 and lnoip < lmsg,mimatini(lnoip +1 ),"")
+			mNameSpaces =Alltrim(Substr(mNameSpaces,At("=",mNameSpaces)+1))
+			If !Empty('mNameSpaces') And Used('mwktabcfg')
+				Select mwktabcfg
+				Go Top
+				On Error &lcErrorAnt
+				Replace olespaces With mNameSpaces
+				If !Empty(coleserver)
+					Replace OLEServer With coleserver
+				Endif
+			ENDIF
+			 
+			lnoip = Ascan(mimatini,"[NOIP]", lexeini)
+			cnoip = Iif(lnoip >0 And lnoip < lmsg,mimatini(lnoip +1 ),"")
 			lnoip = lnoip +1
-			lgenerico = (right(alltrim(cnoip),1)=".")
-			do while left(alltrim(cnoip),9) # "[FINNOIP]" and ;
-					!(cnoip = myip) and !empty(cnoip)
-				if lgenerico and cnoip $ myip
-					exit
-				endif
-				cnoip = iif(lnoip >0,mimatini(lnoip +1 ),"")
-				lgenerico = (right(alltrim(cnoip),1)=".")
+			lgenerico = (Right(Alltrim(cnoip),1)=".")
+			Do While Left(Alltrim(cnoip),9) # "[FINNOIP]" And ;
+					!(cnoip = myip) And !Empty(cnoip)
+				If lgenerico And cnoip $ myip
+					Exit
+				Endif
+				cnoip = Iif(lnoip >0,mimatini(lnoip +1 ),"")
+				lgenerico = (Right(Alltrim(cnoip),1)=".")
 				lnoip = lnoip +1
-			enddo
-			if (cnoip $ myip and lgenerico ) or cnoip = myip
-				messagebox("USTED ESTA TEMPORARIAMENTE BLOQUEADO. DISCULPE", 16, "SISTEMAS")
-				cancel
-			endif
-			lSIip = ascan(mimatini,"[SIIP]", lexeini)
-			csiip = iif(lSIip >0 and lSIip < lmsg,mimatini(lSIip +1 ),"")
-			lgenerico = (right(alltrim(csiip ),1)=".")
+			Enddo
+			If (cnoip $ myip And lgenerico ) Or cnoip = myip
+				Messagebox("USTED ESTA TEMPORARIAMENTE BLOQUEADO. DISCULPE", 16, "SISTEMAS")
+				Cancel
+			Endif
+			lSIip = Ascan(mimatini,"[SIIP]", lexeini)
+			csiip = Iif(lSIip >0 And lSIip < lmsg,mimatini(lSIip +1 ),"")
+			lgenerico = (Right(Alltrim(csiip ),1)=".")
 			lSIip = lSIip +1
-			do while left(alltrim(csiip),9) # "[FINSIIP]" ;
-					and !(csiip $ myip) and !empty(csiip)
-				if lgenerico and csiip $ myip
-					exit
-				endif
-				csiip = iif(lSIip >0,mimatini(lSIip +1 ),"")
-				lgenerico = (right(alltrim(csiip ),1)=".")
+			Do While Left(Alltrim(csiip),9) # "[FINSIIP]" ;
+					and !(csiip $ myip) And !Empty(csiip)
+				If lgenerico And csiip $ myip
+					Exit
+				Endif
+				csiip = Iif(lSIip >0,mimatini(lSIip +1 ),"")
+				lgenerico = (Right(Alltrim(csiip ),1)=".")
 				lSIip = lSIip +1
-			enddo
-			if (csiip $ myip and lgenerico ) or csiip = myip
-				lEXE = ascan(mimatini,"[FINSIIP]", lexeini)
+			Enddo
+			If (csiip $ myip And lgenerico ) Or csiip = myip
+				lEXE = Ascan(mimatini,"[FINSIIP]", lexeini)
 				lexeini = lEXE +1
-				mServer 	= alltrim(mimatini(1+lEXE   ))
-				mDatabase 	= alltrim(mimatini(2+lEXE))
-				mPort 		= alltrim(mimatini(4+lEXE))
+				mServer 	= Alltrim(mimatini(1+lEXE   ))
+				mDatabase 	= Alltrim(mimatini(2+lEXE))
+				mPort 		= Alltrim(mimatini(4+lEXE))
 				lcStringConn="Driver={InterSystems ODBC};" + mPort + ;
 					";" + mServer + ;
 					";" + mDatabase + ;
@@ -301,43 +300,43 @@ if type('mcadcon') = "C" and !empty(mcadcon)
 *!*						";Pwd="
 *BOX( lcStringConn)
 
-				loleserver = ascan(mimatini,"[OLESERVER]", lexeini)
-				coleserver = iif(loleserver>0,mimatini(loleserver +1 ),"")
+				loleserver = Ascan(mimatini,"[OLESERVER]", lexeini)
+				coleserver = Iif(loleserver>0,mimatini(loleserver +1 ),"")
 
-				limagen = ascan(mimatini,"[NOVERIMAGEN]", lexeini)
-				lnoverimagen = iif(limagen>0,val(mimatini(limagen+1 )),0)
+				limagen = Ascan(mimatini,"[NOVERIMAGEN]", lexeini)
+				lnoverimagen = Iif(limagen>0,Val(mimatini(limagen+1 )),0)
 
-				lalerta = ascan(mimatini,"[ALERTA]", lexeini)
-				nalerta = iif(lalerta >0,val(mimatini(lalerta +1 )),0)
-				lmsg = ascan(mimatini,"[MSG]", lexeini)
-				if liniserv
-					lvolumen = ascan(mimatini,"[VOLUMEN]", lexeini)
-					zzvolumen = iif(lvolumen >0 and lvolumen < lmsg ,alltrim(mimatini(lvolumen +1 )),"H:")
-				endif
+				lalerta = Ascan(mimatini,"[ALERTA]", lexeini)
+				nalerta = Iif(lalerta >0,Val(mimatini(lalerta +1 )),0)
+				lmsg = Ascan(mimatini,"[MSG]", lexeini)
+				If liniserv
+					lvolumen = Ascan(mimatini,"[VOLUMEN]", lexeini)
+					zzvolumen = Iif(lvolumen >0 And lvolumen < lmsg ,Alltrim(mimatini(lvolumen +1 )),"H:")
+				Endif
 
-				if nalerta >0
-					cmsg = iif(lmsg > 0,mimatini( lmsg + 1 ),0)
-					messagebox(cmsg, 16, "SISTEMAS")
-				endif
-				if nalerta <=1
+				If nalerta >0
+					cmsg = Iif(lmsg > 0,mimatini( lmsg + 1 ),0)
+					Messagebox(cmsg, 16, "SISTEMAS")
+				Endif
+				If nalerta <=1
 					mNameSpaces = mimatini(3+lEXE)
-					mNameSpaces =alltrim(substr(mNameSpaces,at("=",mNameSpaces)+1))
-					if !empty('mNameSpaces') and used('mwktabcfg')
-						select mwktabcfg
-						go top
-						replace olespaces with mNameSpaces
-						if !empty(coleserver)
-							replace oleserver with coleserver
-						endif
-					endif
-				else
-					cancel
-				endif
-			endif
-		else
-			cancel
-		endif
-	endif
- 	* MESSAGEBOX( lcStringConn)
-	sqlsetprop(0,"DispLogin",3)
-endif
+					mNameSpaces =Alltrim(Substr(mNameSpaces,At("=",mNameSpaces)+1))
+					If !Empty('mNameSpaces') And Used('mwktabcfg')
+						Select mwktabcfg
+						Go Top
+						Replace olespaces With mNameSpaces
+						If !Empty(coleserver)
+							Replace OLEServer With coleserver
+						Endif
+					Endif
+				Else
+					Cancel
+				Endif
+			Endif
+		Else
+			Cancel
+		Endif
+	Endif
+* MESSAGEBOX( lcStringConn)
+	SQLSetprop(0,"DispLogin",3)
+Endif

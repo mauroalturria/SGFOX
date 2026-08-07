@@ -7,7 +7,7 @@ public mxcentromedico
 if vartype(miparam)="C"
 	mxcentromedico = VAL(transf(miparam))
 else
-	mxcentromedico = 1
+	mxcentromedico = 2
 endif
 Public mcon1, mcon1, mcon4, midusu,myip,miform,mxambito
 mxambito = 1

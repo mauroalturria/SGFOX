@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 11/02/2025        LABORATORIOMENU.MPR         13:13:24  
+*       * 06/08/2026        LABORATORIOMENU.MPR         12:54:22  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,18 +26,18 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7410scbsi OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7j40rnv1h OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7410scbsj OF _MSYSMENU PROMPT "Ingreso" COLOR SCHEME 3 ;
+DEFINE PAD _7j40rnv1i OF _MSYSMENU PROMPT "Ingreso" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-ON PAD _7410scbsi OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7410scbsj OF _MSYSMENU ACTIVATE POPUP ingreso
+ON PAD _7j40rnv1h OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7j40rnv1i OF _MSYSMENU ACTIVATE POPUP ingreso
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de"
 ON SELECTION BAR 1 OF salir ;
-	DO _7410scbsk ;
+	DO _7j40rnv1j ;
 	IN LOCFILE("MNU\LABORATORIOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is LABORATORIOMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -50,7 +50,7 @@ ON SELECTION BAR 2 OF ingreso do form frmconf01 with 0,1
 
 *       *********************************************************
 *       *                                                         
-*       * _7410SCBSK  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7J40RNV1J  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -61,6 +61,6 @@ ON SELECTION BAR 2 OF ingreso do form frmconf01 with 0,1
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7410scbsk
+PROCEDURE _7j40rnv1j
 do sp_logoff
 quit
