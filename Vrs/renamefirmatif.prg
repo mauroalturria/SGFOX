@@ -4,13 +4,13 @@ mfecpas = Ctod('01-01-1900')
 mcpathact = Allt(Sys(5))+Sys(2003)
 Cd "C:\documenta/paraarreglar"
 Create Cursor medfirm (CODMED N(4),codarch c(20))
-mnarch = Adir(midir,"*firma_ms.tif")
+mnarch = Adir(midir,"*firma_ms.tiff")
 
 For i= 1 To mnarch
 	mimed = Val(midir(i,1))
 	Insert Into medfirm Values (mimed,midir(i,1))
 Next
-Select * From  prestadores,medfirm  Where Id = codmed AND ISNULL(tpf_filtro) Into Cursor trabajo
+Select * From  b_prestadores,medfirm,b_franja Where Id = medfirm.codmed AND medfirm.codmed = b_franja.codmed  Into Cursor trabajo
 Select trabajo
 Scan
 	mdni = trabajo.dni

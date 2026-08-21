@@ -18,6 +18,8 @@ If Vartype(mids)#"N"
 	mids = mpidsocio
 Endif
 midsocio =  mids
+mnombre = IIF(USED('mwkusuarios'),Allt(mwkusuarios.idusuario),Allt(mwkusuario.idusuario))
+
 If mconsql = 0
 	sp_conecta_sqlserver()
 Endif
@@ -30,7 +32,6 @@ If mconsql > 0  &&sqlserver
 		Messagebox("No se puede acceder a algunos Datos - tabla SOCIOS",0+64,"Usuario")
 		GuardoDatosSQL = .F.
 	Else
-		mnombre = Allt(mwkusuario.idusuario)
 		maten   = Sys(0)
 		mdtF    = sp_busco_fecha_serv('DT')
 
@@ -178,8 +179,7 @@ Else
 		Messagebox("No se puede acceder a algunos Datos",0+64,"Usuario")
 		GuardoDatosSQL = .F.
 	Else
-		mnombre = Allt(mwkusuario.idusuario)
-		maten   = Sys(0)
+ 		maten   = Sys(0)
 		mdtF    = sp_busco_fecha_serv('DT')
 
 

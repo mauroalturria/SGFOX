@@ -238,18 +238,31 @@ Select horatur,;
 	group By REG_nroregistrac,horatur,mwkphorarios.codprest;
 	into Cursor mwkambu1xv
 ***   tabambula sin turno
-
-Select fechahoraing As horatur, fechahoraing,;
-	sp_busco_npac(mwkAmbula.nroregistrac ,8 ) As paciente, prestacion,	 ENT_descrient,ENT_nroprestadorexterno,sp_busco_npac(mwkAmbula.nroregistrac ,10 ) As fechanac,Space(200) As mensaje,  protocolo,;
-	mwkAmbula.Id,Space(10) As sala,codmed, codent, codent As codent1, archivado, demanda,;
-	codestado,CodEsp,PRE_codservicio As codserv,nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
-	nroregistrac As REG_nroregistrac, codprest, nrovale ;
-	,tipoest,Descrip,fechahoraate As fechaconfirma,0 As tid,0 As idturnoexterno;
-	from mwkAmbula ;
-	inner Join mwkentidad On ENT_codent= codent Left Join mwkmedicoamb On mwkmedicoamb.Id = codmed ;
-	group By REG_nroregistrac,horatur,codprest;
-	into Cursor mwkambu1st
-
+If Used('mwkmpfecha')
+	Select fechahoraing As horatur, fechahoraing,;
+		sp_busco_npac(mwkAmbula.nroregistrac ,8 ) As paciente, prestacion,	 ENT_descrient,ENT_nroprestadorexterno,;
+		sp_busco_npac(mwkAmbula.nroregistrac ,10 ) As fechanac,Space(200) As mensaje,  protocolo,;
+		mwkAmbula.Id, mwkmpfecha.sala,mwkAmbula.codmed, codent, codent As codent1, archivado, mwkAmbula.demanda,;
+		codestado,mwkmpfecha.CodEsp,PRE_codservicio As codserv,mwkmpfecha.nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
+		nroregistrac As REG_nroregistrac, mwkAmbula.codprest, nrovale ;
+		,tipoest,Descrip,fechahoraate As fechaconfirma,0 As tid,0 As idturnoexterno;
+		from mwkAmbula ;
+		inner Join mwkentidad On ENT_codent= codent ;
+		Left Join mwkmpfecha On (mwkmpfecha.codmed = mwkAmbula.codmed And mwkmpfecha.codprest= mwkAmbula.codprest) ;
+		group By REG_nroregistrac,horatur,mwkAmbula.codprest;
+		into Cursor mwkambu1st
+Else
+	Select fechahoraing As horatur, fechahoraing,;
+		sp_busco_npac(mwkAmbula.nroregistrac ,8 ) As paciente, prestacion,	 ENT_descrient,ENT_nroprestadorexterno,sp_busco_npac(mwkAmbula.nroregistrac ,10 ) As fechanac,Space(200) As mensaje,  protocolo,;
+		mwkAmbula.Id,Space(10) As sala,codmed, codent, codent As codent1, archivado, demanda,;
+		codestado,CodEsp,PRE_codservicio As codserv,nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
+		nroregistrac As REG_nroregistrac, codprest, nrovale ;
+		,tipoest,Descrip,fechahoraate As fechaconfirma,0 As tid,0 As idturnoexterno;
+		from mwkAmbula ;
+		inner Join mwkentidad On ENT_codent= codent Left Join mwkmedicoamb On mwkmedicoamb.Id = codmed ;
+		group By REG_nroregistrac,horatur,codprest;
+		into Cursor mwkambu1st
+Endif
 *
 Select * From mwkambu1xp Where Nvl(demanda,0) # 8 ;
 	union  Select * From mwkambu1xv Where Nvl(demanda,0) # 8 And nrovale ;

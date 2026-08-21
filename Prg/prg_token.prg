@@ -10,7 +10,7 @@ Lparameters xtipotoken,xcodent,xafiliado,xcantp,xtoken,xsuper,xeslabo,xnrodoc,le
 *!*	CodigoPractica4=................&IdNomenclador4=1&CantPrestacionAutorizar4=1&
 If Vartype(lesprueba)<>"N"
 	lesprueba = 0
-ENDIF
+Endif
 If Vartype(xsuper)<>"N"
 	xsuper = 0
 Endif
@@ -101,21 +101,21 @@ Do While .T.
 			Endif
 		Endif
 	Endif
-	If myip='172.16.1.7' OR lesprueba=1
+	If myip='172.16.1.7' Or lesprueba=1
 		Messagebox(lcresp)
-		miniresp = LEFT(lcresp,250)
+		miniresp = Left(lcresp,250)
 		mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
-				" values (?xnrodoc ,?xafiliado, ?miniresp ,?CSEC,?xmtoken  )")
+			" values (?xnrodoc ,?xafiliado, ?miniresp ,?CSEC,?xmtoken  )")
 	Endif
 	If xsuper = 0
-		If mhoy =Ctod("30/08/2024")
+		If mhoy =Ctod("14/08/2026") And Val(Transform(xmtoken ))=0
 			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
 				" values (?xnrodoc ,?xafiliado,'indica con autorizacion' ,?CSEC,?xmtoken  )")
 		Endif
 		Return .T.
 		Exit
 	Else
-		If At("Numero de Token invalido",lcResp)>0 And nitera = 0 And  xeslabo= 1
+		If At("Numero de Token invalido",lcresp)>0 And nitera = 0 And  xeslabo= 1
 			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
 				" values ('',?xafiliado,'Numero de Token invalido' ,?CSEC,?Token )")
 			Token = ''
@@ -125,14 +125,14 @@ Do While .T.
 		Endif
 	Endif
 Enddo
-If mhoy =Ctod("30/08/2024")
+If mhoy =Ctod("14/08/2026") And Val(Transform(xmtoken ))=0
 	mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
 		" values (?xnrodoc ,?xafiliado,'fin validacion' ,?CSEC,?xmtoken  )")
 Endif
-If !Empty(lcResp)
+If !Empty(lcresp)
 	ntkline = Memlines(lcresp)
 	mnroitem =0
-	Do prg_separo_datos_trad With lcResp,ntkline,mnroitem
+	Do prg_separo_datos_trad With lcresp,ntkline,mnroitem
 	nitem = 1
 
 	tklin = token_resp(1,1)
@@ -148,13 +148,13 @@ If !Empty(lcResp)
 		tkestado  = token_resp(3,2)
 		tkok = Iif(At('APROBADO',tkestado)>0,1,0)
 		xind = 4
-		Do While At('PRT=',token_resp(xind ,1))=0
-			xind =xind +1
-			If xind =100
-				Messagebox("ERROR AL VALIDAR TRADITUM",16,"Control")
-				Return .T.
-			Endif
-		Enddo
+*!*			Do While At('PRT=',token_resp(xind ,1))=0
+*!*				xind =xind +1
+*!*				If xind =100
+*!*					Messagebox("ERROR AL VALIDAR TRADITUM",16,"Control")
+*!*					Return .T.
+*!*				Endif
+*!*			Enddo
 
 		limit = ncantprac +xind
 		For xi = xind  To limit
@@ -178,9 +178,9 @@ Endif
 Select mwkjson
 Go Top
 Release xmlHTTP
-If mhoy =Ctod("30/08/2024")
+If mhoy =Ctod("14/08/2026") And Val(Transform(xmtoken ))=0
 	mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
-		" values (?xnrodoc ,?xafiliado,'fin armado' ,?CSEC,?xmtoken  )")
+					" values (?tkcodprest,?xafiliado,?cestado,?CSEC,?Token )")
 Endif
 Return .T.
 Function json(texto,clave,comillas)

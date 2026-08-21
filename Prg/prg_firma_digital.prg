@@ -1,32 +1,41 @@
-Parameters mcodmed,mlmed,mlmat,lbusresp,msec,mlmedjefe,mlmatjefe,lmedsinfirma,msolfirma
+Parameters mcodmed,mlmed,mlmat,lbusresp,msec,mlmedjefe,mlmatjefe,lmedsinfirma,msolfirma,mdnimed
 *mlmed = ''
 *mlmat = ''
 mlmedjefe = ''
 mlmatjefe = ''
+If Vartype(mdnimed)<>"N"
+	mdnimed=0
+Endif
 If mxambito>1
-	Return .F.
+*	Return .F.
 Endif
 lfirma = .T.
-mfiltra = .t.
+mfiltra = .T.
 mcodmedfirma = mcodmed
 If mcodmedfirma>1
-	Do sp_busco_medico_dat With mcodmedfirma
+	If !Used("MwkDatMed")
+		Do sp_busco_medico_dat With mcodmedfirma
+	Endif
 	If Used("MwkDatMed")
 		If Reccount("MwkDatMed")>0
-			mcodmedfirma = MwkDatMed.id
+			mcodmedfirma = MwkDatMed.Id
 			mlmed = Nvl(MwkDatMed.nombre,'')
 			mlmat = Nvl(MwkDatMed.matriculas,'')
-			mfiltra = !inlist(nvl(MwkDatMed.tpf_filtro,0),0,7)
-		Endif
-		Use In Select('MwkDatMed')
+			mfiltra = !Inlist(Nvl(MwkDatMed.tpf_filtro,0),0,7)
+		ENDIF 
 	Endif
 Endif
-lfirma = (mcodmedfirma>1 and !mfiltra )
+lfirma = (mcodmedfirma>1 And !mfiltra )
 lmedsinfirma = .T.
 mfirma = "C:\temp\imagenes\firmas\firma"+Sys(2015)+".tif"
-mhayfirma = File("X:\qepd1a1\digito\"+Alltrim(Transform(mcodmedfirma))+"_firma_ms.exe")
+IF mdnimed = 0
+cnamefirma = Alltrim(Transform(mcodmedfirma))+"_firma_ms.exe"
+ELSE
+cnamefirma = Alltrim(Transform(mdnimed ))+"m.exe"
+endif
+mhayfirma = File("X:\qepd1a1\digito\"+cnamefirma )
 If mhayfirma
-	msolfirma = "X:\qepd1a1\digito\"+Alltrim(Transform(mcodmedfirma))+"_firma_ms.exe"
+	msolfirma = "X:\qepd1a1\digito\"+cnamefirma 
 	lmedsinfirma = .F.
 Else
 	prg_carga_firma(mcodmedfirma,2,lfirma )

@@ -12,7 +12,7 @@ For i= 1 To mnarch
 	Insert Into medfirm Values (mimed)
 Next
 *Do sp_conexion
- mcon1 = SQLConnect("conec01")
+  mcon1 = SQLConnect("conec01")
 *** ultima actualizacion 04/11/2019
 *mret = SQLExec(mcon1,"select * FROM TabMedFoto where  FechaBaja = ?mfecpas and tipo = 2 and idmedico in (5463) order by id desc ","mprofFotList")
 mret = SQLExec(mcon1,"select * FROM TabMedFoto where   tipo = 2 order by id desc ","mprofFotoctr")

@@ -4,7 +4,8 @@
 parameters mpaciente,mmotivo,mobserva,mCodEntidad,mcodamision
 
 go top in mwkusuario
-mnombre = allt(mwkusuario.idusuario)
+mnombre = IIF(USED('mwkusuarios'),Allt(mwkusuarios.idusuario),Allt(mwkusuario.idusuario))
+
 maten   = sys(0)
 mdtF    = sp_busco_fecha_serv('DT')
 

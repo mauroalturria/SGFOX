@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 14/08/2025          SAPSEGMENU.MPR            14:51:29  
+*       * 11/08/2026          SAPSEGMENU.MPR            12:54:40  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * Author's Name                                           
 *       *                                                         
-*       * Copyright (C) 2025 Company Name                         
+*       * Copyright (C) 2026 Company Name                         
 *       * Address                                                 
 *       * City,     Zip                                           
 *       *                                                         
@@ -26,27 +26,27 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7950vugmr OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7j90ro81j OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7950vugms OF _MSYSMENU PROMPT "Procesos" COLOR SCHEME 3 ;
+DEFINE PAD _7j90ro81k OF _MSYSMENU PROMPT "Procesos" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-DEFINE PAD _7950vugmt OF _MSYSMENU PROMPT "Quirofano" COLOR SCHEME 3 ;
+DEFINE PAD _7j90ro81l OF _MSYSMENU PROMPT "Quirofano" COLOR SCHEME 3 ;
 	KEY ALT+Q, ""
-DEFINE PAD _7950vugmu OF _MSYSMENU PROMPT "Sap" COLOR SCHEME 3 ;
+DEFINE PAD _7j90ro81m OF _MSYSMENU PROMPT "Sap" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7950vugmv OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7j90ro81n OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7950vugmr OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7950vugms OF _MSYSMENU ACTIVATE POPUP procesos
-ON PAD _7950vugmt OF _MSYSMENU ACTIVATE POPUP quirofano
-ON PAD _7950vugmu OF _MSYSMENU ACTIVATE POPUP sap
-ON PAD _7950vugmv OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7j90ro81j OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7j90ro81k OF _MSYSMENU ACTIVATE POPUP procesos
+ON PAD _7j90ro81l OF _MSYSMENU ACTIVATE POPUP quirofano
+ON PAD _7j90ro81m OF _MSYSMENU ACTIVATE POPUP sap
+ON PAD _7j90ro81n OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7950vugmw ;
+	DO _7j90ro81o ;
 	IN LOCFILE("\DESAGUEMES\MNU\SAPSEGMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is SAPSEGMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -78,14 +78,14 @@ DEFINE BAR 2 OF usuario PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7950vugmx ;
+	DO _7j90ro81z ;
 	IN LOCFILE("\DESAGUEMES\MNU\SAPSEGMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is SAPSEGMENU?")
 ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7950VUGMW  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7J90RO81O  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -96,14 +96,14 @@ ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7950vugmw
+PROCEDURE _7j90ro81o
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7950VUGMX  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7J90RO81Z  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -114,7 +114,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7950vugmx
+PROCEDURE _7j90ro81z
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

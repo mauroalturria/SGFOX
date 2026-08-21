@@ -17,20 +17,21 @@ ENDIF
 If Vartype(fechahas)<>"D"
 	fechahas = CTOD("01/01/2100")
 Endif
-mreempl = " union SELECT id, nombre,codesp,codespe,cast(matriculas as integer) as matricula,cast(0 as integer) as TPF_filtro    FROM prestadores  " + ;
+mreempl = " union SELECT id, nombre,codesp,codespe,cast(matriculas as integer) as matricula,cast(0 as integer) as TPF_filtro,dni   FROM prestadores  " + ;
 	" WHERE id = 1059 "
 
 
-mret = SQLExec(mcon1,"SELECT Prestadores.id, nombre,codesp,codespe,cast(matriculas as integer) as matricula,TPF_filtro   "+;
+mret = SQLExec(mcon1,"SELECT Prestadores.id, nombre,codesp,codespe,cast(matriculas as integer) as matricula,TPF_filtro,dni   "+;
 	" FROM prestadores  " + ;
 	" Left join TabProfFiltro on Prestadores.id = TabProfFiltro.TPF_codmed " + ;
 	"WHERE (fecpasivap = ?mfecnul or fecpasivap > ?fechades) " +mbusamb ,"mwkmed01")
 
-mret = SQLExec(mcon1," SELECT ID , nombre,cast('    ' as char(4))  as codesp,gerenciadora  as codespe,matricula,cast(0 as integer) as TPF_filtro  FROM TabMedExterno " + ;
+mret = SQLExec(mcon1," SELECT ID , nombre,cast('    ' as char(4))  as codesp,gerenciadora  as codespe,matricula,"+;
+	"cast(0 as integer) as TPF_filtro,cast(0 as integer) as dni  FROM TabMedExterno " + ;
 	" where fechaIngreso >= ?fechades and fechaIngreso <= ?fechahas and not gerenciadora in ( 0,373) "+ mreempl,"mwkmed02")
 
 Select * From mwkmed01 ;
-	union Select Id , Alltrim(nombre)+" (R)" As nombre,codesp,codespe,matricula,0 as TPF_filtro    ;
+	union Select Id , Alltrim(nombre)+" (R)" As nombre,codesp,codespe,matricula,0 as TPF_filtro,dni    ;
 	from mwkmed02 Into Cursor mwkmed
 Select * From mwkmed Order By nombre Into Cursor mwkmedicoamb
 

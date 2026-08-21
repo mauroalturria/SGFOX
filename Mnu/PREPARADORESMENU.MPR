@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 06/08/2026       PREPARADORESMENU.MPR         12:55:45  
+*       * 20/08/2026       PREPARADORESMENU.MPR         15:25:13  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,21 +26,21 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7j40rpmt2 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7ji0x1ekt OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7j40rpmt3 OF _MSYSMENU PROMPT "Farmacia" COLOR SCHEME 3 ;
+DEFINE PAD _7ji0x1eku OF _MSYSMENU PROMPT "Farmacia" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7j40rpmt4 OF _MSYSMENU PROMPT "Listados" COLOR SCHEME 3 ;
+DEFINE PAD _7ji0x1ekv OF _MSYSMENU PROMPT "Listados" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-ON PAD _7j40rpmt2 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7j40rpmt3 OF _MSYSMENU ACTIVATE POPUP farmacia
-ON PAD _7j40rpmt4 OF _MSYSMENU ACTIVATE POPUP listados
+ON PAD _7ji0x1ekt OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7ji0x1eku OF _MSYSMENU ACTIVATE POPUP farmacia
+ON PAD _7ji0x1ekv OF _MSYSMENU ACTIVATE POPUP listados
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicación"
 DEFINE BAR 2 OF salir PROMPT "Acerca de ..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7j40rpmt5 ;
+	DO _7ji0x1ekw ;
 	IN LOCFILE("\DESAGUEMES\MNU\PREPARADORESMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PREPARADORESMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -61,7 +61,7 @@ ON SELECTION BAR 2 OF listados do sp_abre_informe_kardex.prg
 
 *       *********************************************************
 *       *                                                         
-*       * _7J40RPMT5  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7JI0X1EKW  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -72,6 +72,6 @@ ON SELECTION BAR 2 OF listados do sp_abre_informe_kardex.prg
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7j40rpmt5
+PROCEDURE _7ji0x1ekw
 do sp_logoff
 quit

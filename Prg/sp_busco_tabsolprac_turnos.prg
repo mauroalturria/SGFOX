@@ -12,7 +12,7 @@ Do Case
 Case tnOpcion = 1
 	lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio,ser_descripserv "+;
 		",guardia.codcie9 ,tabambulatorio.codcie9,ciapamb.descrabrev,ciapgua.descrabrev,ciappqx.descrabrev "+;
-		",INS_descriinsumo,tabambulatorio.centromedico,Tabpqx.PQ_coddiag     "+;
+		",INS_descriinsumo,tabambulatorio.centromedico,Tabpqx.PQ_coddiag,ciappoli.descrabrev as descrabrevpoli "+;
 		" from TabSolPract  " + ;
 		" left join prestacions on ASP_codprest = pre_codprest "+;
 		" left join insumos on ASP_codprest = INS_codpuntero "+;
@@ -21,6 +21,7 @@ Case tnOpcion = 1
 		" left join guardia on ASP_protocolo = guardia.protocolo "+;
 		" left join tabpqx on ASP_protocolo = tabpqx.id "+;
 		" left join tabciap2e ciapgua on guardia.codcie9 = ciapgua.id "+;
+		" left join tabciap2e ciappoli on TabSolPract.ASP_codcie9 = ciappoli.id "+;
 		" left join tabciap2e ciappqx on Tabpqx.PQ_coddiag = ciappqx.id "+;
 		" left join servicios on pre_codservicio = ser_codserv "+;
 		tcWhere

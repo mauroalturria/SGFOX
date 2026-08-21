@@ -166,6 +166,7 @@ Case mcual = 5		&& planilla enfermeria
 		left Join mwkentexg On codent = codentexc ;
 		left Join mwkciap2e On mwkciap2e.Id = codcie9 ;
 		left Join mwkprotomsg On protocolo = TAM_protocolo  ;
+		WHERE demanda<>8;
 		group By fechahoraing,protocolo,codprest,mwkambula0.Id;
 		order By fechahoraing Into Cursor &mcursor
 &&and codestado= 1

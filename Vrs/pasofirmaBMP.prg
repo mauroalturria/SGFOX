@@ -17,7 +17,7 @@ Do sp_conexion
 
 mret = SQLExec(mcon1,"select Tabmedfoto.ID, Tabmedfoto.FechaBaja, Tabmedfoto.FechaToma,"+;
 	" Tabmedfoto.IdMedico, Tabmedfoto.Tipo,fecpasivap FROM TabMedFoto,prestadores  where  idmedico=prestadores.id"+;
-	" and fecpasivap  = '1900-01-01' and FechaBaja = ?mfecpas and tipo = 3 ","mprofFotoctr")
+	" and fecpasivap  = '1900-01-01' and FechaBaja = ?mfecpas and tipo = 3 ","mprofFotList")
 
 Set Step On
 *Use c:\desaguemes\medfirm.Dbf In 0 Exclusive
