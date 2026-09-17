@@ -4,20 +4,29 @@
 Lparameters mnreg,  midmedico,mncodprest, mcCursor,mdesde,mcursor,mcodserv,lsoloactivo
 If Vartype(midmedico)<>"N"
 	midmedico= 0
-ENDIF
+Endif
 If Vartype(lsoloactivo)<>"N"
 	lsoloactivo= 0
 Endif
 If Vartype(mcursor)<>"C"
 	mcursor = "mwkvaleambu"
 Endif
-If Vartype(mcodserv)<>"N"
-	mcodserv = 0
+If Vartype(mcodserv)="C"
+	mbcodserv = " in ("+Alltrim(mcodserv)+") "
+	mcodserv = VAL(mcodserv)
+Else
+	If Vartype(mcodserv)<>"N"
+		mcodserv = 0
+	Else
+		mbcodserv = " in ("+Transform(mcodserv)+") "
+	Endif
+
 Endif
+
 If Vartype(mdesde ) # "D"
 	mdesde = sp_busco_fecha_serv("DD")
 Endif
-If midmedico=0 And mcodserv = 0 AND mnreg = 0
+If midmedico=0 And mcodserv = 0 And mnreg = 0
 	Return
 Endif
 mbusamb = ' and centromedico = ?mxcentromedico  '
@@ -28,7 +37,7 @@ If midmedico>0
 	mbusamb = mbusamb + " and codmed ="+Transf(midmedico)
 Endif
 If mcodserv >0
-	mbusamb = mbusamb + " and pre_codservicio  = "+Transf(mcodserv )
+	mbusamb = mbusamb + " and pre_codservicio  "+mbcodserv 
 Endif
 If Val(Transform(mncodprest)) > 0
 	mbusamb =  mbusamb +  ' and  codprest = ?mncodprest '

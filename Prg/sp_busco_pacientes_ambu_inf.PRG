@@ -55,7 +55,7 @@ mret = SQLExec(mcon1,"select PRE_descriprest as prestacion, PRE_codservicio, Tab
 	" inner join tabtipoaltas on TabAmbulatorio.codestado = tabtipoaltas.id " + ;
 	" left join TabAmbMsg on TAM_protocolo = Tabambulatorio.protocolo " + ;
 	"    Left join (select * from informes where tipoArch in ('TXT','PDF') and fechainforme >= ?mdesde  " + ;
-	"            and informes.EstadoInforme < 5) b " + ;
+	"            and ( informes.EstadoInforme < 5 or  informes.EstadoInforme = 8)) b " + ;
 	"            on Tabambulatorio.NroVale = b.nrovale " + ;
 	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
 	" where 1=1 and " + mbus + mbusAmb + mccpoamb  ,"mwkambula")
@@ -92,12 +92,12 @@ mret = SQLExec(mcon1,"select fechahoraing,fechahoraate,REG_nombrepac as paciente
 	" left join TabAmbMsg on TAM_protocolo = Tabambulatorio.protocolo "+ ;
 	" left join Prestadores on Prestadores.Id = CodMed " + ;
 	"    Left join (select * from informes where tipoArch in ('TXT','PDF')  and fechainforme >= ?mdesde  " + ;
-	"            and informes.EstadoInforme < 5) b " + ;
+	"            and ( informes.EstadoInforme < 5 or  informes.EstadoInforme = 8)) b " + ;
 	"            on Tabambulatorio.NroVale = b.nrovale " + ;
 	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
 	" where TabAmbulatorio.demanda = 1 and " + mbus + ;
 	iif(Len(Alltrim(msel_med))>0," and TabAmbulatorio.codmed=?midmedico " ,"")+ ;
-	mbusAmb + mccpoamb  + " group by Tabambulatorio.id ","mwkdemanda")
+	mbusAmb + mccpoamb  + " group by Tabambulatorio.id,b.id ","mwkdemanda")
 
 If mret <= 0
 	Messagebox("EN BUSQUEDA DE AMBULATORIOS DEMANDA" + Chr(10) + "AVISE A SISTEMAS",16,"ERROR")
@@ -139,11 +139,11 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 	" join Prestacions on pre_codprest = turnos.codprest"+ ;
 	" left join Prestadores on Prestadores.Id = turnos.CodMed " + ;
 	"    Left join (select * from informes where tipoArch in ('TXT','PDF') and fechainforme >= ?mdesde   " + ;
-	"            and informes.EstadoInforme < 5) b " + ;
+	"            and ( informes.EstadoInforme < 5 or  informes.EstadoInforme = 8)) b " + ;
 	"            on turnos .NroVale = b.nrovale " + ;
 	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
 	" where 1=1 " + Iif(Upper(Left(msel_med,3))="AND",''," AND ")+msel_med + mbusft + mBusTur + mccpoamb + ;
-	" group by turnos.fechatur, afi_nroafiliado, turnos.codreserva, turnos.codprest, turnos.nrovale ", "mwkphorario1")
+	" group by turnos.fechatur, afi_nroafiliado, turnos.codreserva, turnos.codprest, turnos.nrovale,b.id ", "mwkphorario1")
 
 If mret <= 0
 	Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()
@@ -182,11 +182,11 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 	" join Prestacions on pre_codprest = turnos.codprest "+ ;
 	" left join Prestadores on Prestadores.Id = turnos.CodMed " + ;
 	"    Left join (select informes.* from informes where tipoArch in ('TXT','PDF')  and fechainforme >= ?mdesde  " + ;
-	"            and informes.EstadoInforme < 5) b " + ;
+	"            and ( informes.EstadoInforme < 5 or  informes.EstadoInforme = 8)) b " + ;
 	"            on turnos.NroVale = b.nrovale " + ;
 	"    left join TabEstados on TabEstados.Estado = b.EstadoInforme and propietario = 10 " + ;
 	"where  1=1 and " + mbusft + mBusTur + mccpoamb +;
-	" group by turnos.fechatur,preregistra.afiliado,turnos.codreserva,turnos.codprest,turnos.nrovale","mwkphorario2")
+	" group by turnos.fechatur,preregistra.afiliado,turnos.codreserva,turnos.codprest,turnos.nrovale,b.id","mwkphorario2")
 
 If mret <= 0
 	Do Log_errores With Error(), Message(), Message(1), Program(), Lineno()

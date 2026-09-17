@@ -140,7 +140,7 @@ Select mwkinfo.*,iif(isnull(mwkInfoAUX.id),Val_CodPun,mwkInfoAUX.id) as idinfo, 
 	join mwkprestac on Pre_CodPrest = Pia_CodPrest ;
 	Inner Join mwkInfoAUX On mwkInfo.VAL_CodPun = mwkInfoAUX.CodPun ;
 	left join mwkMedicosall1 on mwkMedicosall1.id = mwkInfoAUX.CodMedFirma ;
-	where (!inlist(nvl(mwkInfoAUX.Estadoinforme,0),1,2,5) or nvl(mwkInfoAUX.Id,0)=0) ;
+	where (!inlist(nvl(mwkInfoAUX.Estadoinforme,0),1,2,5,8) or nvl(mwkInfoAUX.Id,0)=0) ;
 	and VAL_NroProtocolo not in (select tpprotocolo from mwkanulados)  ;
 	and VAL_NroProtocolo>0 and PRE_retiroestudios>0 and !inlist(Pre_CodPrest,84020100,84020101,18010403,34100402);
 	into cursor mwkinfopre

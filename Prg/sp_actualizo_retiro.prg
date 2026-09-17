@@ -101,7 +101,7 @@ if mopcion = 3  && es lectura con proto
 			" Left join Prestadores on Informes.CodMedFirma = Prestadores.Id "+;
 			" left join tabestados on TipoLog = tabestados.estado and propietario = 10 "+;
 			" where IdInforme = Informes.ID and NroProtocolo = ?mprotocolo and Informes.nrovale = ?mnrovale  " + ;
-			" and Informes.EstadoInforme < 5 and codigovax = Informeslog.Usuario and TipoLog < 6"+;
+			" and (estadoinforme < 5 or estadoinforme = 8) and codigovax = Informeslog.Usuario and TipoLog < 6"+;
 			" order by idinforme,FechaLog ","mwkauxiinfo")
 		if mret<1
 			return .f.

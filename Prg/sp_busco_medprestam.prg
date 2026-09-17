@@ -11,7 +11,7 @@ Endif
 If type('mbusci') # "C"
 	mbusci = ''
 Endif
-
+USE IN SELECT("mwkMPfecha")
 If vartype(mfecha2) # "D"
 	mfecha2 = mfecha1
 Endif
@@ -37,8 +37,10 @@ If mcjoin = 'N'
 Else
 
 	mret = sqlexec(mcon1, "select medpresta.*, prestadores.id, prestadores.nombre, franjahoraria.ID as idfranja" +;
-		",bloquedesde, bloquehasta "+;
+		",bloquedesde, bloquehasta,PRE_especialidad as codesppres, PRE_codservicio as codservpres"+;
 		" from medpresta" +;
+		" join Prestacions on" +;
+		" Medpresta.codprest = Prestacions.PRE_codprest "+;
 		" join prestadores on" +;
 		" (prestadores.fecpasivap = ?mfecnul or prestadores.fecpasivap > ?mfecha1)"+;
 		" and prestadores.id = medpresta.codmed" +;

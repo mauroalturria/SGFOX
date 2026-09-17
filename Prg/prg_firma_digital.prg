@@ -13,7 +13,8 @@ lfirma = .T.
 mfiltra = .T.
 mcodmedfirma = mcodmed
 If mcodmedfirma>1
-	If !Used("MwkDatMed")
+	If !Used("MwkDatMed") OR mdnimed = 0
+ 
 		Do sp_busco_medico_dat With mcodmedfirma
 	Endif
 	If Used("MwkDatMed")

@@ -191,7 +191,7 @@ Case mopcion = 2
 		" where pre_codprest = codprest and val_codpun = codpun  and "+;
 		" Tabestados.propietario = 10 and Tabestados.tipo = 1 and Tabestados.estado = estadoinforme and "+;
 		" Servicios.SER_codserv = Informes.CodServVale and " + ;
-		" Prestadores.ID = Informes.CodMedFirma and Informes.EstadoInforme < 5 and "+;
+		" Prestadores.ID = Informes.CodMedFirma and (estadoinforme < 5 or estadoinforme = 8) and "+;
 		" fechainforme>= ?mcfechad and fechainforme< ?mcfechah and " + ;
 		" pac_codadmision  = val_codadmision " + mwhere  ,"mwkinfo")
 Case mopcion = 3 && AGREGADO PARA infor12a
@@ -212,7 +212,7 @@ Case mopcion = 3 && AGREGADO PARA infor12a
 		"Inner join Sectores on sec_codsector = VAL_codsector " + ;
 		"where Tabestados.propietario = 10 and " + ;
 		"Tabestados.tipo = 1 and "+;
-		"Informes.EstadoInforme < 4 and "+;
+		"(estadoinforme < 4 or estadoinforme = 8) and "+;
 		"FechaRecepcion>= ?mcfechad and FechaRecepcion< ?mcfechah " + ;
 		" " + mwhere + " " ,"mwkinfo")
 Endcase

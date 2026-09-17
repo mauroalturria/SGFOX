@@ -1,4 +1,4 @@
-Parameters mPrest, mCodPun, msector, mmedico, mnprot , mnrovale    
+Parameters mPrest, mCodPun, msector, mmedico, mnprot , mnrovale ,mnewestado
 
 Private mcFila, mcExt
 Store "" To mcExt, mcFila
@@ -8,7 +8,9 @@ mcFila = Getfile("","Seleccione un Archivo")
 If Empty(mcFila)
 	Return .F.
 Endif
-
+If Vartype(mnewestado)<>"N"
+	mnewestado=3
+Endif
 mcExt = Justext(mcFila)
 mcName = Juststem(mcFila)
 mcDir = Addbs(Justpath(mcFila))
@@ -20,7 +22,7 @@ mcDir = Addbs(Justpath(mcFila))
 *!*	?mcDir
 *!*------------------------------------------------------------------------------------------------------------------------------
 mdiahoy = sp_busco_fecha_serv('DT')
-mnestado = 3
+mnestado = mnewestado
 mitxt = ""
 *!*	mprest = mwkPresin.Pia_CodPrest
 *!*	mcodpun = mwkVale.Val_codpun
@@ -71,11 +73,11 @@ Else
 			?mnprot, ?mnrovale, ?mcExt, ?__DATA.informe , ?mitxt,
 			0, ?mdiahoy)
 	ENDTEXT
-Endif 
+Endif
 
 If !Prg_EjecutoSql(lcSql,"mwk")
 	Messagebox("ERROR AL GUARDAR",16,"ERROR")
-	Return .f.
+	Return .F.
 Endif
 
 Use In Select("__DATA")
@@ -83,6 +85,6 @@ Use In Select("__DATA")
 If File("C:\temp\informes\Adjunto01.dbf")
 	Delete File ("C:\temp\informes\Adjunto01.dbf")
 	Delete File ("C:\temp\informes\Adjunto01.FPT")
-Endif 	
-	
+Endif
+
 Messagebox("FIN DEL PROCESO !!!",64,"AVISO")

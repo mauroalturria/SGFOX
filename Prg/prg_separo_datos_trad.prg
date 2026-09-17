@@ -47,3 +47,5 @@ Do While  (mconta1>0 Or mconta3>0) And Len(mrespu)>0
 Enddo
 mnroitem =m_i
 
+
+

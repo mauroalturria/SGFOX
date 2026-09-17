@@ -44,35 +44,38 @@ If mwkAgendaMK.estado = 1
 	Else
 		lcresp = Transform(oHttp.Status)
 	Endif
-	Strtofile(lcResp,"jsonresp.txt")
+	Strtofile(lcresp,"jsonresp.txt")
 	If mwkusuario.sector = 'SISTEMAS'
 		Messagebox("Respuesta:"+Chr(10)+Alltrim(lcresp))
 	Endif
 	Release oHttp
 	Wait Clear
-	If !Empty(lcResp)
+	If !Empty(lcresp)
 		Create Cursor mwkjson (turnCodigo N(12),mediMedico c(50) ,turnFechaInicio T,paciPaciente c(50);
 			,turnEstado c(30),turnEspontaneo L,turnReemplazo L,procCodigoInterno N(10),procDescripcion c(50);
-			,tuprCodigoInterno c(30) )
-		lcturnCodigo = Val(json(lcResp,'turnCodigo',0))
-		lcturnEstado = json(lcResp,'turnEstado',0)
-		lctuprCodigoInterno = json(lcResp,'tuprCodigoInterno',0)
-		lcturnFechaInicio =  prg_ctod(Strtran(Left(json(lcResp,'turnFechaInicio',0),19),"T"," "),'T')
-		lcpaciPaciente = json(lcResp,'paciPaciente',0)
-		lcmediMedico = json(lcResp,'mediMedico',0)
-		lcjason = json(lcResp,'turnEspontaneo',0)
+			,tuprCodigoInterno c(30),panoAutorizacion c(20))
+		lcturnCodigo = Val(json(lcresp,'turnCodigo',0))
+		lcturnEstado = json(lcresp,'turnEstado',0)
+		lctuprCodigoInterno = json(lcresp,'tuprCodigoInterno',0)
+		lcturnFechaInicio =  prg_ctod(Strtran(Left(json(lcresp,'turnFechaInicio',0),19),"T"," "),'T')
+		lcpaciPaciente = json(lcresp,'paciPaciente',0)
+		lcmediMedico = json(lcresp,'mediMedico',0)
+		lcjason = json(lcresp,'turnEspontaneo',0)
 		lcturnEspontaneo =  (lcjason<>'false')
-		lcjason =  json(lcResp,'turnReemplazo',0)
+		lcjason =  json(lcresp,'turnReemplazo',0)
 		lcturnReemplazo = (lcjason<>'false')
+		lcpanoAutorizacion  = json(lcresp,'panoAutorizacion',0)
 		Do While Len(Alltrim(lcresp))>20
-			lcprocCodigoInterno = Val(json(lcResp,'procCodigoInterno',0))
-			lcprocDescripcion = json(lcResp,'procDescripcion',0)
-			lcjason =  json(lcResp,'turnReemplazo',0)
+			lcprocCodigoInterno = Val(json(lcresp,'procCodigoInterno',0))
+			lcprocDescripcion = json(lcresp,'procDescripcion',0)
+			lcjason =  json(lcresp,'turnReemplazo',0)
 
 			Insert Into mwkjson   (turnCodigo,mediMedico,turnFechaInicio,paciPaciente;
-				,turnEstado,turnEspontaneo,turnReemplazo,procCodigoInterno,procDescripcion,tuprCodigoInterno  );
+				,turnEstado,turnEspontaneo,turnReemplazo,procCodigoInterno,procDescripcion,;
+				tuprCodigoInterno,panoAutorizacion  );
 				Values (lcturnCodigo,lcmediMedico,lcturnFechaInicio,lcpaciPaciente;
-				,lcturnEstado,lcturnEspontaneo,lcturnReemplazo,lcprocCodigoInterno,lcprocDescripcion,lctuprCodigoInterno  )
+				,lcturnEstado,lcturnEspontaneo,lcturnReemplazo,lcprocCodigoInterno,lcprocDescripcion,;
+				lctuprCodigoInterno,lcpanoAutorizacion  )
 
 			npositem = At('tuprCodigoInterno:',lcresp)+32
 			lcresp =Substr(lcresp ,npositem)

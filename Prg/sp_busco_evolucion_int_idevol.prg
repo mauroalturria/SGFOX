@@ -240,7 +240,7 @@ Case xctipo = "EM"
 				If !Used("mwkEvolmeda")
 					Select * From mwkEvolmedo Into Cursor mwkEvolmeda
 				Else
-					Select * From mwkEvolmedo Union All Select * From mwkEvolmed Into Cursor mwkEvolmeda
+					Select * From mwkEvolmeda Union All Select * From mwkEvolmedo Into Cursor mwkEvolmeda
 				Endif
 				If Reccount('mwkEvolmeda')>=xncantreg
 					Exit
@@ -292,7 +292,7 @@ Case xctipo = "II"
 				If !Used("mwkEvolmeda")
 					Select * From mwkEvolmedo Into Cursor mwkEvolmeda
 				Else
-					Select * From mwkEvolmedo Union All Select * From mwkEvolmed Into Cursor mwkEvolmeda
+					Select * From mwkEvolmeda Union All Select * From mwkEvolmedo Into Cursor mwkEvolmeda
 				Endif
 				If Reccount('mwkEvolmeda')>=xncantreg
 					Exit

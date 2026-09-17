@@ -157,7 +157,7 @@ If (Reccount('mwkinfo')>0)
 		join mwkprestac On Pre_CodPrest = Pia_CodPrest ;
 		Left Join mwkInfoAUX On mwkinfo.Val_CodPun = mwkInfoAUX.CodPun ;
 		left Join mwkMedicosall1 On mwkMedicosall1.Id = mwkInfoAUX.CodMedFirma ;
-		where (!Inlist(Nvl(mwkInfoAUX.Estadoinforme,0),1,2,5) Or Nvl(mwkInfoAUX.Id,0)=0) ;
+		where (!Inlist(Nvl(mwkInfoAUX.Estadoinforme,0),1,2,5,8) Or Nvl(mwkInfoAUX.Id,0)=0) ;
 		and VAL_NroProtocolo Not In (Select tpprotocolo From mwkanulados)  ;
 		and VAL_NroProtocolo>0 And PRE_retiroestudios>0 And !Inlist(Pre_CodPrest,84020100,84020101,18010403,34100402);
 		into Cursor mwkinfopre Readwrite
@@ -227,7 +227,7 @@ Endif
 mret = SQLExec(mcon1,"select NrovaleOriginal,NroValeRelacionado"+;
 	" from tabvalerelacion "+;
 	" inner join informes on nrovale = NrovaleOriginal"+;
-	" where fecPasiva = ?mfnull and informes.estadoinforme < 5","mwkvalrelacion")
+	" where fecPasiva = ?mfnull and (estadoinforme < 5 or estadoinforme = 8)","mwkvalrelacion")
 
 If mret <= 0
 	Messagebox("ERROR DE LECTURA, REINTENTE", 48, "VALIDACION")
@@ -238,7 +238,7 @@ Endif
 mret = SQLExec(mcon1,"select NrovaleOriginal,NroValeRelacionado"+;
 	" from tabvalerelacion "+;
 	" inner join informes on nrovale = NroValeRelacionado"+;
-	" where  fecPasiva = ?mfnull and estadoinforme <5","mwkvalrelacion2")
+	" where  fecPasiva = ?mfnull and (estadoinforme < 5 or estadoinforme = 8)","mwkvalrelacion2")
 
 If mret <= 0
 	Messagebox("ERROR DE LECTURA, REINTENTE", 48, "VALIDACION")

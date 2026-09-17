@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 19/08/2026           INFOMENU.MPR             15:37:09  
+*       * 16/09/2026           INFOMENU.MPR             11:51:15  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,40 +26,40 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7jh0xgt00 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peows OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7jh0xgt01 OF _MSYSMENU PROMPT "Informes" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peowt OF _MSYSMENU PROMPT "Informes" COLOR SCHEME 3 ;
 	KEY ALT+I, ""
-DEFINE PAD _7jh0xgt02 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peowu OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7jh0xgt03 OF _MSYSMENU PROMPT "Médicos - Transcripciones" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peowv OF _MSYSMENU PROMPT "Médicos - Transcripciones" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
-DEFINE PAD _7jh0xgt04 OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peoww OF _MSYSMENU PROMPT "Contraseña" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7jh0xgt05 OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peowx OF _MSYSMENU PROMPT "Documentación" COLOR SCHEME 3 ;
 	KEY ALT+D, ""
-DEFINE PAD _7jh0xgt06 OF _MSYSMENU PROMPT "Sistemas" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peowy OF _MSYSMENU PROMPT "Sistemas" COLOR SCHEME 3 ;
 	KEY ALT+S, "" ;
 	SKIP FOR mwkusuario.sector#'SISTEMAS'
-DEFINE PAD _7jh0xgt07 OF _MSYSMENU PROMPT "Pacs" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peox8 OF _MSYSMENU PROMPT "Pacs" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-DEFINE PAD _7jh0xgt08 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
+DEFINE PAD _7k90peox9 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7jh0xgt00 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7jh0xgt01 OF _MSYSMENU ACTIVATE POPUP informes
-ON PAD _7jh0xgt02 OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _7jh0xgt03 OF _MSYSMENU ACTIVATE POPUP médicostra
-ON PAD _7jh0xgt04 OF _MSYSMENU ACTIVATE POPUP password
-ON PAD _7jh0xgt05 OF _MSYSMENU ACTIVATE POPUP documentac
-ON PAD _7jh0xgt06 OF _MSYSMENU ACTIVATE POPUP sistemas
-ON PAD _7jh0xgt07 OF _MSYSMENU ACTIVATE POPUP pacs
-ON PAD _7jh0xgt08 OF _MSYSMENU ACTIVATE POPUP usuarios
+ON PAD _7k90peows OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7k90peowt OF _MSYSMENU ACTIVATE POPUP informes
+ON PAD _7k90peowu OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7k90peowv OF _MSYSMENU ACTIVATE POPUP médicostra
+ON PAD _7k90peoww OF _MSYSMENU ACTIVATE POPUP password
+ON PAD _7k90peowx OF _MSYSMENU ACTIVATE POPUP documentac
+ON PAD _7k90peowy OF _MSYSMENU ACTIVATE POPUP sistemas
+ON PAD _7k90peox8 OF _MSYSMENU ACTIVATE POPUP pacs
+ON PAD _7k90peox9 OF _MSYSMENU ACTIVATE POPUP usuarios
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7jh0xgt09 ;
+	DO _7k90peoxa ;
 	IN LOCFILE("MNU\INFOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is INFOMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -208,14 +208,14 @@ DEFINE BAR 2 OF usuarios PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuarios PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuarios do form frmpass_amb
 ON SELECTION BAR 2 OF usuarios ;
-	DO _7jh0xgt0v ;
+	DO _7k90peoxb ;
 	IN LOCFILE("MNU\INFOMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is INFOMENU?")
 ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7JH0XGT09  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7K90PEOXA  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -226,14 +226,14 @@ ON SELECTION BAR 3 OF usuarios Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7jh0xgt09
+PROCEDURE _7k90peoxa
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7JH0XGT0V  ON SELECTION BAR 2 OF POPUP usuarios        
+*       * _7K90PEOXB  ON SELECTION BAR 2 OF POPUP usuarios        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -244,7 +244,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7jh0xgt0v
+PROCEDURE _7k90peoxb
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

@@ -88,7 +88,7 @@ select a.* , "VERIFICAR  " as VER ;
 	from mwkinfopre a, mwkinfopre b ;
 	where a.val_codpun = b.val_codpun And ;
 	((a.id = 0 and b.id > 0) Or (a.id > 0 and b.id > 0));
-	And (a.estadoinforme = 5 And b.estadoinforme in (2,3,4));
+	And (a.estadoinforme = 5 And b.estadoinforme in (2,3,4,8));
 	Group By a.val_codpun;
 	into cursor mwkValsInf	
 

@@ -7,9 +7,9 @@ If Vartype(lxcentro)<>"N"
 	lxcentro=0
 Endif
 If Vartype(mcodesp)="C"
-	mbuscodesp =  " and medpresta.codesp = ?mcodesp " 
+	mbuscodesp =  " and Prestacions.PRE_especialidad = ?mcodesp " 
 Else
-	mbuscodesp =  " and medpresta.codserv = ?mcodesp " 
+	mbuscodesp =  " and Prestacions.PRE_codservicio = ?mcodesp " 
 Endif
 If Type('mfecdes')#"D"
 	mfecdes = sp_busco_fecha_serv('DD')-30
@@ -31,6 +31,8 @@ If mxambito >1
 Endif
 mret = SQLExec(mcon1,"SELECT nombre, prestadores.id,TPF_filtro " + ;
 	"FROM Medpresta,Prestadores " + ;
+	" join Prestacions on" +;
+		" Medpresta.codprest = Prestacions.PRE_codprest "+;
 	" Left join TabProfFiltro on Prestadores.id = TabProfFiltro.TPF_codmed " + ;
 	"WHERE (fecpasivap = ?mfecnul or fecpasivap > ?mfecdes) "+;
 	"and  medpresta.codmed = prestadores.id and " + ;

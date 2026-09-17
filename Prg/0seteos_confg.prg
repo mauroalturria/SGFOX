@@ -101,7 +101,7 @@ lnexec = 1
 *  -RLV 16/10/2025: Agrego también la suma de las Cantidades de los items, para ver si hay vales que ANULAR completos:
 TEXT To lcsql Textmerge Noshow Pretext 7
 	select VAL_fechasolicitud, ser_codserv, VAL_codmnemoserv, VAL_codvaleasist, val_tipopaciente, val_nroprotocolo ,
-	    VAL_lugar_origen, ser_descripserv, pacientes.pac_codhce,
+	    VAL_lugar_origen, ser_descripserv, pacientes.pac_codhce, VAL_fhsolicitud,
 	    SUM(PIA_cantsolicitada) as TotalSolicit,
 		Cast("" AS CHAR(20)) AS PACS, 
 		Cast("" AS CHAR(20)) AS INF, 
@@ -139,6 +139,8 @@ ENDTEXT
 *!*	4403	ECOCARDIOGRAFIA PEDIATRICA
 *!*	9100	DOPPLER VASCULAR PERIFERICO
 
+**SET STEP ON
+
 
 If SqlExec(mcon1,lcSql,"mwkAux",laCount)<=0
 	Aerror(eros)
@@ -166,7 +168,7 @@ Scan All
 	*   caso contrario, dejarlos sin conformar:
 	IF mwkaux.VAL_lugar_origen = '4' && Significa que el circuito de Admisión fue Markey
 		** Busco la existencia del Vale Markey:
-		SET STEP ON
+		**SET STEP ON
 		
 		TEXT To lcsqlvalmk Textmerge Noshow Pretext 7
 		   SELECT CodigoValeMK
@@ -204,6 +206,10 @@ Scan All
 		FlagConformable = .F.
 		FechaHoraImagen = CTOT('')
 		FechaHoraRealizado = CTOT('')
+
+
+		**SET STEP ON 
+		
 
 		** 1) Busca en PACS Viejo:
 		SELECT mwkValRel
@@ -247,8 +253,21 @@ Scan All
 		 	*  Acá agregar el CONFORME **********
 		 	*INKEY(1)
 			*SET STEP ON
+			
+			** -RLV 09/09/2026: Detecté casos en que la FechaHoraRealizado (por la imagen principalmente)
+			*    figura ANTERIOR a la Fecha/hora de Solicitado del vale (IMPOSIBLE!))  
+			*   En estos casos, pondré FechaHoraRealiz = FechaHoraSolicitado.
+			IF FechaHoraRealizado < mwkaux.VAL_FHsolicitud
+				**SET STEP ON 
+				FechaHoraRealizado = mwkaux.VAL_FHsolicitud
+			ENDIF
+						
+			** -RLV 26/08/2026: Fecha y Hora para el Conforme (realizado), separados:
+			FechaRealiz = TTOD(FechaHoraRealizado)
+			HoraRealiz  = TTOC(FechaHoraRealizado,2)
+			
 
-			lccode = "D CONFTOTAL^RTN031("+ Transform(lnexec) + ',' + Transform(mvale) + ',' + Transform(moperador) + ')'
+			lccode = 'D CONFTOTAL^RTN031('+ Transform(lnexec) + ',' + Transform(mvale) + ',' + Transform(moperador) + ',"","' + Transform(FechaRealiz) + '","' + Transform(HoraRealiz) + '")'
 			lccomenta = "CONFG" + '-' + Alltrim(str(mvale,16,0))
 
 			ExecVism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
@@ -343,7 +362,7 @@ PROCEDURE ValesRelacionados
 PARAMETERS NroValeActual, NroProtocoloActual
 
 CREATE CURSOR mwkValRel ;
-	 (NroVale N(10,0), NroProtocolo N(10,0))
+	 (NroVale N(10,0), NroProtocolo N(10,0) null)
 
 *1 - El vale que se está analizando
 INSERT INTO mwkValRel (NroVale, NroProtocolo) ;
@@ -406,7 +425,8 @@ Parameters NumeroVale, FlagConformable, FechaHoraCompletado
 TEXT To lcsqlinf Textmerge Noshow Pretext 7
 	Select ID, fechahoraestudio 
 	   from Informes 
-	   Where NroVAle = ?NumeroVale And estadoinforme = 3 And tipoarch = 'TXT'
+	   Where NroVAle = ?NumeroVale And (estadoinforme = 3 And tipoarch = 'TXT'
+  	        or estadoinforme = 8 And tipoarch = 'PDF')
 ENDTEXT
 
 If SqlExec(mcon1,lcsqlinf,"mwkAuxI") > 0 AND Reccount("mwkAuxI") > 0
@@ -422,6 +442,11 @@ Procedure MPPS
 Parameters NroProtocolo, NroHistClin, FlagConformable, FechaHoraCompletado
 *Parameters lcsqlMPPS
 *!*	------------------------------------------------------------------------
+
+** -RLV 31/08/2026: Por inconsistencias encontradas en tabla de vales, si el nro. protocolo es NULL, salteo
+IF ISNULL(NroProtocolo)
+	RETURN
+ENDIF
 
 TEXT To lcsqlmpps Textmerge Noshow Pretext 7
 	SELECT PatientId, ExamCode, AccessionNumber, UniquePrimary, DBO.MWL_H.ID,
@@ -447,6 +472,12 @@ Procedure Pacs
 Parameters NroProtocolo, NroHistClin, FlagConformable, FechaHoraImagen
 *!*	------------------------------------------------------------------------
 
+** -RLV 31/08/2026: Por inconsistencias encontradas en tabla de vales, si el nro. protocolo es NULL, salteo
+IF ISNULL(NroProtocolo)
+	RETURN
+ENDIF
+
+
 ** PACS viejo:
 TEXT To lcsqlpacs Textmerge Noshow Pretext 7
 	Select * 
@@ -456,7 +487,7 @@ TEXT To lcsqlpacs Textmerge Noshow Pretext 7
 ENDTEXT
 If SqlExec(mcon1,lcsqlpacs,"mwkAuxP")>0 AND Reccount("mwkAuxP")>0
 	FlagConformable = .T.
-	FechaHoraImagen = mwkAuxP.study_date
+	FechaHoraImagen = FormateaDatetime(mwkAuxP.study_date)
 endif	
 
 
@@ -470,6 +501,10 @@ Procedure PacsPaciente
 Parameters NroProtocolo, NroHistClin, FlagConformable, FechaHoraImagen
 *!*	------------------------------------------------------------------------
 
+** -RLV 31/08/2026: Por inconsistencias encontradas en tabla de vales, si el nro. protocolo es NULL, salteo
+IF ISNULL(NroProtocolo)
+	RETURN
+ENDIF
 
 lclink = "https://servicios2.sg.com.ar/api/pacsrm/index.php?hc=" + ALLTRIM(NroHistClin) + "&proto=" + ALLTRIM(STR(NroProtocolo,10,0))
 Local xmlHTTP As "Microsoft.XMLHTTP"
@@ -503,7 +538,7 @@ OTHERWISE
     *SET STEP ON  && ********************
     ?? ' PACS PACIENTE++ '
 	FlagConformable = .T.
-	FechaHoraImagen = SUBSTR(lcresp,AT('"fecha":',lcresp)+10,10) + ' ' + SUBSTR(lcresp,AT('"hora":',lcresp)+9,8)
+	FechaHoraImagen = FormateaDatetime(SUBSTR(lcresp,AT('"fecha":',lcresp)+10,10) + ' ' + SUBSTR(lcresp,AT('"hora":',lcresp)+9,8))
 ENDCASE
 
 Release xmlHTTP
@@ -526,9 +561,6 @@ lccomenta = "CONFGANUL" + '-' + Alltrim(str(mvale,16,0))
 ExecVism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
 
 RETURN
-
-
-
 
 
 *!*	-------------------------------------
@@ -593,132 +625,26 @@ Endfunc
 
 
 
-*!*	*!*	-------------------------------------
-*!*	Function conforme
-*!*	*!*	-------------------------------------
+****************************************************
+* -RLV 28/08/2026
+* Función: FormateaDatetime('AAAA-MM-DD HH:MM:SS[.nnn]')
+*    Devuelve formato Datetime
+****************************************************
+FUNCTION FormateaDatetime
+PARAMETERS mStringFechaHora
 
+PRIVATE mAno, mMes, mDia, mHor, mMin, mSeg
 
+mStringFechaHora = ALLTRIM(mStringFechaHora)
 
-*!*		mgraba = '1'
-*!*		
-*!*		mvale  = alltrim(str(mwkValeAsist.val_codvaleasist))
-*!*		moperador	= iif(mwkusuarios.codigovax = 0, '99999', str(mwkusuarios.codigovax, 5))
+mAno = VAL(SUBSTR(mStringFechaHora, 1,4))
+mMes = VAL(SUBSTR(mStringFechaHora, 6,2))
+mDia = VAL(SUBSTR(mStringFechaHora, 9,2))
+mHor = VAL(SUBSTR(mStringFechaHora,12,2))
+mMin = VAL(SUBSTR(mStringFechaHora,15,2))
+mSeg = VAL(SUBSTR(mStringFechaHora,18,2))
 
-*!*		.olevism.mserver	= alltrim(mwktabcfg.oleserver)
-*!*		.olevism.namespace	= alltrim(mwktabcfg.olespaces)
-*!*		
-*!*		=prg_olevism_reset(.olevism)
+RETURN DATETIME(mAno, mMes, mDia, mHor, mMin, mSeg)
 
-*!*		.olevism.code = "D CONFTOTAL^RTN031("+ mgraba + ','+ mvale + ','+ moperador + ')'
-*!*		.olevism.execflag = 1
+ENDFUNC
 
-*!*		mmsgerr = .olevism.errorname
-*!*		
-*!*		if !empty(mmsgerr)
-*!*			do sp_insert_tabctrlerr with .olevism.code, mmsgerr , moperador, .name
-*!*			messagebox ("ERROR EN CONFORME DEL VALE...", 48, 'VALIDACION')
-*!*			.OleVismOff()
-*!*			Return .f.
-*!*		Endif 
-*!*		
-*!*		mok		= .olevism.p0					&& Codigo de error
-*!*		
-*!*		if .olevism.p0 <> ''
-*!*			mcoderr = val(thisform.olevism.p0)
-*!*			do sp_busco_texto_error with mcoderr && mwktaberror
-*!*			
-*!*			MESSAGEBOX(ALLTRIM(MWKTABERROR.TEXTOERROR), 48, 'VALIDACION')
-*!*			mmsgerr = "V:" +  alltrim(thisform.olevism.p1) + "-" + alltrim(mwktaberror.textoerror)
-*!*			
-*!*			do sp_insert_tabctrlerr with thisform.olevism.code, mmsgerr , moperador, .name
-*!*			messagebox ("ERROR EN CONFORME DEL VALE...", 48, 'VALIDACION')
-*!*			.OleVismOff()
-*!*			Return .f.
-*!*		Endif
-*!*		
-*!*		.OleVismOff()
-
-*!*	RETURN
-
-
-
-
-
-*****************************************************
-
-
-
-
-*!*	*!*	------------------------------------------------------------------------
-*!*	Procedure ValeRela
-*!*	*!*	------------------------------------------------------------------------
-
-
-*!*	TEXT To lcsqlrela1 Textmerge Noshow Pretext 7
-*!*		select b.ID, b.estadoinforme 
-*!*			  	from TabValeRelacion a
-*!*			  	inner join informes b on a.NroValeRelacionado = b.nrovale
-*!*			  	where a.NroValeOriginal = ?mwkaux.VAL_codvaleasist and 
-*!*			  	estadoinforme < 5 and FecPasiva = '1900-01-01'
-*!*	Endtext
-
-
-*!*	If SqlExec(mcon1,lcsqlrela1,"mwkAuxI")<=0
-*!*		Aerror(eros)
-*!*		?eros(3)
-*!*		Return .F.
-*!*	Endif
-
-
-*!*	If Reccount("mwkAuxI") > 0
-
-*!*		If Reccount("mwkAuxI")>1
-*!*			replace INFR With "-1" In mwkAux
-*!*		Else
-*!*			If Reccount("mwkAuxI")=1
-*!*				If !execvism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
-*!*					Return .f.
-*!*				Endif 
-*!*				replace INFR With "1" In mwkAux
-*!*				replace CONFORMADO With "1" In mwkAux
-*!*			Else
-*!*				replace INFR With "0" In mwkAux
-*!*			endif
-*!*		endif
-
-
-*!*	Else
-*!*		Use In Select("mwkAuxI")
-*!*		TEXT To lcsqlrela2 Textmerge Noshow Pretext 7
-
-*!*		select b.ID, b.estadoinforme 
-*!*			  	from TabValeRelacion a
-*!*			  	inner join informes b on a.NroValeOriginal = b.nrovale
-*!*			  	where NroValeRelacionado = ?mwkaux.VAL_codvaleasist and 
-*!*			  	estadoinforme < 5 and FecPasiva = '1900-01-01'
-
-*!*		Endtext
-
-
-*!*		If SqlExec(mcon1,lcsqlrela2,"mwkAuxI")<=0
-*!*			Aerror(eros)
-*!*			?eros(3)
-*!*			Return .F.
-*!*		Endif		
-*!*		
-*!*		***--------
-*!*		If Reccount("mwkAuxI")>1
-*!*			replace INFR With "-1" In mwkAux
-*!*		Else
-*!*			If Reccount("mwkAuxI")=1
-*!*				If !execvism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
-*!*					Return .f.
-*!*				Endif 
-*!*				replace INFR With "1" In mwkAux
-*!*				replace CONFORMADO With "1" In mwkAux
-*!*			Else
-*!*				replace INFR With "0" In mwkAux
-*!*			endif
-*!*		endif		  	
-
-*!*	Endif 
