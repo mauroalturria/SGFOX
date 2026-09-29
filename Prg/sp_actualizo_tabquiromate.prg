@@ -39,6 +39,7 @@ Otherwise
 	cbuscaid =  " id = ?mid "
 Endcase
 mret = SQLExec(mcon1, "select * from  Tabquiromaterial where "+cbuscaid ,"mwkctrqm")
+midqm = mwkctrqm.id
 If Vartype(mxproveedor)<>"C"
 	mxproveedor = ''
 Endif
@@ -64,6 +65,11 @@ Case tnopcion = 1  &&& internados
 			" ('' ,0 , 0,?mcant,0,?mnroreg ,0,0,'',?mfecnul,?mfechacx,?mfecnul,?mfecnul,?mfecnul"+;
 			",?mfecnul,?mid,0,0,'','',0,?mpedido,?mxproveedor,'',?midusu ,0,0,?mfecnul) "
 	Else
+		lcSql = "update Tabquiromaterial" + ;
+			" set  QM_cantidadSol = ?mcant, QM_Nroregistrac = ?mnroreg "+;
+			"  ,QM_fechaCX = ?mfechacx, QM_idAutprevias = ?mid  "+;
+			" ,QM_proveedor = ?mxproveedor,   QM_usuarioIngreso = ?midusu where id = ?midqm "
+
 	Endif
 Case tnopcion = 2	 &&& ambulatorio
 	If Reccount("mwkctrqm")= 0
@@ -76,6 +82,11 @@ Case tnopcion = 2	 &&& ambulatorio
 			" ('' ,0 , 0,?mcant,0,?mnroreg ,0,0,'',?mfecnul,?mfechacx,?mfecnul,?mfecnul,?mfecnul"+;
 			",?mfecnul,0,?mid,0,'','',0,?mpedido,?mxproveedor,'',?midusu ,0,?mfecnul) "
 	Else
+		lcSql = "update Tabquiromaterial" + ;
+			" set  QM_cantidadSol = ?mcant, QM_Nroregistrac = ?mnroreg "+;
+			"  ,QM_fechaCX = ?mfechacx, QM_idTabautprevias= ?mid  "+;
+			" ,QM_proveedor = ?mxproveedor,   QM_usuarioIngreso = ?midusu where id = ?midqm "
+
 	Endif
 Case tnopcion = 3 &&actualiza fecha de cirugia
 	midusu = Iif( Used('mwkusuarios'),mwkusuarios.idusuario,mwkusuario.idusuario)
@@ -88,7 +99,7 @@ Case tnopcion = 4 &&da de baja
 		" Set QM_fecpasiva = ?tnpasivado,FecHorDbUpd = ?tnfechah  ,UserDbAdd = ?midusu  " + ;
 		" Where   "+cbuscaid
 Case tnopcion = 5	 &&& quirofano
-*	If Reccount("mwkctrqm")= 0
+*!*	 	If Reccount("mwkctrqm")= 0
 	lcSql = "Insert into Tabquiromaterial" + ;
 		" ( QM_accionesFC, QM_cantidadDevFC, QM_cantidadDevQF, QM_cantidadSol,QM_codinsumo,QM_Nroregistrac,QM_materialOK,QM_provistox, "+;
 		" QM_codproveedor, QM_fechaAccionFC,QM_fechaCX, QM_fechaDevFC,QM_fechaDevQF, QM_fechaFarma,"+;
@@ -97,8 +108,13 @@ Case tnopcion = 5	 &&& quirofano
 		" Values " + ;
 		" ('' ,0 , 0,?mcant,0,?mnroreg ,0,0,'',?mfecnul,?mfechacx,?mfecnul,?mfecnul,?mfecnul"+;
 		",?mfecnul,0,0,?mid,'','',0,?mpedido,?mxproveedor,'',?midusu ,0,?mfecnul) "
-*!*			Else
-*!*			Endif
+*!*	Else
+*!*		lcSql = "update Tabquiromaterial" + ;
+*!*			" set  QM_cantidadSol = ?mcant, QM_Nroregistrac = ?mnroreg "+;
+*!*			"  ,QM_fechaCX = ?mfechacx, QM_idquiro= ?mid  "+;
+*!*			" ,QM_proveedor = ?mxproveedor,   QM_usuarioIngreso = ?midusu )"
+
+*!*	Endif
 Case tnopcion = 6 &&actualiza
 
 	lcSql = "Update Tabquiromaterial " + ;

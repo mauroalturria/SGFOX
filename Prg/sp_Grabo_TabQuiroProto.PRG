@@ -1,5 +1,7 @@
 Parameters tnOpcion, tnId, tcCurDat, tbSiImage
 
+mDescCiru = ""
+
 Do Case
 	Case tnOpcion = 1
 		If tnId = 0
@@ -49,6 +51,9 @@ Do Case
 *!*			Select __DATA
 *!*			Go top
 
+*           limpiar la descripcion de cirugia
+	        mDescCiru = &tcCurDat..TQP_DescCiru
+	        mDescCiru = sp_FiltraTextoAnsi1252(ALLTRIM(mDescCiru))
 	
 			lcSql = " Update TabQuiroProto " + ;
 				"Set TQP_HoraIni = ?&tcCurDat..TQP_HoraIni, " + ;
@@ -63,7 +68,7 @@ Do Case
 				"TQP_TransHDocis = ?&tcCurDat..TQP_TransHDocis1, " + ;
 				"TQP_Asa = ?&tcCurDat..TQP_Asa1, " + ;
 				"TQP_AntiSepsia = ?&tcCurDat..TQP_Ase1, " + ;
-				"TQP_DescCiru = ?&tcCurDat..TQP_DescCiru, " + ;
+				"TQP_DescCiru = ?mDescCiru, " + ;
 				"TQP_IOPAP = ?&tcCurDat..TQP_IOPAP, " + ;
 				"TQP_IOPCONG = ?&tcCurDat..TQP_IOPCONG, " + ;
 				"TQP_IOPBAC = ?&tcCurDat..TQP_IOPBAC, " + ;
@@ -101,6 +106,10 @@ Do Case
 
 	Case tnOpcion = 5 && cirujano
 
+*           limpiar la descripcion de cirugia
+	        mDescCiru = &tcCurDat..TQP_DescCiru
+	        mDescCiru = sp_FiltraTextoAnsi1252(ALLTRIM(mDescCiru))
+
 			lcSql = " Update TabQuiroProto " + ;
 				"Set Tqp_diagpreo = ?&tcCurDat..Tqp_diagpreo, " + ;
 				"TQP_DiagPostO = ?&tcCurDat..TQP_DiagPostO, " + ;
@@ -112,7 +121,7 @@ Do Case
 				"TQP_TransHDocis = ?&tcCurDat..TQP_TransHDocis1, " + ;
 				"TQP_Asa = ?&tcCurDat..TQP_Asa1, " + ;
 				"TQP_AntiSepsia = ?&tcCurDat..TQP_Ase1, " + ;
-				"TQP_DescCiru = ?&tcCurDat..TQP_DescCiru, " + ;
+				"TQP_DescCiru = ?mDescCiru, " + ;
 				"TQP_IOPAP = ?&tcCurDat..TQP_IOPAP, " + ;
 				"TQP_IOPCONG = ?&tcCurDat..TQP_IOPCONG, " + ;
 				"TQP_IOPBAC = ?&tcCurDat..TQP_IOPBAC, " + ;

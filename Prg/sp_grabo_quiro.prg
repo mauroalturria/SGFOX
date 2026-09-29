@@ -142,7 +142,8 @@ Case mabm = 2			&&& MODIFICACION
 
 	mentro = .F.
 
-	mret = SQLExec(mcon1," select id,NroQuirofano,FechaQuirof,horaEst,HoraEstDesp from TabQuirofano "+;
+	mret = SQLExec(mcon1," select id,NroQuirofano,FechaQuirof,horaEst,HoraEstDesp "+;
+		"from TabQuirofano "+;
 		"Where FechaQuirof = ?mFechaQuirof and " +;
 		" HoraEst = ?mHoraEst and NroQuirofano = ?mNroQuirofano and not id = ?mid ", "mwkValido")
 
@@ -191,7 +192,7 @@ Case mabm = 2			&&& MODIFICACION
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 	If  mNroQuirofano =  mNroQuirofano2  And   mHoraEst = mHoraEst2 And mFechaQuirof = mFechaQuirof2
@@ -248,7 +249,7 @@ Case mabm = 2			&&& MODIFICACION
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 
 		Select mwkComen
@@ -265,7 +266,7 @@ Case mabm = 2			&&& MODIFICACION
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 
 	Endif
@@ -411,6 +412,49 @@ Case mabm = 2			&&& MODIFICACION
 
 	Endif
 
+	Set Step On
+
+*   Marcelo Torres, 01/09/2026
+*   Me aseguro que tenga registro en TabProtQuir.
+*   -------------------------------------
+	mret = SQLExec(mcon1,"select * from tabprotquir " +;
+		"where Quirofano = ?mid","mwkProtQuir_2")
+
+	If mret < 0
+		Messagebox("EN CONSULTA TABPROTQUIR",16,"ERROR")
+		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+		Return .F.
+	Endif
+
+	Go Top In mwkProtQuir_2
+
+	If mwkProtQuir_2.quirofano = 0
+
+*          inserto registro "basico" en tabprotquir
+		mret = SQLExec(mcon1,"insert into TabProtQuir set " +;
+			"Codadmision= ?madmision," +;
+			"Quirofano= ?mid")
+
+		If mret < 0
+			Messagebox("EN INSERT TABPROTQUIR",16,"ERROR")
+			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+		Endif
+
+	Else
+
+		mret = SQLExec(mcon1,"update TabProtQuir set " +;
+			"Codadmision= ?madmision " +;
+			"where Quirofano= ?mid")
+
+		If mret < 0
+			Messagebox("EN UPDATE TABPROTQUIR",16,"ERROR")
+			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+		Endif
+	Endif
+
+	Use In Select("mwkProtQuir_2")
+*   ---------------------------------------
+
 Case mabm = 3		&& da de baja lo desplaza 20 años hacia atras
 
 	mret = SQLExec(mcon1," select id,NroQuirofano,FechaQuirof,horaEst,HoraEstDesp from TabQuirofano " +;
@@ -449,7 +493,7 @@ Case mabm = 3		&& da de baja lo desplaza 20 años hacia atras
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO LOG",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*Return .F.
+*Return .F.
 	Endif
 
 	mret = SQLExec(mcon1,"select id,HoraEstDesp from TabQuirofano "+;
@@ -460,7 +504,7 @@ Case mabm = 3		&& da de baja lo desplaza 20 años hacia atras
 	If mret < 0
 		Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*	Return .F.
+*	Return .F.
 	Endif
 
 	Select mwkValido
@@ -478,7 +522,7 @@ Case mabm = 3		&& da de baja lo desplaza 20 años hacia atras
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*	Return .F.
+*	Return .F.
 	Endif
 
 	mgrabolog = .F.
@@ -495,7 +539,7 @@ Case mabm = 4		&& cierra el parte quirurgico
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*	Return .F.
+*	Return .F.
 	Endif
 
 	mret = SQLExec(mcon1,"update TabQuirofanoLog set verificado = 1 where idQuirof = ?mid ")
@@ -517,7 +561,7 @@ Case mabm = 5		&& VERIFICACION
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*	Return .F.
+*	Return .F.
 	Endif
 
 	mret = SQLExec(mcon1,"Update TabQuirofanoLog " + ;
@@ -562,7 +606,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*	Return .F.
+*	Return .F.
 		Endif
 		Select mwkComen
 		mComment = ''
@@ -576,7 +620,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*		Return .F.
+*		Return .F.
 		Endif
 	Endif
 
@@ -585,7 +629,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*		Return .F.
+*		Return .F.
 		Endif
 		Select mwkComen
 		mComment = ''
@@ -599,7 +643,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-	*		Return .F.
+*		Return .F.
 		Endif
 	Endif
 
@@ -608,7 +652,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 		Select mwkComen
 		mComment = ''
@@ -622,7 +666,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 	Endif
 
@@ -631,7 +675,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 		Select mwkComen
 		mComment = ''
@@ -645,7 +689,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 	Endif
 
@@ -654,7 +698,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 		Select mwkComen
 		mComment = ''
@@ -668,7 +712,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 	Endif
 
@@ -677,7 +721,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 		Select mwkComen
 		mComment = ''
@@ -691,7 +735,7 @@ Case mabm = 6			&&& MODIFICACION DATOS Hemo - material.etc
 		If mret < 0
 			Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 	Endif
 
@@ -705,7 +749,7 @@ Case mabm = 7 && CIRUJANOOK DIRECCION
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 	mret = SQLExec(mcon1,"Update TabquirofanoLog " + ;
@@ -714,7 +758,7 @@ Case mabm = 7 && CIRUJANOOK DIRECCION
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO LOG",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 	mpacientequi  = 0
@@ -734,14 +778,14 @@ Case mabm = 8		&& cierra el parte quirurgico
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 	mret = SQLExec(mcon1,"update TabQuirofanoLog set verificado = 0 where idQuirof = ?mid ")
 	If mret < 0
 		Messagebox("EN ACTUALIZACION QUIROFANO LOG",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 	mpacientequi  = 0
@@ -777,7 +821,7 @@ Case mabm = 9  && inserto desde preaggenda
 			If mret < 0
 				Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 		Endif
 		lsigo = (Reccount('mwkValido') = 0)
@@ -815,7 +859,7 @@ Case mabm = 9  && inserto desde preaggenda
 	If mret < 0
 		Messagebox("EN ALTA DE REGISTRO QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 Case mabm = 10 && ACTUALIZO  Hemo desde preagenda
 
@@ -844,7 +888,7 @@ Case mabm = 10 && ACTUALIZO  Hemo desde preagenda
 			If mret < 0
 				Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 
 			Select mwkComen
@@ -861,7 +905,7 @@ Case mabm = 10 && ACTUALIZO  Hemo desde preagenda
 			If mret < 0
 				Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 		Endif
 
@@ -900,7 +944,7 @@ Case mabm = 11 && ACTUALIZO  mate desde preagenda
 	If mret < 0
 		Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 
@@ -918,7 +962,7 @@ Case mabm = 11 && ACTUALIZO  mate desde preagenda
 			If mret < 0
 				Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 			Select mwkComen
 			mComment = ''
@@ -932,7 +976,7 @@ Case mabm = 11 && ACTUALIZO  mate desde preagenda
 			If mret < 0
 				Messagebox("EN ACTUALIZACION QUIROFANO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 		Endif
 
@@ -997,7 +1041,7 @@ Case mabm = 14  && inserto desde preaggenda_internados
 	If mret < 0
 		Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 
 	maxdesp = 0
@@ -1015,7 +1059,7 @@ Case mabm = 14  && inserto desde preaggenda_internados
 			If mret < 0
 				Messagebox("EN CONSULTA QUIROFANO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 		Endif
 		lsigo = (Reccount('mwkValido') = 0)
@@ -1053,7 +1097,7 @@ Case mabm = 14  && inserto desde preaggenda_internados
 	If mret < 0
 		Messagebox("EN ALTA DE REGISTRO QUIROFANO",16,"ERROR")
 		Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-		*return .F.
+*return .F.
 	Endif
 Endcase
 
@@ -1095,7 +1139,7 @@ If mabm < 9
 				If mret < 0
 					Messagebox("EN CONSULTA PROTOCOLO QUIRURGICO",16,"ERROR")
 					Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-					*return .F.
+*return .F.
 				Endif
 
 				If Reccount("mwkBuscoPaci")>0
@@ -1120,7 +1164,7 @@ If mabm < 9
 				If mret < 0
 					Messagebox("EN ACTUALIZACION PROTOCOLO QUIRURGICO",16,"ERROR")
 					Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-					*return .F.
+*return .F.
 				Endif
 			Else && reccount('mwkpacint') = 0
 				Do sp_busco_cta_activa With mNroregistrac,mfechaqh
@@ -1131,7 +1175,7 @@ If mabm < 9
 				If Reccount('mwkcontrol')=0 And Reccount('mwkctasamb')>0
 					Select pac_fechaadmision, PAC_codadmision,his_codentidad  From mwkctasamb ;
 						where PAC_tipopaciente = "AMB" And pac_fechaadmision = mfechaqh And Nvl(PAC_CentroMedico, 1 )=  mxcentromedico ;
-						 Into Cursor mwkcontrol && busco los que encuentre... :(
+						Into Cursor mwkcontrol && busco los que encuentre... :(
 				Endif
 				Select mwkcontrol
 				Scan All
@@ -1146,7 +1190,7 @@ If mabm < 9
 					If mret < 0
 						Messagebox("EN CONSULTA PROTOCOLO QUIRURGICO",16,"ERROR")
 						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-						*return .F.
+*return .F.
 					Endif
 
 					Select mwkBuscoPaci
@@ -1162,7 +1206,7 @@ If mabm < 9
 					If mret < 0
 						Messagebox("EN ACTUALIZACION PROTOCOLO QUIRURGICO",16,"ERROR")
 						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-						*return .F.
+*return .F.
 					Endif
 
 					Select mwkcontrol
@@ -1196,7 +1240,7 @@ If mabm < 9
 					If mret < 0
 						Messagebox("EN CONSULTA PROTOCOLO QUIRURGICO",16,"ERROR")
 						Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-						*return .F.
+*return .F.
 					Endif
 
 					If Reccount("mwkBuscoPaci")>0
@@ -1235,7 +1279,7 @@ If mabm < 9
 									mret = SQLExec(mcon1,"update TabProtQuir set quirofano = ?mid where id  = ?midProt ")
 								Else
 									Messagebox("ADMISION DEBE AGREGAR OTRO PROTOCOLO AMBULATORIO PARA ESTA PROGRAMACION",16,"Control de asignacion")
-									return
+									Return
 								Endif
 							Endif
 							mret = SQLExec(mcon1," update TabProtQuir set quirofano = ?mquiro where id = ?miid")
@@ -1257,7 +1301,7 @@ If mabm < 9
 				ENDTEXT
 
 				If !Prg_EjecutoSql(lcSql,"mwkAuxQ")
-					*return .F.
+*return .F.
 				Endif
 				If !Empty(Left(madmision,4))
 
@@ -1269,7 +1313,7 @@ If mabm < 9
 						ENDTEXT
 
 						If !Prg_EjecutoSql(lcSql,"mwkAux")
-							*return .F.
+*return .F.
 						Endif
 
 						Select mwkAuxQ
@@ -1302,7 +1346,7 @@ If mabm < 9
 		If mret < 0
 			Messagebox("EN CONSULTA PROTOCOLO QUIRURGICO",16,"ERROR")
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-			*return .F.
+*return .F.
 		Endif
 
 		Select mwkBuscoPaci
@@ -1313,7 +1357,7 @@ If mabm < 9
 			If mret < 0
 				Messagebox("EN ACTUALIZACION PROTOCOLO QUIRURGICO",16,"ERROR")
 				Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
-				*return .F.
+*return .F.
 			Endif
 		Else
 			Do sp_grabo_prot_quir With 1,mCodAdm , 1,'', 0, 1,mpacmedicoadm ,0,'',1,0,mfechapqh

@@ -31,7 +31,7 @@ ELSE
 Endif
 mret = SQLExec(mcon1,"select PRE_descriprest as prestacion, PRE_codservicio, TabAmbulatorio.*, " + ;
 	" tabtipoaltas.tipoest, tabtipoaltas.descrip, TAM_mensaje, " + ;
-	" TabEstados.Descrip as DescripInf, b.Id as InformesId, tipoArch , b.EstadoInforme " + ;
+	" TabEstados.Descrip as DescripInf, b.Id as InformesId, b.tipoArch , b.EstadoInforme " + ;
 	" from TabAmbulatorio " + ;
 	" inner join Prestacions on pre_codprest = TabAmbulatorio.codprest " + ;
 	" inner join tabtipoaltas on TabAmbulatorio.codestado = tabtipoaltas.id " + ;
@@ -64,7 +64,7 @@ mret = SQLExec(mcon1,"select fechahoraing,fechahoraate,REG_nombrepac as paciente
 	"TabAmbulatorio.id,TabAmbulatorio.codmed,TabAmbulatorio.codent,TabAmbulatorio.codestado,"+ ;
 	"Pre_Especialidad,Pre_CodServicio,Prestadores.NOMBRE as nombre,TabAmbulatorio.codprest"+ ;
 	",tabtipoaltas.tipoest,tabtipoaltas.descrip, REG_nroregistrac, TabAmbulatorio.nrovale, "+;
-	" TabEstados.Descrip as DescripInf, b.Id as InformesId, tipoArch , b.EstadoInforme,fechaarchivado  " + ;
+	" TabEstados.Descrip as DescripInf, b.Id as InformesId, b.tipoArch , b.EstadoInforme,fechaarchivado  " + ;
 	" from TabAmbulatorio "+;
 	" join REgistracio on REG_nroregistrac = TabAmbulatorio.nroregistrac"+ ;
 	" join Prestacions on pre_codprest = TabAmbulatorio.codprest"+ ;
@@ -107,7 +107,7 @@ mret = SQLExec(mcon1, "select turnos.id, turnos.fechatur, turnos.horatur, turnos
 	"registracio.reg_nroregistrac, Prestacions.PRE_descriprest as prestacion, "+ ;
 	"PRE_codservicio, Pre_Especialidad, " + ;
 	"Prestadores.nombre as nombre, " + ;
-	" TabEstados.Descrip as DescripInf, b.Id as InformesId, tipoArch , b.EstadoInforme " + ;
+	" TabEstados.Descrip as DescripInf, b.Id as InformesId, b.tipoArch , b.EstadoInforme " + ;
 	" from turnos " + ;
 	"Inner join registracio on turnos.afiliado = registracio.reg_nroregistrac " + ;
 	"Inner join afiliacion on registracio.reg_nroregistrac = afiliacion.registracio and " + ;
@@ -138,7 +138,7 @@ If mret <= 0
 Endif
 Select horatur,reg_nombrepac,codprest,codent,fechanac,reg_nroregistrac,sala,codmed,nrovale,prestacion, ;
 	codserv,PRE_codservicio, Pre_Especialidad As CodEsp, nombre,codreserva,fechatur,fechaconfirma,Id As tid, ;
-	DescripInf, InformesId, tipoturno,idturnoexterno ;
+	DescripInf, InformesId, tipoturno,idturnoexterno,tipoArch  ;
 	from mwkphorario1 ;
 	into Cursor mwkphorariossin
  
@@ -157,7 +157,7 @@ Select horatur,;
 	fechanac,Left(TAM_mensaje,200) As mensaje,mwkAmbula.protocolo As protocolo,mwkAmbula.Id,;
 	sala,mwkphorarios.codmed,mwkphorarios.codent,mwkAmbula.codent As codent1,Nvl(demanda,0) As demanda ,;
 	codestado,CodEsp,codserv,nombre,reg_nroregistrac,mwkphorarios.codprest,mwkphorarios.nrovale ;
-	,tipoest,idturnoexterno, ;
+	,tipoest,idturnoexterno,mwkphorarios.tipoArch , ;
 	Iif(tipoturno = 3,'GI' + Space(50), Descrip) as Descrip,; 
 	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId,fechaarchivado ;
 	from mwkphorarios;
@@ -174,7 +174,7 @@ Select horatur,;
 	fechanac,Left(TAM_mensaje,200) As mensaje,mwkAmbula.protocolo As protocolo,mwkAmbula.Id,;
 	sala,mwkphorarios.codmed,mwkphorarios.codent,mwkAmbula.codent As codent1,Nvl(demanda,0) As demanda,;
 	codestado,CodEsp,codserv,nombre,reg_nroregistrac,mwkphorarios.codprest,mwkAmbula.nrovale ;
-	,tipoest,idturnoexterno,;
+	,tipoest,idturnoexterno,mwkphorarios.tipoArch ,;
 	Iif(tipoturno = 3,'GI' + Space(50), Descrip) as Descrip,;
 	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId,fechaarchivado;
 	from mwkphorarios;
@@ -212,14 +212,14 @@ If Reccount('mwkdemanda')>0
 
 	Select horatur,Nvl(fechahoraing, Dtot({//})) As fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,Iif(Isnull(codent1),codent,codent1) As codent,;
-		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest,idturnoexterno;
+		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest,idturnoexterno,tipoArch ;
 		,tipoest,Descrip,fechaconfirma,tid, nrovale,  Nvl(DescripInf,Space(lnLenInf)) as DescripInf, InformesId,fechaarchivado  ;
 		 ,sp_busco_datos_regis_cond( reg_nroregistrac," and RCE_tipoCondesp  = 15 And  RCE_fechahasta>= {fn curdate()} ",;
 			"mwkpacvip",1) As lespactras from mwkambu1;
 		union;
 	select fechahoraing As horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,Left(TAM_mensaje,200) As mensaje,;
 		protocolo,Id,Space(20) As sala,codmed,codent,codestado,Pre_Especialidad,PRE_codservicio,nombre,;
-		demanda, reg_nroregistrac,codprest,SPACE(16) as idturnoexterno;
+		demanda, reg_nroregistrac,codprest,SPACE(16) as idturnoexterno,tipoArch ;
 		,tipoest,Descrip,fechahoraing As fechaconfirma,999999999-999999999 As tid, nrovale, ;
 		Nvl(DescripInf,Space(lnLenInf)) as DescripInf, InformesId,fechaarchivado ;
 		 ,sp_busco_datos_regis_cond( reg_nroregistrac," and RCE_tipoCondesp  = 15 And  RCE_fechahasta>= {fn curdate()} ",;
@@ -231,7 +231,7 @@ Else
 
 	Select horatur,Nvl(fechahoraing, Dtot({//})) As fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,Iif(Isnull(codent1),codent,codent1) As codent,  ;
-		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest,idturnoexterno ;
+		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest,idturnoexterno,tipoArch  ;
 		,tipoest,Descrip,fechaconfirma,tid, nrovale, Nvl(DescripInf,Space(lnLenInf)) as DescripInf, InformesId,fechaarchivado ;
 		 ,sp_busco_datos_regis_cond( reg_nroregistrac," and RCE_tipoCondesp  = 15 And  RCE_fechahasta>= {fn curdate()} ",;
 			"mwkpacvip",1) As lespactras ;

@@ -1,5 +1,5 @@
 Lparameters tcidevol
-SET STEP ON
+ 
 mRet = SQLExec(mcon1," SELECT ID , CUA_SDRA , CUA_decubitoProno , CUA_fechaH , CUA_hemodialisis "+;
 	", CUA_idevol , CUA_limitaTerapia , CUA_patologia , CUA_plasmaferesis , CUA_procede , CUA_traqueotomia "+;
 	", CUA_usuario FROM  ZabIntUCIClas where CUA_idevol =?tcidevol " , 'mwktabintuci' )

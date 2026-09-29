@@ -64,7 +64,9 @@ If mwkAgendaMK.estado = 1
 		lcturnEspontaneo =  (lcjason<>'false')
 		lcjason =  json(lcresp,'turnReemplazo',0)
 		lcturnReemplazo = (lcjason<>'false')
-		lcpanoAutorizacion  = json(lcresp,'panoAutorizacion',0)
+
+		lcjason = json(lcresp,'panoValidacion',0)
+		lcpanoValidacion  =  Iif(lcjason ='null','',lcjason )
 		Do While Len(Alltrim(lcresp))>20
 			lcprocCodigoInterno = Val(json(lcresp,'procCodigoInterno',0))
 			lcprocDescripcion = json(lcresp,'procDescripcion',0)
@@ -72,10 +74,10 @@ If mwkAgendaMK.estado = 1
 
 			Insert Into mwkjson   (turnCodigo,mediMedico,turnFechaInicio,paciPaciente;
 				,turnEstado,turnEspontaneo,turnReemplazo,procCodigoInterno,procDescripcion,;
-				tuprCodigoInterno,panoAutorizacion  );
+				tuprCodigoInterno,panoValidacion  );
 				Values (lcturnCodigo,lcmediMedico,lcturnFechaInicio,lcpaciPaciente;
 				,lcturnEstado,lcturnEspontaneo,lcturnReemplazo,lcprocCodigoInterno,lcprocDescripcion,;
-				lctuprCodigoInterno,lcpanoAutorizacion  )
+				lctuprCodigoInterno,lcpanoValidacion  )
 
 			npositem = At('tuprCodigoInterno:',lcresp)+32
 			lcresp =Substr(lcresp ,npositem)

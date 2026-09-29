@@ -4,7 +4,8 @@
 
 Lparameters nIdPre, pChkVer, mTipo, mVale
 
-*Set Step On
+* Set Step On
+
 Local cWhere
 
 If Vartype(mVale) <> "N"
@@ -257,6 +258,9 @@ If Used("mwkValesInf")
 			Select mwkValesInf
 			Go Top
 			Scan All
+			
+			* SET STEP ON
+			
 				Select * From mwkinformeGral Where _vale = mwkValesInf.lvale Order By lpuntero Into Cursor mwkinforme
 				Select mwkinforme
 				Go Top

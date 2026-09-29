@@ -20,7 +20,11 @@ Endif
 If Vartype(xeslabo)<>"N"
 	xeslabo = 0
 Endif
+Do sp_busco_estados With 10 , " and tipo = 3 and  estado = 1 ","mwktokenLOG"
+
 mhoy = sp_busco_fecha_serv("DD")
+
+
 If Transform(Val(Transform(xtoken)),"@L 9999") <>Alltrim(Transform(xtoken))
 	Messagebox("INGRESE UN TOKEN VALIDO DE 4 DIGITOS",16,"Control de INgreso")
 	Return .F.
@@ -28,9 +32,9 @@ Else
 	xmtoken = xtoken
 Endif
 If xcantp=0
-Use In Select('mwkjson')
+	Use In Select('mwkjson')
 	Create Cursor mwkjson (ok N(1), codprest N(9),nroautor N(10),estado c(200),autoriza c(200))
-	Insert Into mwkjson (ok, codprest,nroautor,estado,autoriza) Values (1,0,VAL(xtoken),'APROBADO',''  )
+	Insert Into mwkjson (ok, codprest,nroautor,estado,autoriza) Values (1,0,Val(xtoken),'APROBADO',''  )
 	Return .T.
 Endif
 If myip='172.16.1.7'
@@ -38,6 +42,7 @@ If myip='172.16.1.7'
 Endif
 nitera = 0
 csec=Iif(mwkexe.nomexe="GUARDIA","GUA",Iif( At('TURNOS',mwkexe.nomexe )>0,"AMB","INT"))
+nsumasec=Iif(csec="AMB",0,10)
 *https://servicios.sg.com.ar/interfaces/ajax/sg_valoriza_sap_srv.php?aplicacion=MK&codigoPractica=22010101&codigoEmpresa=948
 codigoentidad = Alltrim(Transform(xcodent))
 IdAfiliado = Padl(Alltrim(Transform(xafiliado)),9,'0')
@@ -46,12 +51,13 @@ cccod = xcodent
 tkautoriza = ''
 Use In Select('mwkjson')
 Create Cursor mwkjson (ok N(1), codprest N(9),nroautor N(10),estado c(200),autoriza c(200))
-Do sp_busco_estados With 10 , " and tipo = 3 and  estado = 1 ","mwktokenLOG"
+
 Do sp_busco_estados With 57 , " and tipo = 23 and subestado = ?cccod ","mwktoken"
-If mhoy =Ctod(ALLTRIM(mwktokenLOG.DESCRIP)) AND  mwktokenLOG.ESTADO = 1
-	mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
-		" values (?xnrodoc ,?xafiliado,'Inicia' ,?CSEC,?xmtoken  )")
-Endif
+*!*	If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip)) And  mwktokenLOG.estado = 1
+*!*	*!*		mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
+*!*	*!*			" values (?xnrodoc ,?xafiliado,'Inicia' ,?CSEC,?xmtoken  )")
+
+*!*	Endif
 Do While nitera <2
 	lclink = Alltrim(mwktoken.Descrip)
 	Do Case
@@ -73,9 +79,14 @@ Do While nitera <2
 	Local xmlHTTP As "Microsoft.XMLHTTP"
 	xmlHTTP = Createobject("Microsoft.XMLHTTP")
 	If Alltrim(Type("xmlHTTP")) <> "O"
-		Messagebox( "No se pudo crear el objeto (XMLHTTP). ",48,"Aviso")
-		mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
-			" values (?xnrodoc ,?xafiliado,'No se pudo crear el objeto' ,?CSEC,?xmtoken  )")
+		Messagebox( "No se pudo crear el objeto (XMLHTTP). ",48,"Aviso")&&&SECUENCIA 0
+*!*			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
+*!*				" values (?xnrodoc ,?xafiliado,'No se pudo crear el objeto' ,?CSEC,?xmtoken  )")
+		If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip))
+			nsec = nsumasec
+			Do sp_grabo_aviso_trad With 0,nsec,'TRA',0,lclink ,1,,1
+
+		Endif
 		Return .T.
 	Endif
 	xmlHTTP.Open("GET", lclink)
@@ -90,23 +101,48 @@ Do While nitera <2
 	Wait Clear
 	codigopractica = Alltrim(Transform( token_prest(1,1)))
 	ccadlink =Left(lclink ,250)
+
 *	Set Step On
-	If !xmlHTTP.Status = 200
+	If !xmlHTTP.Status = 200&&&RESPUESTA 1
 		nstatus = Left(Transform(xmlHTTP.Status ),4)
 		Messagebox('Tipo de Error: '+Alltrim(Str(xmlHTTP.Status)),48,'Problemas con el Servidor')
-		ccadlink  = Left(nstatus +lclink  ,250)
-		mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
-			" values (?codigopractica ,?xafiliado,?ccadlink  ,?CSEC,?nstatus )")
-	Else
-		If !Vartype(lcresp)="C" Or Empty(lcresp)
+		If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip))
+			nsec = 1+nsumasec
+			Do sp_grabo_aviso_trad With 0,xmlHTTP.Status,'TRA',0,lclink ,1,,1
+			Do sp_grabo_aviso_trad With 0,nsec ,'TRA',0,lcresp,1,,1
 
-			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
-				" values (?codigopractica ,?xafiliado,?ccadlink  ,?CSEC,'NoRt' )")
+		Endif
+		nitera =2
+		Exit
+*!*			ccadlink  = Left(nstatus +lclink  ,250)
+*!*			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
+*!*				" values (?codigopractica ,?xafiliado,?ccadlink  ,?CSEC,?nstatus )")
+	Else
+		If !Vartype(lcresp)="C" Or Empty(lcresp) &&&2 SIN RESPUESTA
+			If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip))
+				nsec = 2+nsumasec
+				Do sp_grabo_aviso_trad With 0,nsec  ,'TRA',0,lclink ,1,,1
+				Do sp_grabo_aviso_trad With 0,nsec ,'TRA',0,lcresp,1,,1
+
+
+			Endif
+*!*				mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
+*!*					" values (?codigopractica ,?xafiliado,?ccadlink  ,?CSEC,'NoRt' )")
 			lcresp = ""
+			nitera =2
+			Exit
 		Else
 			If Empty(lcresp)
+				If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip))
+					nsec = 2+nsumasec
+					Do sp_grabo_aviso_trad With 0,nsec  ,'TRA',0,lclink ,1,,1
+					Do sp_grabo_aviso_trad With 0,nsec ,'TRA',0,lcresp,1,,1
+
+				Endif
 				mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
 					" values (?codigopractica ,?xafiliado,?ccadlink  ,?CSEC,'NoRt' )")
+				nitera =2
+				Exit
 			Endif
 		Endif
 	Endif
@@ -117,7 +153,13 @@ Do While nitera <2
 			" values (?xnrodoc ,?xafiliado, ?miniresp ,?CSEC,?xmtoken  )")
 	Endif
 	Strtofile(lcresp,"jsonresp.txt")
-	If xsuper = 0
+	If xsuper = 0 &&&3
+		If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip))
+			nsec = 3+nsumasec
+			Do sp_grabo_aviso_trad With 0,nsec  ,'TRA',0,lclink ,1,,1
+			Do sp_grabo_aviso_trad With 0,nsec ,'TRA',0,lcresp,1,,1
+
+		Endif
 		If Val(Transform(xmtoken ))=0
 			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
 				" values (?xnrodoc ,?xafiliado,'indica con autorizacion' ,?CSEC,?xmtoken  )")
@@ -125,6 +167,12 @@ Do While nitera <2
 		Return .F.
 		Exit
 	Else
+		nsec = 4 +xeslabo+nsumasec
+		If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip))
+			Do sp_grabo_aviso_trad With 0,nsec  ,'TRA',0,lclink ,1,,1
+			Do sp_grabo_aviso_trad With 0,nsec ,'TRA',0,lcresp,1,,1
+
+		Endif
 		codp = Alltrim(Transform( token_prest(1,1)))
 		If At("NUMERO DE TOKEN INVALIDO",lcresp)>0 And nitera = 0 And  xeslabo= 1
 			mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
@@ -192,7 +240,7 @@ Endif
 Select mwkjson
 Go Top
 Release xmlHTTP
-If mhoy =Ctod(ALLTRIM(mwktokenLOG.DESCRIP)) AND  mwktokenLOG.ESTADO = 1 And Val(Transform(xmtoken ))=0
+If mhoy =Ctod(Alltrim(mwktokenLOG.Descrip)) And  mwktokenLOG.estado = 1  And Val(Transform(xmtoken ))=0
 	mRet = SQLExec(mcon1,"insert into Zabtraderr (TE_CodigoPractica,TE_IdAfiliado, TE_error, TE_sector,TE_token) "+;
 		" values (?tkcodprest,?xafiliado,?cestado,?CSEC,?xeslabo )")
 Endif

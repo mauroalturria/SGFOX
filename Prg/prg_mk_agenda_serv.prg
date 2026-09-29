@@ -61,7 +61,7 @@ If mwkAgendaMK.estado = 1  Or xlok
 			,turnSobreTurno L,turnEspontaneo L,tuprCodigo N(10),procCodigoInterno N(10),procDescripcion c(50);
 			,procVirtual L,turnSeRetira T ,turnReemplazo L,mediCodigoReemplazado N(5),mediMedicoReemplazado c(50);
 			,tconCodigoInterno c(1),tconDescripcion c(20),turnAdmitido L,turnMostrar L,tuprCodigoInterno c(20),turCodigoInterno N(10);
-			, tuprCantidad N(2),panoAutorizacion c(20))
+			, tuprCantidad N(2),panoValidacion c(20))
 
 
 		Do While Len(Alltrim(lcresp))>20
@@ -113,7 +113,9 @@ If mwkAgendaMK.estado = 1  Or xlok
 			lcturnSeRetira = prg_ctod(Iif(lcjason ='null', "1900-01-01T00:00:00" ,lcjason ))
 			npositem = At('procedimientos',lcresp)+14
 			lcresp =Substr(lcresp ,npositem)
-			lcpanoAutorizacion  = json(lcresp,'panoAutorizacion',0)
+			 
+			lcjason = json(lcresp,'panoValidacion',0)
+			lcpanoValidacion  =  Iif(lcjason ='null','',lcjason )
 			Do While Len(Alltrim(lcresp))>20 And At(']',Alltrim(lcresp))>10
 				lctuprCodigoInterno = json(lcresp,'tuprCodigoInterno',0)
 				lcturCodigoInterno = Val(Substr(lctuprCodigoInterno ,At("ID",lctuprCodigoInterno )+3))
@@ -131,13 +133,13 @@ If mwkAgendaMK.estado = 1  Or xlok
 					mediCodigo,mediMedico,cobeDescripcion,planDescripcion,cobeCodigoInterno,planCodigoInterno,;
 					turnCodigoAdmision,turnCodigoVale,turnPrioridad,turnSobreTurno,turnEspontaneo,tuprCodigo,;
 					procCodigoInterno,procDescripcion,procVirtual,turnSeRetira,turnReemplazo ,mediCodigoReemplazado ,mediMedicoReemplazado,;
-					tconCodigoInterno,tconDescripcion,consCodigoInterno,tuprCodigoInterno,turCodigoInterno,tuprCantidad,panoAutorizacion )  ;
+					tconCodigoInterno,tconDescripcion,consCodigoInterno,tuprCodigoInterno,turCodigoInterno,tuprCantidad,panoValidacion )  ;
 					Values (lcMedicoCodigo,lcmediCodigoInterno,lcMedico,lcturnCodigoInterno,lcturnCodigo,lcturnFecha,lcturnFechaInicio,;
 					lcturnFechaFin,lcturnLlegada,lcpaciCodigo,lcpaciCodigoInterno,lcpaciHistoriaClinica,lcpaciPaciente,lcpaciNroDocumento,;
 					lcmediCodigo,lcmediMedico,lccobeDescripcion,lcplanDescripcion,lccobeCodigoInterno,lcplanCodigoInterno,;
 					lcturnCodigoAdmision,lcturnCodigoVale,lcturnPrioridad,lcturnSobreTurno,lcturnEspontaneo,lctuprCodigo,;
 					lcprocCodigoInterno,lcprocDescripcion,lcprocVirtual,lcturnSeRetira,lcturnReemplazo ,lcmediCodigoReemplazado  ,lcmediMedicoReemplazado,;
-					lctconCodigoInterno,lctconDescripcion,lcconsCodigoInterno,lctuprCodigoInterno ,lcturCodigoInterno,LtuprCantidad,lcpanoAutorizacion  )
+					lctconCodigoInterno,lctconDescripcion,lcconsCodigoInterno,lctuprCodigoInterno ,lcturCodigoInterno,LtuprCantidad,lcpanoValidacion  )
 
 				npositem = At('}',lcresp)+1
 				lcresp =Substr(lcresp ,npositem)
