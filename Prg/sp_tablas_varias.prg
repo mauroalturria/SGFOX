@@ -80,13 +80,18 @@ mret = SQLExec(mcon1,"select ser_codserv, ser_descripserv from servicios " + ;
 	"where ser_ambulatorio = 'S' and not ser_ambulatorio is null " + ;
 	"order by ser_descripserv ", "mwkservicios")
 
-mret = SQLExec(mcon1,"select ser_codserv,ser_descripserv " + ;
+mret = SQLExec(mcon1,"select ser_codserv,ser_descripserv  " + ;
 	"from servicios, servcargval " + ;
 	"where ser_fechapasiva is null and " + ;
 	"ser_ambulatorio = 'S' and " + ;
 	"ser_codserv = scv_codservicio and scv_mnemonico is not null " + ;
 	"order by ser_descripserv", "mwkservicio1" )
-
+mret = SQLExec(mcon1,"select ser_codserv,ser_descripserv,ser_modalidad " + ;
+	"from servicios, servcargval " + ;
+	"where ser_fechapasiva is null and " + ;
+	"ser_ambulatorio = 'S' and " + ;
+	"ser_codserv = scv_codservicio and scv_mnemonico is not null " + ;
+	"order by ser_descripserv", "mwkservmod" )
 mfecpas = Ctod('01/01/1900')
 mret = SQLExec(mcon1, "select codent, tipoturno from entidexclu " + ;
 	"where id <100000 and fecpasiva = '1900-01-01' and tpopac = 'AMB' and tipoturno = 7 " , "mwkentexc")

@@ -50,6 +50,8 @@ If mwkAgendaMK.estado = 1
 	If mwkusuario.sector = 'SISTEMAS'
 		Messagebox("Respuesta:"+Chr(10)+Alltrim(lcresp))
 	Endif
+	Do sp_grabo_log_servicio With  'prg_mk_agenda',ALLTRIM(myip)+'-'+lclink,oHttp.ResponseText
+
 	Release oHttp
 	Wait Clear
 	If !Empty(lcresp)
@@ -104,7 +106,7 @@ If mwkAgendaMK.estado = 1
 			lcturnSeRetira = prg_ctod(Iif(lcjason ='null', "1900-01-01T00:00:00" ,lcjason ))
 			npositem = At('procedimientos',lcresp)+14
 			lcresp =Substr(lcresp ,npositem)
-			 
+
 			lcjason = json(lcresp,'panoValidacion',0)
 			lcpanoValidacion  =  Iif(lcjason ='null','',lcjason )
 			Do While Len(Alltrim(lcresp))>20 And At(']',Alltrim(lcresp))>10

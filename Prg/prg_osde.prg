@@ -75,6 +75,7 @@ If mwkosde.estado = 1 && esta habilitada la entidad
 		Messagebox("Error al enviar la solicitud: " + loError.Message)
 		Return
 	Endtry
+	DO sp_grabo_log_servicio WITH  'prg_osde',ALLTRIM(myip)+'-'+lclink,oHttp.ResponseText
 
 	If oHttp.Status = 200
 		cResponse = oHttp.ResponseText

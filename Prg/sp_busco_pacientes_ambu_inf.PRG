@@ -201,12 +201,12 @@ Endif
 
 Select horatur,reg_nombrepac,codprest,codent,fechanac,reg_nroregistrac,sala,codmed,nrovale,prestacion, ;
 	codserv,PRE_codservicio, Pre_Especialidad As CodEsp, nombre,codreserva,fechatur,fechaconfirma,Id As tid, ;
-	DescripInf, InformesId,  idturnoexterno,tipoturno ;
+	DescripInf, InformesId,EstadoInforme ,  idturnoexterno,tipoturno ;
 	from mwkphorario1 ;
 	Union ;
 	select horatur,reg_nombrepac,codprest,codent,fechanac,0 As reg_nroregistrac,sala,codmed,nrovale,prestacion, ;
 	codserv, PRE_codservicio, Pre_Especialidad, nombre,codreserva,fechatur,fechaconfirma,Id As tid, ;
-	DescripInf, InformesId, idturnoexterno, tipoturno ;
+	DescripInf, InformesId, EstadoInforme , idturnoexterno, tipoturno ;
 	from mwkphorario2 ;
 	into Cursor mwkphorariossin
 
@@ -229,7 +229,7 @@ Select horatur,;
 	codestado,CodEsp,codserv,nombre,reg_nroregistrac,mwkphorarios.codprest,mwkAmbula.nrovale ;
 	,tipoest, idturnoexterno, ;
 	Iif(tipoturno = 3,'GI' + Space(50), Descrip) As Descrip,;
-	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId,fechaarchivado   ;
+	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId, mwkphorarios.EstadoInforme ,fechaarchivado   ;
 	from mwkphorarios;
 	left Join mwkentidad On ENT_codent=mwkphorarios.codent ;
 	left Join mwkAmbula On (mwkAmbula.codprest = mwkphorarios.codprest ;
@@ -246,7 +246,7 @@ Select horatur,;
 	codestado,CodEsp,codserv,nombre,reg_nroregistrac,mwkphorarios.codprest,mwkAmbula.nrovale ;
 	,tipoest,idturnoexterno,;
 	Iif(tipoturno = 3,'GI' + Space(50), Descrip) As Descrip,;
-	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId,fechaarchivado  ;
+	fechaconfirma,tid, mwkphorarios.DescripInf, mwkphorarios.InformesId, mwkphorarios.EstadoInforme ,fechaarchivado  ;
 	from mwkphorarios;
 	left Join mwkentidad On ENT_codent=mwkphorarios.codent ;
 	inner Join mwkAmbula On mwkAmbula.nrovale = mwkphorarios.nrovale;
@@ -263,7 +263,7 @@ Select fechahoraing As horatur, fechahoraing,;
 	codestado,CodEsp,PRE_codservicio As codserv,nombre,sp_busco_npac(mwkAmbula.nroregistrac ,9 ) As reg_nrohclinica,;
 	nroregistrac As reg_nroregistrac, codprest, nrovale ;
 	,tipoest,Descrip,fechahoraate As fechaconfirma,0 As tid,SPACE(16) As idturnoexterno;
-	,DescripInf,  InformesId, tipoArch ,    EstadoInforme ;
+	,DescripInf,  InformesId, EstadoInforme , tipoArch   ;
 	from mwkAmbula ;
 	inner Join mwkentidad On ENT_codent= codent Left Join mwkmedicoamb On mwkmedicoamb.Id = codmed ;
 	group By reg_nroregistrac,horatur,codprest;
@@ -297,14 +297,14 @@ If Reccount('mwkdemanda')>0
 	Select horatur,Nvl(fechahoraing, Dtot({//})) As fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,Iif(Isnull(codent1),codent,codent1) As codent,;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId,fechaarchivado   ;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId, EstadoInforme ,fechaarchivado   ;
 		from mwkambu1;
 		union;
 		select fechahoraing As horatur,fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,Left(TAM_mensaje,200) As mensaje,;
 		protocolo,Id,Space(20) As sala,codmed,codent,codestado,Pre_Especialidad,PRE_codservicio,nombre,;
 		demanda, reg_nroregistrac,codprest;
 		,tipoest,Space(16) As idturnoexterno,Descrip,fechahoraing As fechaconfirma,999999999-999999999 As tid, nrovale, ;
-		Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId,fechaarchivado;
+		Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId, EstadoInforme ,fechaarchivado;
 		from mwkdemanda ;
 		Where demanda # 8;
 		into Cursor mwkambu1p
@@ -314,7 +314,7 @@ Else
 	Select horatur,Nvl(fechahoraing, Dtot({//})) As fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,Iif(Isnull(codent1),codent,codent1) As codent,  ;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale, Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId,fechaarchivado;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale, Nvl(DescripInf,Space(lnLenInf)) As DescripInf, InformesId, EstadoInforme ,fechaarchivado;
 		from mwkambu1;
 		into Cursor mwkambu1p
 ENDIF
@@ -328,20 +328,20 @@ If Reccount('mwkambu1_st')>0
 	Select horatur,  fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed, codent,  ;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId,fechaarchivado;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId, EstadoInforme ,fechaarchivado;
 		from mwkambu1p;
 		union;
 		SELECT horatur,  fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed, codent,  ;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId,fechaarchivado;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId, EstadoInforme ,fechaarchivado;
 		from mwkambu1_st;
 		into Cursor &mcCursor
 Else
 	Select horatur,  fechahoraing,paciente,prestacion,ENT_descrient,ENT_nroprestadorexterno,fechanac,mensaje,;
 		protocolo,Id,sala,codmed,  codent,  ;
 		nvl(codestado,20) As codestado, CodEsp, codserv, nombre,demanda,reg_nroregistrac,codprest ;
-		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId,fechaarchivado;
+		,tipoest,idturnoexterno,Descrip,fechaconfirma,tid, nrovale,  DescripInf, InformesId, EstadoInforme ,fechaarchivado;
 		from mwkambu1p;
 		into Cursor &mcCursor
 Endif

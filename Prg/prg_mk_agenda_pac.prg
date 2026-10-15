@@ -47,13 +47,14 @@ If mwkAgendaMK.estado = 1
 	Strtofile(lcresp,"jsonresp.txt")
 	If mwkusuario.sector = 'SISTEMAS'
 		Messagebox("Respuesta:"+Chr(10)+Alltrim(lcresp))
-	Endif
+	ENDIF
+	Do sp_grabo_log_servicio With  'prg_mk_agenda_pac',ALLTRIM(myip)+'-'+lclink,oHttp.ResponseText
 	Release oHttp
 	Wait Clear
 	If !Empty(lcresp)
 		Create Cursor mwkjson (turnCodigo N(12),mediMedico c(50) ,turnFechaInicio T,paciPaciente c(50);
 			,turnEstado c(30),turnEspontaneo L,turnReemplazo L,procCodigoInterno N(10),procDescripcion c(50);
-			,tuprCodigoInterno c(30),panoAutorizacion c(20))
+			,tuprCodigoInterno c(30),panoValidacion  c(20))
 		lcturnCodigo = Val(json(lcresp,'turnCodigo',0))
 		lcturnEstado = json(lcresp,'turnEstado',0)
 		lctuprCodigoInterno = json(lcresp,'tuprCodigoInterno',0)

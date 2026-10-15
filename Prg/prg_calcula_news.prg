@@ -97,7 +97,7 @@ Else
 	Do Case
 	Case lnFC >=  131
 		lnNEWS = lnNEWS + 3
-		mlobs = mlobs + Iif(!Empty(mlobs),"-","")+"FR"
+		mlobs = mlobs + Iif(!Empty(mlobs),"-","")+"FC"
 	Case lnFC >=  111
 		lnNEWS = lnNEWS + 2
 	Case lnFC >= 91
@@ -108,7 +108,7 @@ Else
 		lnNEWS = lnNEWS + 1
 	Otherwise
 		lnNEWS = lnNEWS + 3
-		mlobs = mlobs + Iif(!Empty(mlobs),"-","")+"FR"
+		mlobs = mlobs + Iif(!Empty(mlobs),"-","")+"FC"
 	Endcase
 
 	lnNEWS = lnNEWS + lnConc -1

@@ -4,7 +4,7 @@ Public mxcentromedico
 If Vartype(miparam)="C"
 	mxcentromedico = Val(Transf(miparam))
 ELSE
-	mxcentromedico =2
+	mxcentromedico = 3
 Endif
 Do prg_var_public
 

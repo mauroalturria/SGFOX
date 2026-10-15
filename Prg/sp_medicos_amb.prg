@@ -34,7 +34,7 @@ mcfiltraxcentro = ''
 mcfiltraxcentror = ''
 mcfiltraxcm= ''
 If myip = '172.16.1.7'
- SET STEP ON
+* SET STEP ON
 Endif
 If Vartype(mxcentromedico )="N" And lxcentro=1
 	mcfiltraxcentro = " and centromed = ?mxcentromedico  "

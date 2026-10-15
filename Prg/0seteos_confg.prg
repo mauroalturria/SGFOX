@@ -423,15 +423,26 @@ Parameters NumeroVale, FlagConformable, FechaHoraCompletado
 *!*	------------------------------------------------------------------------
 
 TEXT To lcsqlinf Textmerge Noshow Pretext 7
-	Select ID, fechahoraestudio 
+	Select ID, fechahoraestudio, FechaInforme
 	   from Informes 
-	   Where NroVAle = ?NumeroVale And (estadoinforme = 3 And tipoarch = 'TXT'
-  	        or estadoinforme = 8 And tipoarch = 'PDF')
+	   Where NroVAle = ?NumeroVale And estadoinforme = 3 And (tipoarch = 'TXT'
+  	        or tipoarch = 'PDF')
 ENDTEXT
 
 If SqlExec(mcon1,lcsqlinf,"mwkAuxI") > 0 AND Reccount("mwkAuxI") > 0
+	**SET STEP ON
 	FlagConformable = .T.
-	FechaHoraCompletado = mwkAuxI.fechahoraestudio 
+	DO CASE
+	CASE NOT isnull(mwkAuxI.fechahoraestudio)
+		FechaHoraCompletado = mwkAuxI.fechahoraestudio 
+	CASE mwkAuxI.FechaInforme <= mwkaux.VAL_fechasolicitud
+		FechaHoraCompletado = mwkaux.VAL_FHsolicitud
+	OTHERWISE
+		&& Al carecer de datos precisos, criterio arbitrario: fecha del informe, a las 10:00 AM
+		SET STEP ON 
+		FechaHoraCompletado = DATETIME(YEAR(mwkAuxI.FechaInforme),MONTH(mwkAuxI.FechaInforme), DAY(mwkAuxI.FechaInforme), ;
+		                      10, 0, 0)
+	ENDCASE
 Endif
 
 RETURN

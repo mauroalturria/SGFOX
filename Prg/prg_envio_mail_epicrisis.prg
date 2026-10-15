@@ -1,9 +1,5 @@
 Parameters valor
 
-valor = '3749316-9'
-
-Set Step On
-
 * * * ENVIO DE MAIL DE EPICRISIS - Fabián * * *
 * Esto modifica a prg_envio_mail_epicrisis que había realizado en su momento.
 * Historial:

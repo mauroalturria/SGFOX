@@ -6,7 +6,7 @@
 *!*			,iif(thisform.mformorigen=28, mwkusuarios.codigovax,0),;
 *!*			thisform.lmodifresumen,thisform.lclose,iif(thisform.mformorigen=28 ,0,thisform.miorigen)
 
-Parameters lgrabobien,mnroreg, mprot, mmedico,mopage2, mopage3,mopage4,mopage5,mopage6,mopage7,musua,morigen,lrevision
+Parameters lgrabobien,mnroreg, mprot, mmedico,mopage2, mopage3,mopage4,mopage5,mopage6,mopage7,musua,morigen,lrevision,mevoluci
 Dimension admfar(11),pract(13)
 Dime porcMC(5)
 If Vartype(lrevision)<>"N"
@@ -228,7 +228,20 @@ With mopage2.PgEvol.pgevold
 			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
 			lgrabobien = .F.
 		Endif
-	Endif
+	ENDIF
+	IF !EMPTY(mevoluci)
+		mret = SQLExec(mcon1, "insert into tabintevolMed " + ;
+			"(EIM_codmed,EIM_evol,EIM_fechaH,EIM_idevol)"+;
+			" values "+;
+			" (?mEIM_codmed, ?mevoluci, ?mfechahora,?midevol  )" )
+
+		If mret < 0
+			Messagebox("ERROR EN LA ACTUALIZACION"+Chr(10)+;
+				"AVISE A SISTEMAS",16, "ERROR")
+			Do log_errores With Error(), Message(), Message(1), Program(), Lineno()
+			lgrabobien = .F.
+		Endif
+	ENDIF
 	With .pgevolApa
 		With .Page1
 			mevolm  = ''

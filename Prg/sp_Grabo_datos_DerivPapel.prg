@@ -1,11 +1,17 @@
 * sp_Grabo_datos_DerivPapel
 * Marcelo Torres, 13/04/2022
-Lparameters nIdTurno,nnrovale
+Lparameters nIdTurno,nnrovale,ncodprestnew
 
 Local mFecha,mCentro,nCodMed,mMatricula,mMedico,nSector,mAfiliado, nCodent, nCodReserva
 If Vartype(nnrovale)<>"N"
 	nnrovale=0
-Endif
+ENDIF
+If Vartype(nIdTurno)<>"N"
+	nIdTurno=0
+ENDIF
+If Vartype(ncodprestnew)<>"N"
+	ncodprestnew = 0
+ENDIF
 * ------------------------------
 *!*	mwkDatosMedDeriv(nombre c(50),matricula c(15), IdCodMed N(15), Centro N(3), Sector N(3))
 * La tabla se crea en frmdatosderiva
@@ -32,10 +38,10 @@ If Used("mwkDatosMedDeriv")
 			nCodent = mwkTmpTurno.codent
 			nCodReserva = mwkTmpTurno.codreserva
 			mFecha = sp_busco_fecha_serv("DD")
-			ncodprest = mwkTmpTurno.codprest
+			ncodprest = IIF(ncodprestnew>0,ncodprestnew,mwkTmpTurno.codprest)
 
 		Else
-			mret = SQLExec(mcon1, "Select * from tabambula "+;
+			mret = SQLExec(mcon1, "Select * from tabambulatorio "+;
 				" Where nrovale = ?nnrovale  ", "mwkValeexterno")
 			mbusco = " and nrovale  = ?nnrovale  "
 
@@ -43,7 +49,7 @@ If Used("mwkDatosMedDeriv")
 			nCodent = mwkValeexterno.codent
 			nCodReserva = mwkValeexterno.protocolo
 			mFecha = sp_busco_fecha_serv("DD")
-			ncodprest = mwkValeexterno.codprest
+			ncodprest = IIF(ncodprestnew>0,ncodprestnew,mwkValeexterno.codprest)
 
 		Endif
 		Select mwkDatosMedDeriv
@@ -63,7 +69,8 @@ If Used("mwkDatosMedDeriv")
 		Else
 			mid = mwkctrderiv.Id
 			mret = SQLExec(mcon1,"update ZabTurnosDerivPapel set TDP_Centro = ?mCentro,  "+;
-				" TDP_Matricula = ?mMatricula,TDP_Medico = ?mMedico,TDP_Sector = ?nSector,nrovale = ?nnrovale,observa=?mcobs where id = ?mid  ")
+				" TDP_Matricula = ?mMatricula,TDP_Medico = ?mMedico,TDP_Sector = ?nSector"+;
+				",nrovale = ?nnrovale,observa=?mcobs where id = ?mid  ")
 
 		Endif
 		If mret < 0

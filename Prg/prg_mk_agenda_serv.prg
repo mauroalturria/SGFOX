@@ -48,7 +48,8 @@ If mwkAgendaMK.estado = 1  Or xlok
 	Strtofile(lcresp,"jsonresp.txt")
 	If mwkusuario.sector = 'SISTEMAS'
 		Messagebox("Respuesta:"+Chr(10)+Alltrim(lcresp))
-	Endif
+	ENDIF
+	DO sp_grabo_log_servicio WITH  'prg_mk_agenda_serv',ALLTRIM(myip)+'-'+lclink,oHttp.ResponseText
 	Release oHttp
 	Wait Clear
 	If !Empty(lcresp)

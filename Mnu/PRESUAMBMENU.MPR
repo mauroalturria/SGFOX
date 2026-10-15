@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 22/07/2026         PRESUAMBMENU.MPR           14:32:59  
+*       * 05/10/2026         PRESUAMBMENU.MPR           17:56:45  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,30 +26,30 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7ip0v51g3 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7ks12gqa1 OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7ip0v51g4 OF _MSYSMENU PROMPT "Tablas Varias" COLOR SCHEME 3 ;
+DEFINE PAD _7ks12gqa2 OF _MSYSMENU PROMPT "Tablas Varias" COLOR SCHEME 3 ;
 	KEY ALT+T, ""
-DEFINE PAD _7ip0v51g5 OF _MSYSMENU PROMPT "Presupuesto" COLOR SCHEME 3 ;
+DEFINE PAD _7ks12gqa3 OF _MSYSMENU PROMPT "Presupuesto" COLOR SCHEME 3 ;
 	KEY ALT+P, ""
-DEFINE PAD _7ip0v51g6 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7ks12gqa4 OF _MSYSMENU PROMPT "Consultas" COLOR SCHEME 3 ;
 	KEY ALT+C, ""
-DEFINE PAD _7ip0v51g7 OF _MSYSMENU PROMPT "Alta complejidad" COLOR SCHEME 3 ;
+DEFINE PAD _7ks12gqa5 OF _MSYSMENU PROMPT "Alta complejidad" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7ip0v51g8 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
+DEFINE PAD _7ks12gqa6 OF _MSYSMENU PROMPT "Usuarios" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7ip0v51g3 OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7ip0v51g4 OF _MSYSMENU ACTIVATE POPUP tablasvari
-ON PAD _7ip0v51g5 OF _MSYSMENU ACTIVATE POPUP _1sy0tnw2j
-ON PAD _7ip0v51g6 OF _MSYSMENU ACTIVATE POPUP consultas
-ON PAD _7ip0v51g7 OF _MSYSMENU ACTIVATE POPUP altacomple
-ON PAD _7ip0v51g8 OF _MSYSMENU ACTIVATE POPUP usuarios
+ON PAD _7ks12gqa1 OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7ks12gqa2 OF _MSYSMENU ACTIVATE POPUP tablasvari
+ON PAD _7ks12gqa3 OF _MSYSMENU ACTIVATE POPUP _1sy0tnw2j
+ON PAD _7ks12gqa4 OF _MSYSMENU ACTIVATE POPUP consultas
+ON PAD _7ks12gqa5 OF _MSYSMENU ACTIVATE POPUP altacomple
+ON PAD _7ks12gqa6 OF _MSYSMENU ACTIVATE POPUP usuarios
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de.."
 ON SELECTION BAR 1 OF salir ;
-	DO _7ip0v51g9 ;
+	DO _7ks12gqa7 ;
 	IN LOCFILE("MNU\PRESUAMBMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is PRESUAMBMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -85,7 +85,7 @@ ON SELECTION BAR 1 OF usuarios do form frmpresu20
 
 *       *********************************************************
 *       *                                                         
-*       * _7IP0V51G9  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7KS12GQA7  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -96,7 +96,7 @@ ON SELECTION BAR 1 OF usuarios do form frmpresu20
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ip0v51g9
+PROCEDURE _7ks12gqa7
 do sp_logoff
 quit
 
