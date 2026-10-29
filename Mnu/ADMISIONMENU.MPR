@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 14/10/2026         ADMISIONMENU.MPR           10:53:18  
+*       * 15/10/2026         ADMISIONMENU.MPR           13:38:11  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,27 +26,27 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7l10nc5rj OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
+DEFINE PAD _7l20t86ae OF _MSYSMENU PROMPT "Salir" COLOR SCHEME 3 ;
 	KEY ALT+S, ""
-DEFINE PAD _7l10nc5rk OF _MSYSMENU PROMPT "Admision" COLOR SCHEME 3 ;
+DEFINE PAD _7l20t86af OF _MSYSMENU PROMPT "Admision" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
-DEFINE PAD _7l10nc5rl OF _MSYSMENU PROMPT "Modificaciones" COLOR SCHEME 3 ;
+DEFINE PAD _7l20t86ag OF _MSYSMENU PROMPT "Modificaciones" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
-DEFINE PAD _7l10nc5rm OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
+DEFINE PAD _7l20t86ah OF _MSYSMENU PROMPT "Listados y Consultas" COLOR SCHEME 3 ;
 	KEY ALT+L, ""
-DEFINE PAD _7l10nc5rn OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
+DEFINE PAD _7l20t86ai OF _MSYSMENU PROMPT "Usuario" COLOR SCHEME 3 ;
 	KEY ALT+U, ""
-ON PAD _7l10nc5rj OF _MSYSMENU ACTIVATE POPUP salir
-ON PAD _7l10nc5rk OF _MSYSMENU ACTIVATE POPUP admision
-ON PAD _7l10nc5rl OF _MSYSMENU ACTIVATE POPUP modificaci
-ON PAD _7l10nc5rm OF _MSYSMENU ACTIVATE POPUP listadosyc
-ON PAD _7l10nc5rn OF _MSYSMENU ACTIVATE POPUP usuario
+ON PAD _7l20t86ae OF _MSYSMENU ACTIVATE POPUP salir
+ON PAD _7l20t86af OF _MSYSMENU ACTIVATE POPUP admision
+ON PAD _7l20t86ag OF _MSYSMENU ACTIVATE POPUP modificaci
+ON PAD _7l20t86ah OF _MSYSMENU ACTIVATE POPUP listadosyc
+ON PAD _7l20t86ai OF _MSYSMENU ACTIVATE POPUP usuario
 
 DEFINE POPUP salir MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR 1 OF salir PROMPT "Cerrar Aplicacion"
 DEFINE BAR 2 OF salir PROMPT "Acerca de..."
 ON SELECTION BAR 1 OF salir ;
-	DO _7l10nc5ro ;
+	DO _7l20t86aj ;
 	IN LOCFILE("MNU\ADMISIONMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is ADMISIONMENU?")
 ON SELECTION BAR 2 OF salir do form frmacercade
 
@@ -107,7 +107,7 @@ DEFINE BAR 7 OF listadosyc PROMPT "Impresión HCE Unificada" ;
 DEFINE BAR 8 OF listadosyc PROMPT "Impresión de Vales"
 ON SELECTION BAR 1 OF listadosyc do form frmturno60
 ON SELECTION BAR 2 OF listadosyc ;
-	DO _7l10nc5rp ;
+	DO _7l20t86ak ;
 	IN LOCFILE("MNU\ADMISIONMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is ADMISIONMENU?")
 ON SELECTION BAR 3 OF listadosyc do form frmadmision28
 ON SELECTION BAR 4 OF listadosyc do form frmadmision30
@@ -123,14 +123,14 @@ DEFINE BAR 2 OF usuario PROMPT "\<Usuario"
 DEFINE BAR 3 OF usuario PROMPT "Mesa de Ayuda"
 ON SELECTION BAR 1 OF usuario do form frmpass_amb
 ON SELECTION BAR 2 OF usuario ;
-	DO _7l10nc5rq ;
+	DO _7l20t86al ;
 	IN LOCFILE("MNU\ADMISIONMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is ADMISIONMENU?")
 ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7L10NC5RO  ON SELECTION BAR 1 OF POPUP salir           
+*       * _7L20T86AJ  ON SELECTION BAR 1 OF POPUP salir           
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -141,14 +141,14 @@ ON SELECTION BAR 3 OF usuario Do form  frmreclamos03
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7l10nc5ro
+PROCEDURE _7l20t86aj
 do sp_logoff
 quit
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7L10NC5RP  ON SELECTION BAR 2 OF POPUP listadosyc      
+*       * _7L20T86AK  ON SELECTION BAR 2 OF POPUP listadosyc      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -159,7 +159,7 @@ quit
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7l10nc5rp
+PROCEDURE _7l20t86ak
 do sp_conexion
 do form frmagenda_tel
 do sp_desconexion with "agenda"
@@ -170,7 +170,7 @@ do sp_desconexion with "agenda"
 
 *       *********************************************************
 *       *                                                         
-*       * _7L10NC5RQ  ON SELECTION BAR 2 OF POPUP usuario         
+*       * _7L20T86AL  ON SELECTION BAR 2 OF POPUP usuario         
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -181,7 +181,7 @@ do sp_desconexion with "agenda"
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7l10nc5rq
+PROCEDURE _7l20t86al
 messagebox ("Usuario Logueado: "+ mwkusuario.idusuario + chr(13)+;
 	"Usuario Codigo: "+ transf(mwkusuario.codigovax )+ chr(13)+ ;
 	"Sector:  " + mwkusuario.sector+transf(reccount('mwkusuario')),64,"Información")

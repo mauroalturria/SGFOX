@@ -17,7 +17,7 @@ mbusco = mbusco + lcBusco
 mRet = Sqlexec(mcon1,"select TabAutPrevias.*, " + ;
 	" tabestados.descrip as descest, tabestados.estado as estadoori, " + ;
 	" tabbacteriotipomuestra.ID as IdTipoMuestra, tabbacteriotipomuestra.BAC_codigomuestra,"+;
-	" tabbacteriotipomuestra.BAC_descripmuestra,Tabambulatorio.centromedico " +;
+	" tabbacteriotipomuestra.BAC_descripmuestra,Tabambulatorio.centromedico , codambito, APV_idrubro" +;
 	" from TabAutPrevias " + ;
 	" Inner join tabestados on (tabestados.subestado = TabAutPrevias.APV_Estado and tabestados.propietario = 28) " + ;
 	" left join tabbacteriotipomuestra on TabAutPrevias.APV_codmuestra = tabbacteriotipomuestra.id " +;

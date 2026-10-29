@@ -13,7 +13,7 @@ do case
 		lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio, ser_descripserv "+;
 			",guardia.codcie9 ,tabambulatorio.codcie9,pre_especialidad,pre_tipomuestra,tabambulatorio.codent as codentamb "+;
 			",guardia.codent as codentgua, tabbacteriotipomuestra.BAC_descripmuestra,TabSolPract.ASP_codmuestra"+;
-			",tabbacteriotipomuestra.BAC_codigomuestra,tabambulatorio.centromedico,Tabciap2e.descrabrev  " +;
+			",tabbacteriotipomuestra.BAC_codigomuestra,tabambulatorio.centromedico,Tabciap2e.descrabrev,TabSolPract.codambito, TabSolPract.ASP_idrubro  " +;
 			" from TabSolPract  " + ;
 			" left join prestacions on ASP_codprest = pre_codprest "+;
 			" left join tabambulatorio on ASP_protocolo = tabambulatorio.protocolo "+;
@@ -26,7 +26,7 @@ do case
 				
 		lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio, pre_especialidad ,ser_descripserv,pre_tipomuestra, "+;
 		    " tabbacteriotipomuestra.BAC_descripmuestra,TabSolPract.ASP_codmuestra,tabbacteriotipomuestra.BAC_codigomuestra, " +;
-		    " tabambulatorio.centromedico " +;
+		    " tabambulatorio.centromedico,TabSolPract.codambito, TabSolPract.ASP_idrubro " +;
 		    " from TabSolPract  " + ;			
 			" left join prestacions on ASP_codprest = pre_codprest "+;
 			" left join tabambulatorio on ASP_protocolo = tabambulatorio.protocolo "+;
@@ -34,7 +34,7 @@ do case
 			" left join tabbacteriotipomuestra on TabSolPract.ASP_codmuestra = tabbacteriotipomuestra.id " +;
 			tcWhere
 	case tnOpcion = 3
-		lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio, ser_descripserv "+;
+		lcSql = "select TabSolPract.*,pre_descriprest,pre_codservicio, ser_descripserv,TabSolPract.codambito, TabSolPract.ASP_idrubro "+;
 			" from TabSolPract  " + ;
 			" INNER join prestacions on ASP_codprest = pre_codprest "+;
 			" INNER join servicios on pre_codservicio = ser_codserv "+;

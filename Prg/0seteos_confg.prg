@@ -245,14 +245,18 @@ Scan All
 			SELECT mwkValRel
 		ENDSCAN
 	
+		** 5) Busca en TabAmbulatorio:
+		SELECT mwkValRel
+		SCAN FOR mwkaux.val_tipopaciente = 'AMB' AND NOT FlagConformable
+		    lccriterio = 'ProtocoloAmb'
+			ProtocoloAmb(mwkValRel.NroVale, @FlagConformable, @FechaHoraRealizado)
+			SELECT mwkValRel
+		ENDSCAN
+	
 
 		IF FlagConformable
 
 		 	??  mwkValRel.NroProtocolo, FechaHoraRealizado, FechaHoraImagen, ' *** CONFORMABLE!  ',lccriterio
-		 	****************
-		 	*  Acá agregar el CONFORME **********
-		 	*INKEY(1)
-			*SET STEP ON
 			
 			** -RLV 09/09/2026: Detecté casos en que la FechaHoraRealizado (por la imagen principalmente)
 			*    figura ANTERIOR a la Fecha/hora de Solicitado del vale (IMPOSIBLE!))  
@@ -326,31 +330,6 @@ ENDIF
 
 
 RETURN
-
-
-*!*		lccode = "D CONFTOTAL^RTN031("+ Transform(lnexec) + ',' + Transform(mvale) + ',' + Transform(moperador) + ')'
-
-*!*		If !Inlist(mwkAux.ser_codserv,7900, 7400, 5163, 4403, 9100)
-*!*			If Val(mwkAux.CONFORMADO)=0
-*!*				Do MPPS With lcsqlmpps 
-*!*			Endif 	
-*!*			If Val(mwkAux.CONFORMADO)=0
-*!*				Do Pacs With lcsqlpacs
-*!*			Endif 
-*!*		Endif 
-*!*		If Val(mwkAux.CONFORMADO)=0
-*!*			Do Informe With lcsqlinf
-*!*		Endif 
-*!*		
-*!*		If Val(mwkAux.CONFORMADO)=0
-*!*			Do ValeRela
-*!*		Endif
-*!*			
-
-*!*	If !execvism(lccomenta, lcsvr, lcnasp, lcruti, lcparr, lccode, lnexec)
-*!*		Return .f.
-*!*	Endif 
-
 
 
 ***********************************************************************************************
@@ -520,7 +499,6 @@ ENDIF
 lclink = "https://servicios2.sg.com.ar/api/pacsrm/index.php?hc=" + ALLTRIM(NroHistClin) + "&proto=" + ALLTRIM(STR(NroProtocolo,10,0))
 Local xmlHTTP As "Microsoft.XMLHTTP"
 
-
 xmlHTTP = Createobject("Microsoft.XMLHTTP")
 If Alltrim(Type("xmlHTTP")) <> "O"
 	*Messagebox( "No se pudo crear el objeto (XMLHTTP) - NOMBRE DEL EJECUTABLE.",48,"Aviso")
@@ -555,6 +533,31 @@ ENDCASE
 Release xmlHTTP
 
 RETURN
+
+
+*!*	------------------------------------------------------------------------
+Procedure ProtocoloAmb   && -RLV 15/10/2026, cuando todo lo demás falló (no encontró evidencia)
+
+Parameters NumeroVale, FlagConformable, FechaHoraCompletado
+
+*!*	------------------------------------------------------------------------
+
+TEXT To lcsqlprot Textmerge Noshow Pretext 7
+	SELECT CodEstado, NroVale, FechaHoraIng
+	 FROM TabAmbulatorio
+	 WHERE  CodEstado = 70 
+	    and NroVale = ?NumeroVale
+ENDTEXT
+
+If SqlExec(mcon1,lcsqlprot,"mwkAuxI") > 0 AND Reccount("mwkAuxI") > 0
+	SET STEP ON
+	FlagConformable = .T.
+	FechaHoraCompletado = mwkAuxI.FechaHoraIng 
+Endif
+
+RETURN
+
+
 
 
 

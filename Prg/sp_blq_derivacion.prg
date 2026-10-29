@@ -5,7 +5,7 @@
 Use in select("mwkblqder")
 
 mid = mwkderiva1.id          && ID derivación
-mvx = mwkUsuario.codigovax   && Codigo VAX usuario p/bloqueo de registro
+mvx = IIF(USED('mwkUsuarios'),mwkUsuarios.codigovax ,mwkUsuario.codigovax )  && Codigo VAX usuario p/bloqueo de registro
 mtd = mwkderiva1.ltipreg     && Registro proviene de Registracio o Preregistra
 
 mret = sqlexec(mcon1,"select * from TabDerivacion"+;

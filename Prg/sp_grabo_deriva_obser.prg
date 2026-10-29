@@ -27,7 +27,7 @@ With mthisform
       mcodent = 0
 
    Else
-      mnroreg = mwkbuspacie1.REG_nroregistrac
+      mnroreg = IIF(RECCOUNT('mwkbuspacie1')>0,mwkbuspacie1.REG_nroregistrac,0)
       mnroafi = .txtnroafi.value
       mcodent = .CboEntidad.Value
 

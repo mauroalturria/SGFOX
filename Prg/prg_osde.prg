@@ -75,7 +75,7 @@ If mwkosde.estado = 1 && esta habilitada la entidad
 		Messagebox("Error al enviar la solicitud: " + loError.Message)
 		Return
 	Endtry
-	DO sp_grabo_log_servicio WITH  'prg_osde',ALLTRIM(myip)+'-'+lclink,oHttp.ResponseText
+	Do sp_grabo_log_servicio With  'prg_osde',Alltrim(myip)+'-'+lclink,oHttp.ResponseText
 
 	If oHttp.Status = 200
 		cResponse = oHttp.ResponseText
@@ -95,19 +95,35 @@ If mwkosde.estado = 1 && esta habilitada la entidad
 	Endif
 	Release oHttp
 	If !Empty(lcresp)
+		nlineas = Alines(respuesta,lcresp)
 		Create Cursor mwkjson (Consok L, numeroEvento N(10),mensaje c(200)   )
 		lcjason = json(lcresp,'ok',0)
 		lConsok =  (lcjason<>'false')
-		lnumeroEvento  = Val(json(lcresp,'value',0))
+		If lConsok
+			For xni = 1 To nlineas
+				If At('numeroEvento',respuesta(xni))>0
+					Exit
+				Endif
+			Next xni
+			xni=xni+1
+			lnumeroEvento  = Val(json(respuesta(xni),'value',0))
+		Else
+			lnumeroEvento  = Val(json(lcresp,'value',0))
+		Endif
 		lmensaje   =  json(lcresp,'mensaje',0)
 		Insert Into mwkjson   (Consok , numeroEvento ,mensaje ) Values (lConsok, lnumeroEvento, lmensaje)
 	Else
 		Insert Into mwkjson   (Consok , numeroEvento ,mensaje ) Values (.F., 0, "NO SE PUDO VALIDAR")
 	Endif
-
 	Wait Clear
 Endif
-Function json(texto,clave,comillas)
+*!*	       "identifier": [
+*!*	                    {
+*!*	                        "system": "https://osde.com.ar/internacion/numeroEvento",
+*!*	                        "value": "6000927636"
+
+
+Function json(texto,clave,npos)
 lcjson = texto
 lcjsonclave = '"'+Alltrim(clave)+'":'
 lninicio = At(lcjsonclave,lcjson)
@@ -115,10 +131,13 @@ lcstring = Substr(lcjson,lninicio,Len(lcjson)-lninicio)
 lextra = At(":",lcstring)
 lcstring = Substr(lcstring,lextra+1,Len(lcstring)-lextra)
 If Left(lcstring,1)='"'
-	lcstring = ALLTRIM(Strextract(lcstring,'"','"'))
+	lcstring = Alltrim(Strextract(lcstring,'"','"'))
 Else
 	lextra = At(",",lcstring)-1
-	lcstring = ALLTRIM(Left(lcstring,lextra ))
+	If lextra<=0
+		lextra = Len(lcstring)
+	Endif
+	lcstring = Alltrim(Left(lcstring,lextra ))
 Endif
 lcstring = Strtran(lcstring,'"','')
 Return lcstring
