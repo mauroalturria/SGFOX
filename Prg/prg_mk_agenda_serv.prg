@@ -1,6 +1,6 @@
 Lparameters xfdesde,xconsul,xcuil ,xserv,xlok
 If myip='172.16.1.7'
-*	Set Step On
+ 	Set Step On
 Endif
 If Vartype(xlok)<>"L"
 	xlok = .F.
